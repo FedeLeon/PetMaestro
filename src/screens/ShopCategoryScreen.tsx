@@ -172,9 +172,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
+    paddingBottom: 10,
     paddingHorizontal: 14,
-    paddingTop: 54,
+    paddingTop: 32,
   },
   itemName: {
     color: '#372413',

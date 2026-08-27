@@ -218,6 +218,12 @@ export const shopItems: ShopItem[] = [
   { id: 'round-rug', name: 'Alfombra redonda', price: 40, category: 'furniture', target: 'house', slot: 'furniture', color: '#ff7a59', label: 'ALFOMBRA', icon: 'rug' },
   { id: 'floor-lamp', name: 'Lampara de pie', price: 46, category: 'furniture', target: 'house', slot: 'furniture', color: '#d6bf77', label: 'LUZ', icon: 'floor-lamp' },
   { id: 'tv-cabinet', name: 'Mueble TV', price: 55, category: 'furniture', target: 'house', slot: 'furniture', color: '#b7864f', label: 'MUEBLE', icon: 'television-classic' },
+  { id: 'farm-cow', name: 'Vaquita', price: 70, category: 'pets', target: 'yard', slot: 'animal', color: '#7fc8f8', label: 'MUU', icon: 'cow' },
+  { id: 'farm-pig', name: 'Cerdito', price: 62, category: 'pets', target: 'yard', slot: 'animal', color: '#f4a6bd', label: 'OINK', icon: 'pig' },
+  { id: 'farm-sheep', name: 'Ovejita', price: 66, category: 'pets', target: 'yard', slot: 'animal', color: '#b7d88a', label: 'BEE', icon: 'sheep' },
+  { id: 'farm-horse', name: 'Caballito', price: 84, category: 'pets', target: 'yard', slot: 'animal', color: '#c9935b', label: 'HIH', icon: 'horse' },
+  { id: 'farm-duck', name: 'Patito', price: 54, category: 'pets', target: 'yard', slot: 'animal', color: '#ffd966', label: 'CUAC', icon: 'duck' },
+  { id: 'farm-rabbit', name: 'Conejito', price: 58, category: 'pets', target: 'yard', slot: 'animal', color: '#d9d2e9', label: 'SALTA', icon: 'rabbit' },
 ];
 
 export const shopCategories: ShopCategory[] = [
@@ -262,6 +268,13 @@ export const shopCategories: ShopCategory[] = [
     description: 'Objetos para decorar la casa por dentro.',
     icon: 'sofa',
     color: '#8d552c',
+  },
+  {
+    id: 'pets',
+    label: 'Mascotas',
+    description: 'Animalitos de granja para los corrales exteriores.',
+    icon: 'barn',
+    color: '#7fc8f8',
   },
 ];
 

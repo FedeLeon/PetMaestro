@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { levels, shopItems } from '../data/gameContent';
 import { ProgressState } from '../types';
 
@@ -14,6 +14,7 @@ const initialProgress: ProgressState = {
   equippedItemId: null,
   equippedCatItems: {},
   placedFurnitureIds: [],
+  placedAnimalIds: [],
   furniturePositions: {},
   completedLevels: [],
 };
@@ -25,6 +26,7 @@ type ProgressContextValue = {
   buyItem: (itemId: string) => Promise<{ ok: boolean; reason?: string }>;
   equipItem: (itemId: string | null) => Promise<void>;
   toggleFurniture: (itemId: string) => Promise<void>;
+  toggleAnimal: (itemId: string) => Promise<void>;
   setFurniturePosition: (itemId: string, position: { x: number; y: number }) => Promise<void>;
   resetProgress: () => Promise<void>;
 };
@@ -33,6 +35,7 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 
 export function ProgressProvider({ children }: PropsWithChildren) {
   const [progress, setProgress] = useState<ProgressState>(initialProgress);
+  const progressRef = useRef(initialProgress);
   const [isReady, setIsReady] = useState(false);
   const visibleProgress = useMemo(
     () => ({
@@ -46,15 +49,23 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
         if (raw) {
-          setProgress({ ...initialProgress, ...JSON.parse(raw) });
+          const storedProgress = { ...initialProgress, ...JSON.parse(raw) };
+          progressRef.current = storedProgress;
+          setProgress(storedProgress);
         }
       })
       .finally(() => setIsReady(true));
   }, []);
 
   const saveProgress = async (next: ProgressState) => {
+    progressRef.current = next;
     setProgress(next);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  };
+
+  const updateProgress = async (updater: (current: ProgressState) => ProgressState) => {
+    const next = updater(progressRef.current);
+    await saveProgress(next);
   };
 
   const completeLevel = async (levelId: number, correctAnswers: number, totalRounds: number) => {
@@ -116,7 +127,7 @@ export function ProgressProvider({ children }: PropsWithChildren) {
 
     const item = shopItems.find((entry) => entry.id === itemId);
 
-    if (!item || item.target !== 'cat' || item.slot === 'furniture') {
+    if (!item || item.target !== 'cat' || item.slot === 'furniture' || item.slot === 'animal') {
       return;
     }
 
@@ -134,25 +145,41 @@ export function ProgressProvider({ children }: PropsWithChildren) {
   };
 
   const toggleFurniture = async (itemId: string) => {
-    if (!progress.ownedItems.includes(itemId)) {
-      return;
-    }
+    await updateProgress((current) => {
+      if (!current.ownedItems.includes(itemId)) {
+        return current;
+      }
 
-    const placedFurnitureIds = progress.placedFurnitureIds.includes(itemId)
-      ? progress.placedFurnitureIds.filter((id) => id !== itemId)
-      : [...progress.placedFurnitureIds, itemId];
+      const placedFurnitureIds = current.placedFurnitureIds.includes(itemId)
+        ? current.placedFurnitureIds.filter((id) => id !== itemId)
+        : [...current.placedFurnitureIds, itemId];
 
-    await saveProgress({ ...progress, placedFurnitureIds });
+      return { ...current, placedFurnitureIds };
+    });
+  };
+
+  const toggleAnimal = async (itemId: string) => {
+    await updateProgress((current) => {
+      if (!current.ownedItems.includes(itemId)) {
+        return current;
+      }
+
+      const placedAnimalIds = current.placedAnimalIds.includes(itemId)
+        ? current.placedAnimalIds.filter((id) => id !== itemId)
+        : [...current.placedAnimalIds, itemId];
+
+      return { ...current, placedAnimalIds };
+    });
   };
 
   const setFurniturePosition = async (itemId: string, position: { x: number; y: number }) => {
-    await saveProgress({
-      ...progress,
+    await updateProgress((current) => ({
+      ...current,
       furniturePositions: {
-        ...progress.furniturePositions,
+        ...current.furniturePositions,
         [itemId]: position,
       },
-    });
+    }));
   };
 
   const resetProgress = async () => {
@@ -167,6 +194,7 @@ export function ProgressProvider({ children }: PropsWithChildren) {
       buyItem,
       equipItem,
       toggleFurniture,
+      toggleAnimal,
       setFurniturePosition,
       resetProgress,
     }),

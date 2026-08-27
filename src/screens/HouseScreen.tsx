@@ -24,18 +24,21 @@ import { RootStackParamList, ShopItem } from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
 
 const MAIN_ROOM_WIDTH = 720;
+const BATHROOM_ROOM_WIDTH = 720;
 const EXTERIOR_YARD_WIDTH = 960;
+const ROOM_HEIGHT = 420;
+const ROOM_FLOOR_HEIGHT = 184;
 
 const furnitureDefaults: Record<string, { x: number; y: number }> = {
-  'soft-bed': { x: 24, y: 144 },
-  'small-table': { x: 142, y: 176 },
-  'fish-lamp': { x: 226, y: 116 },
-  'window-plant': { x: 34, y: 54 },
-  'red-sofa': { x: 392, y: 142 },
-  'bookcase-open': { x: 590, y: 46 },
-  'round-rug': { x: 414, y: 205 },
-  'floor-lamp': { x: 526, y: 96 },
-  'tv-cabinet': { x: 430, y: 56 },
+  'soft-bed': { x: 24, y: 44 },
+  'small-table': { x: 142, y: 58 },
+  'fish-lamp': { x: 226, y: 22 },
+  'window-plant': { x: 34, y: 26 },
+  'red-sofa': { x: 392, y: 48 },
+  'bookcase-open': { x: 590, y: 12 },
+  'round-rug': { x: 414, y: 64 },
+  'floor-lamp': { x: 526, y: 8 },
+  'tv-cabinet': { x: 430, y: 54 },
 };
 
 const furnitureSizes: Record<string, { width: number; height: number }> = {
@@ -50,17 +53,49 @@ const furnitureSizes: Record<string, { width: number; height: number }> = {
   'tv-cabinet': { width: 122, height: 78 },
 };
 
+const animalPositions: Record<string, { x: number; y: number }> = {
+  'farm-cow': { x: 130, y: 176 },
+  'farm-pig': { x: 750, y: 204 },
+  'farm-sheep': { x: 230, y: 216 },
+  'farm-horse': { x: 675, y: 152 },
+  'farm-duck': { x: 342, y: 238 },
+  'farm-rabbit': { x: 600, y: 244 },
+};
+
 export function HouseScreen({ navigation }: Props) {
-  const { progress, setFurniturePosition, toggleFurniture } = useProgress();
+  const { progress, setFurniturePosition, toggleAnimal, toggleFurniture } = useProgress();
   const [houseView, setHouseView] = useState<'outside' | 'inside' | 'bathroom'>('outside');
   const [activeFurnitureId, setActiveFurnitureId] = useState<string | null>(null);
   const [isDraggingFurniture, setIsDraggingFurniture] = useState(false);
+  const [exteriorViewportWidth, setExteriorViewportWidth] = useState(0);
   const [roomSize, setRoomSize] = useState({ height: 0, width: 0 });
+  const exteriorScrollRef = useRef<ScrollView>(null);
   const ownedFurniture = useMemo(
     () => shopItems.filter((item) => item.target === 'house' && progress.ownedItems.includes(item.id)),
     [progress.ownedItems],
   );
+  const ownedAnimals = useMemo(
+    () => shopItems.filter((item) => item.target === 'yard' && progress.ownedItems.includes(item.id)),
+    [progress.ownedItems],
+  );
   const placedFurniture = ownedFurniture.filter((item) => progress.placedFurnitureIds.includes(item.id));
+  const placedAnimals = ownedAnimals.filter((item) => progress.placedAnimalIds.includes(item.id));
+
+  useEffect(() => {
+    if (houseView !== 'outside' || !exteriorViewportWidth) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      exteriorScrollRef.current?.scrollTo({
+        animated: false,
+        x: Math.max(0, (EXTERIOR_YARD_WIDTH - exteriorViewportWidth) / 2),
+        y: 0,
+      });
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [exteriorViewportWidth, houseView]);
 
   return (
     <View style={styles.screen}>
@@ -87,7 +122,7 @@ export function HouseScreen({ navigation }: Props) {
                   }}
                   style={styles.floor}
                 >
-                  <View style={styles.roomCat}>
+                  <View pointerEvents="none" style={styles.roomCat}>
                     <PetCat
                       equippedCatItems={progress.equippedCatItems}
                       equippedItemId={progress.equippedItemId}
@@ -134,24 +169,51 @@ export function HouseScreen({ navigation }: Props) {
           </View>
         ) : houseView === 'bathroom' ? (
           <View style={styles.room}>
-            <ImageBackground
-              imageStyle={styles.roomBackgroundImage}
-              resizeMode="stretch"
-              source={houseImages.bathroomInterior}
-              style={styles.bathroomPane}
-            >
-              <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.bathroomExitDoorHit} />
-            </ImageBackground>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <ImageBackground
+                imageStyle={styles.roomBackgroundImage}
+                resizeMode="stretch"
+                source={houseImages.bathroomInterior}
+                style={styles.bathroomPane}
+              >
+                <View pointerEvents="none" style={styles.bathroomCat}>
+                  <PetCat
+                    equippedCatItems={progress.equippedCatItems}
+                    equippedItemId={progress.equippedItemId}
+                    size="room"
+                  />
+                </View>
+                <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.bathroomExitDoorHit} />
+              </ImageBackground>
+            </ScrollView>
           </View>
         ) : (
-          <View style={styles.room}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View
+            onLayout={(event) => {
+              setExteriorViewportWidth(event.nativeEvent.layout.width);
+            }}
+            style={styles.room}
+          >
+            <ScrollView horizontal ref={exteriorScrollRef} showsHorizontalScrollIndicator={false}>
               <ImageBackground
                 imageStyle={styles.roomBackgroundImage}
                 resizeMode="stretch"
                 source={houseImages.exteriorWide}
                 style={styles.exteriorWide}
               >
+                {placedAnimals.map((animal) => {
+                  const position = animalPositions[animal.id] ?? { x: EXTERIOR_YARD_WIDTH / 2, y: 220 };
+
+                  return (
+                    <View key={animal.id} style={[styles.yardAnimal, { left: position.x, top: position.y }]}>
+                      <MaterialCommunityIcons
+                        color={animal.color}
+                        name={animal.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+                        size={54}
+                      />
+                    </View>
+                  );
+                })}
                 <View style={styles.exteriorHouseBody}>
                   <Image resizeMode="contain" source={houseImages.cuteHouse} style={styles.houseImage} />
                   <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.doorTileButton} />
@@ -162,40 +224,62 @@ export function HouseScreen({ navigation }: Props) {
         )}
       </View>
 
-      <View style={styles.inventorySection}>
-        <Text style={styles.sectionTitle}>Mis muebles</Text>
-        <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}>
-          <View style={styles.inventoryGrid}>
-            {ownedFurniture.length === 0 ? (
+      {houseView === 'inside' || houseView === 'outside' ? (
+        <View style={styles.inventorySection}>
+          <Text style={styles.sectionTitle}>{houseView === 'inside' ? 'Mis muebles' : 'Mis animales'}</Text>
+          <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}>
+            <View style={styles.inventoryGrid}>
+              {houseView === 'inside' && ownedFurniture.length === 0 ? (
+                <View style={styles.emptyInventory}>
+                  <Text style={styles.emptyText}>Todavia no compraste muebles.</Text>
+                </View>
+              ) : null}
+              {houseView === 'outside' && ownedAnimals.length === 0 ? (
               <View style={styles.emptyInventory}>
-                <Text style={styles.emptyText}>Todavia no compraste muebles.</Text>
+                <Text style={styles.emptyText}>Compra animalitos en la tienda para agregarlos a los corrales.</Text>
               </View>
-            ) : (
-              ownedFurniture.map((item) => {
-                const placed = progress.placedFurnitureIds.includes(item.id);
+              ) : null}
+              {houseView === 'inside'
+                ? ownedFurniture.map((item) => {
+                    const placed = progress.placedFurnitureIds.includes(item.id);
 
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    onPress={() => toggleFurniture(item.id)}
-                    style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
-                  >
-                    <View style={[styles.inventoryPreview, { backgroundColor: item.color }]}>
-                      {furnitureImages[item.id] ? (
-                        <Image resizeMode="contain" source={furnitureImages[item.id]} style={styles.inventoryImage} />
-                      ) : (
-                        <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={24} />
-                      )}
-                    </View>
-                    <Text style={styles.inventoryName}>{item.name}</Text>
-                    <Text style={styles.inventoryAction}>{placed ? 'Quitar' : 'Colocar'}</Text>
-                  </TouchableOpacity>
-                );
-              })
-            )}
-          </View>
-        </ScrollView>
-      </View>
+                    return (
+                      <TouchableOpacity
+                        key={item.id}
+                        onPress={() => toggleFurniture(item.id)}
+                        style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
+                      >
+                        <View style={[styles.inventoryPreview, { backgroundColor: item.color }]}>
+                          {furnitureImages[item.id] ? (
+                            <Image resizeMode="contain" source={furnitureImages[item.id]} style={styles.inventoryImage} />
+                          ) : (
+                            <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={26} />
+                          )}
+                        </View>
+                        <Text style={styles.inventoryName}>{item.name}</Text>
+                      </TouchableOpacity>
+                    );
+                  })
+                : ownedAnimals.map((item) => {
+                    const placed = progress.placedAnimalIds.includes(item.id);
+
+                    return (
+                      <TouchableOpacity
+                        key={item.id}
+                        onPress={() => toggleAnimal(item.id)}
+                        style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
+                      >
+                        <View style={[styles.inventoryPreview, { backgroundColor: item.color }]}>
+                          <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={34} />
+                        </View>
+                        <Text style={styles.inventoryName}>{item.name}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+            </View>
+          </ScrollView>
+        </View>
+      ) : null}
       <AppBottomMenu />
     </View>
   );
@@ -216,16 +300,29 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+function clampFurniturePosition(position: { x: number; y: number }, roomSize: { height: number; width: number }, size: { height: number; width: number }) {
+  if (!roomSize.height || !roomSize.width) {
+    return position;
+  }
+
+  return {
+    x: clamp(position.x, 0, Math.max(0, roomSize.width - size.width)),
+    y: clamp(position.y, 0, Math.max(0, roomSize.height - size.height)),
+  };
+}
+
 function DraggableFurniture({ isActive, item, onDragEnd, onDragStart, onMoveEnd, position, roomSize, source }: DraggableFurnitureProps) {
   const size = furnitureSizes[item.id] ?? { height: 86, width: 86 };
-  const pan = useRef(new Animated.ValueXY(position)).current;
-  const latestPosition = useRef(position);
+  const initialPosition = clampFurniturePosition(position, roomSize, size);
+  const pan = useRef(new Animated.ValueXY(initialPosition)).current;
+  const latestPosition = useRef(initialPosition);
   const roomSizeRef = useRef(roomSize);
 
   useEffect(() => {
-    latestPosition.current = position;
-    pan.setValue(position);
-  }, [pan, position]);
+    const nextPosition = clampFurniturePosition(position, roomSize, size);
+    latestPosition.current = nextPosition;
+    pan.setValue(nextPosition);
+  }, [pan, position, roomSize, size]);
 
   useEffect(() => {
     roomSizeRef.current = roomSize;
@@ -248,12 +345,14 @@ function DraggableFurniture({ isActive, item, onDragEnd, onDragStart, onMoveEnd,
       onPanResponderRelease: (_event, gesture) => {
         pan.flattenOffset();
         const currentRoomSize = roomSizeRef.current;
-        const maxX = Math.max(0, currentRoomSize.width - size.width);
-        const maxY = Math.max(0, currentRoomSize.height - size.height);
-        const nextPosition = {
-          x: clamp(latestPosition.current.x + gesture.dx, 0, maxX),
-          y: clamp(latestPosition.current.y + gesture.dy, 0, maxY),
-        };
+        const nextPosition = clampFurniturePosition(
+          {
+            x: latestPosition.current.x + gesture.dx,
+            y: latestPosition.current.y + gesture.dy,
+          },
+          currentRoomSize,
+          size,
+        );
 
         latestPosition.current = nextPosition;
         pan.setValue(nextPosition);
@@ -277,7 +376,8 @@ function DraggableFurniture({ isActive, item, onDragEnd, onDragStart, onMoveEnd,
         styles.draggableFurniture,
         {
           height: size.height,
-          transform: pan.getTranslateTransform(),
+          left: pan.x,
+          top: pan.y,
           width: size.width,
           zIndex: isActive ? 30 : 4,
         },
@@ -295,28 +395,35 @@ const styles = StyleSheet.create({
     right: 20,
     top: 82,
     width: 108,
-    zIndex: 8,
+    zIndex: 1,
+  },
+  bathroomCat: {
+    bottom: -4,
+    left: 468,
+    position: 'absolute',
+    zIndex: 4,
   },
   bathroomExitDoorHit: {
     height: 204,
-    left: 30,
+    left: 36,
     position: 'absolute',
     top: 50,
-    width: 116,
+    width: 132,
     zIndex: 8,
   },
   bathroomPane: {
     backgroundColor: '#ffffff',
-    height: 336,
+    height: ROOM_HEIGHT - 4,
     overflow: 'hidden',
-    width: '100%',
+    position: 'relative',
+    width: BATHROOM_ROOM_WIDTH,
   },
   doorTileButton: {
-    bottom: 8,
-    height: 88,
-    left: 98,
+    bottom: 10,
+    height: 106,
+    left: 118,
     position: 'absolute',
-    width: 72,
+    width: 86,
     zIndex: 3,
   },
   emptyInventory: {
@@ -353,30 +460,34 @@ const styles = StyleSheet.create({
   },
   exteriorHouseBody: {
     alignItems: 'center',
-    bottom: 58,
-    height: 178,
-    left: EXTERIOR_YARD_WIDTH / 2 - 122,
+    bottom: 62,
+    height: 214,
+    left: EXTERIOR_YARD_WIDTH / 2 - 146,
     position: 'absolute',
-    width: 244,
+    width: 293,
     zIndex: 3,
   },
   exteriorWide: {
-    height: 336,
+    height: ROOM_HEIGHT - 4,
     position: 'relative',
     width: EXTERIOR_YARD_WIDTH,
   },
   floor: {
     bottom: 0,
     left: 0,
-    position: 'relative',
+    height: ROOM_FLOOR_HEIGHT,
+    position: 'absolute',
     right: 0,
-    top: 0,
     width: '100%',
-    height: '100%',
+    zIndex: 4,
   },
   furnitureStage: {
-    flex: 1,
-    position: 'relative',
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 6,
   },
   header: {
     alignItems: 'center',
@@ -385,9 +496,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
+    paddingBottom: 10,
     paddingHorizontal: 14,
-    paddingTop: 54,
+    paddingTop: 32,
   },
   insideDoorHit: {
     height: 178,
@@ -395,7 +506,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 48,
     width: 166,
-    zIndex: 8,
+    zIndex: 1,
   },
   inventoryScroll: {
     paddingBottom: 128,
@@ -406,7 +517,7 @@ const styles = StyleSheet.create({
   },
   mainRoomPane: {
     backgroundColor: '#ffffff',
-    height: 336,
+    height: ROOM_HEIGHT - 4,
     overflow: 'hidden',
     position: 'relative',
     width: MAIN_ROOM_WIDTH,
@@ -415,22 +526,16 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  inventoryAction: {
-    color: '#ff7a59',
-    fontSize: 14,
-    fontWeight: '900',
-    marginTop: 4,
-  },
   inventoryCard: {
     alignItems: 'center',
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '47%',
-    flexGrow: 1,
-    minHeight: 142,
-    padding: 10,
+    flexBasis: '30.6%',
+    height: 104,
+    justifyContent: 'center',
+    padding: 8,
   },
   inventoryGrid: {
     flexDirection: 'row',
@@ -439,31 +544,32 @@ const styles = StyleSheet.create({
   },
   inventoryName: {
     color: '#372413',
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '900',
-    marginTop: 8,
+    marginTop: 5,
     textAlign: 'center',
   },
   inventoryImage: {
-    height: 58,
+    height: 46,
     width: '100%',
   },
   inventoryPreview: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 54,
+    height: 48,
     justifyContent: 'center',
     width: '100%',
   },
   placedInventoryCard: {
     borderColor: '#57b8a9',
+    borderWidth: 5,
   },
   room: {
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    height: 340,
+    height: ROOM_HEIGHT,
     overflow: 'hidden',
   },
   roomCat: {
@@ -476,8 +582,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   sceneArea: {
-    padding: 20,
-    paddingBottom: 14,
+    paddingBottom: 12,
+    paddingHorizontal: 0,
+    paddingTop: 12,
   },
   screen: {
     backgroundColor: '#fff7e8',
@@ -496,5 +603,17 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     paddingHorizontal: 10,
     textAlign: 'center',
+  },
+  yardAnimal: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+    borderColor: '#ffffff',
+    borderRadius: 999,
+    borderWidth: 3,
+    height: 72,
+    justifyContent: 'center',
+    position: 'absolute',
+    width: 72,
+    zIndex: 2,
   },
 });

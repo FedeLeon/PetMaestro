@@ -275,9 +275,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
+    paddingBottom: 10,
     paddingHorizontal: 20,
-    paddingTop: 54,
+    paddingTop: 32,
   },
   ground: {
     backgroundColor: '#78c85f',
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: '#ff7a59',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '900',
   },
   landscape: {
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#372413',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '900',
   },
   tree: {

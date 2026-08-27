@@ -15,7 +15,7 @@ export function PetScreen({ navigation }: Props) {
   const { equipItem, progress } = useProgress();
   const ownedCatItems = progress.ownedItems.filter((itemId) => {
     const item = shopItems.find((entry) => entry.id === itemId);
-    return item?.target === 'cat' && item.slot !== 'furniture';
+    return item?.target === 'cat' && item.slot !== 'furniture' && item.slot !== 'animal';
   });
 
   return (
@@ -41,7 +41,7 @@ export function PetScreen({ navigation }: Props) {
             ownedCatItems.map((itemId) => {
               const item = shopItems.find((entry) => entry.id === itemId);
 
-              if (!item || item.target !== 'cat' || item.slot === 'furniture') {
+              if (!item || item.target !== 'cat' || item.slot === 'furniture' || item.slot === 'animal') {
                 return null;
               }
 
@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
+    paddingBottom: 10,
     paddingHorizontal: 14,
-    paddingTop: 54,
+    paddingTop: 32,
   },
   itemCard: {
     alignItems: 'center',

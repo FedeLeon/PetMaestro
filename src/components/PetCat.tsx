@@ -26,6 +26,11 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large' }
   const scale = size === 'large' ? 1 : isRoomSize ? 0.52 : 0.72;
 
   useEffect(() => {
+    if (isRoomSize) {
+      bounce.setValue(0);
+      return;
+    }
+
     const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(bounce, { duration: 900, toValue: -8, useNativeDriver: false }),
@@ -35,7 +40,7 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large' }
     animation.start();
 
     return () => animation.stop();
-  }, [bounce]);
+  }, [bounce, isRoomSize]);
 
   return (
     <Animated.View style={[styles.wrap, { transform: [{ translateY: bounce }, { scale }] }]}>
