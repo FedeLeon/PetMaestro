@@ -1,13 +1,14 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { useProgress } from '../context/ProgressContext';
+import { catItemImages, furnitureImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
-import { RootStackParamList, ShopItem } from '../types';
+import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ShopCategory'>;
 
@@ -22,21 +23,7 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
 
   const handleBuy = async (itemId: string) => {
     const result = await buyItem(itemId);
-    setMessage(result.ok ? 'Listo!' : result.reason ?? 'No se pudo comprar.');
-  };
-
-  const getItemButtonLabel = (item: ShopItem) => {
-    const owned = progress.ownedItems.includes(item.id);
-
-    if (!owned) {
-      return 'Comprar';
-    }
-
-    if (item.target === 'house') {
-      return progress.placedFurnitureIds.includes(item.id) ? 'Quitar' : 'Colocar';
-    }
-
-    return item.slot !== 'furniture' && progress.equippedCatItems[item.slot] === item.id ? 'Quitar' : 'Usar';
+    setMessage(result.ok ? 'Comprado!' : result.reason ?? 'No se pudo comprar.');
   };
 
   return (
@@ -69,31 +56,34 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
         <View style={styles.grid}>
           {visibleItems.map((item) => {
             const owned = progress.ownedItems.includes(item.id);
-            const equipped =
-              item.target === 'house'
-                ? progress.placedFurnitureIds.includes(item.id)
-                : item.slot !== 'furniture' && progress.equippedCatItems[item.slot] === item.id;
             const canBuy = progress.coins >= item.price;
+            const itemImage = item.target === 'cat' ? catItemImages[item.id] : furnitureImages[item.id];
 
             return (
-              <View key={item.id} style={[styles.card, equipped && styles.equippedCard]}>
+              <View key={item.id} style={[styles.card, owned && styles.ownedCard]}>
                 <View style={[styles.preview, { backgroundColor: item.color }]}>
-                  <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={30} />
+                  {itemImage ? (
+                    <Image resizeMode="contain" source={itemImage} style={styles.previewImage} />
+                  ) : (
+                    <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={30} />
+                  )}
                   <Text style={styles.previewText}>{item.label}</Text>
                 </View>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.price}>{owned ? 'Comprado' : `${item.price} moneditas`}</Text>
-                <TouchableOpacity
-                  onPress={() => handleBuy(item.id)}
-                  style={[
-                    styles.buyButton,
-                    owned && styles.ownedButton,
-                    !owned && !canBuy && styles.disabledButton,
-                    equipped && styles.equippedButton,
-                  ]}
-                >
-                  <Text style={styles.buyButtonText}>{getItemButtonLabel(item)}</Text>
-                </TouchableOpacity>
+                {owned ? (
+                  <View style={styles.ownedBadge}>
+                    <Text style={styles.ownedBadgeText}>Comprado</Text>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    disabled={!canBuy}
+                    onPress={() => handleBuy(item.id)}
+                    style={[styles.buyButton, !canBuy && styles.disabledButton]}
+                  >
+                    <Text style={styles.buyButtonText}>Comprar</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })}
@@ -170,12 +160,6 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: '#c8bba8',
   },
-  equippedButton: {
-    backgroundColor: '#57b8a9',
-  },
-  equippedCard: {
-    borderColor: '#57b8a9',
-  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -212,8 +196,24 @@ const styles = StyleSheet.create({
     padding: 12,
     textAlign: 'center',
   },
-  ownedButton: {
-    backgroundColor: '#6fa8dc',
+  ownedBadge: {
+    alignItems: 'center',
+    backgroundColor: '#e4f6ef',
+    borderColor: '#57b8a9',
+    borderRadius: 8,
+    borderWidth: 2,
+    justifyContent: 'center',
+    marginTop: 12,
+    minHeight: 48,
+    width: '100%',
+  },
+  ownedBadgeText: {
+    color: '#287568',
+    fontSize: 16,
+    fontWeight: '900',
+  },
+  ownedCard: {
+    borderColor: '#57b8a9',
   },
   preview: {
     alignItems: 'center',
@@ -221,6 +221,10 @@ const styles = StyleSheet.create({
     height: 82,
     justifyContent: 'center',
     paddingHorizontal: 8,
+    width: '100%',
+  },
+  previewImage: {
+    height: 52,
     width: '100%',
   },
   previewText: {

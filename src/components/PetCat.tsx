@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Image, StyleSheet, View } from 'react-native';
+import { catItemImages, petImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
 import { ProgressState } from '../types';
 
 type PetCatProps = {
   equippedItemId: string | null;
   equippedCatItems?: ProgressState['equippedCatItems'];
-  size?: 'small' | 'large';
+  size?: 'small' | 'large' | 'room';
 };
 
 export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large' }: PetCatProps) {
@@ -21,7 +22,8 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large' }
   const shoes = getEquippedItem('feet');
   const neck = getEquippedItem('neck');
   const toy = getEquippedItem('toy');
-  const scale = size === 'large' ? 1 : 0.72;
+  const isRoomSize = size === 'room';
+  const scale = size === 'large' ? 1 : isRoomSize ? 0.52 : 0.72;
 
   useEffect(() => {
     const animation = Animated.loop(
@@ -37,167 +39,138 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large' }
 
   return (
     <Animated.View style={[styles.wrap, { transform: [{ translateY: bounce }, { scale }] }]}>
+      <Image resizeMode="contain" source={petImages.cat} style={[styles.catImage, isRoomSize && styles.roomCatImage]} />
       {hat ? (
-        <View style={[styles.hat, { backgroundColor: hat.color }]}>
-          <Text style={styles.itemText}>{hat.label}</Text>
-        </View>
+        <Image resizeMode="contain" source={catItemImages[hat.id]} style={[styles.hat, isRoomSize && styles.roomHat]} />
       ) : null}
-      <View style={styles.ears}>
-        <View style={styles.ear} />
-        <View style={styles.ear} />
-      </View>
-      <View style={styles.face}>
-        <View style={styles.eyes}>
-          <View style={styles.eye} />
-          <View style={styles.eye} />
-        </View>
-        {glasses ? (
-          <View style={[styles.glasses, { borderColor: glasses.color }]}>
-            <View style={styles.glassesLens} />
-            <View style={styles.glassesBridge} />
-            <View style={styles.glassesLens} />
-          </View>
-        ) : null}
-        <Text style={styles.mouth}>w</Text>
-        {neck ? (
-          <View style={[styles.neckItem, { backgroundColor: neck.color }]}>
-            <Text style={styles.itemText}>{neck.label}</Text>
-          </View>
-        ) : null}
-        {shirt ? (
-          <View style={[styles.shirt, { backgroundColor: shirt.color }]}>
-            <Text style={styles.itemText}>{shirt.label}</Text>
-          </View>
-        ) : null}
-      </View>
+      {glasses ? (
+        <Image resizeMode="contain" source={catItemImages[glasses.id]} style={[styles.glasses, isRoomSize && styles.roomGlasses]} />
+      ) : null}
+      {neck ? (
+        <Image resizeMode="contain" source={catItemImages[neck.id]} style={[styles.neckItem, isRoomSize && styles.roomNeckItem]} />
+      ) : null}
+      {shirt ? (
+        <Image resizeMode="stretch" source={catItemImages[shirt.id]} style={[styles.shirt, isRoomSize && styles.roomShirt]} />
+      ) : null}
       {shoes ? (
         <View style={styles.shoes}>
-          <View style={[styles.shoe, { backgroundColor: shoes.color }]} />
-          <View style={[styles.shoe, { backgroundColor: shoes.color }]} />
+          <Image resizeMode="contain" source={catItemImages[shoes.id]} style={[styles.shoe, isRoomSize && styles.roomShoe]} />
+          <Image
+            resizeMode="contain"
+            source={catItemImages[shoes.id]}
+            style={[styles.shoe, styles.secondShoe, isRoomSize && styles.roomShoe]}
+          />
         </View>
       ) : null}
       {toy ? (
-        <View style={[styles.toy, { backgroundColor: toy.color }]}>
-          <Text style={styles.itemText}>{toy.label}</Text>
-        </View>
+        <Image resizeMode="contain" source={catItemImages[toy.id]} style={[styles.toy, isRoomSize && styles.roomToy]} />
       ) : null}
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  ear: {
-    backgroundColor: '#f7c78a',
-    borderColor: '#7b4c28',
-    borderRadius: 8,
-    borderWidth: 3,
-    height: 54,
-    transform: [{ rotate: '45deg' }],
-    width: 54,
-  },
-  ears: {
-    flexDirection: 'row',
-    gap: 56,
-    marginBottom: -26,
-  },
-  eye: {
-    backgroundColor: '#4f3327',
-    borderRadius: 10,
-    height: 20,
-    width: 20,
-  },
-  eyes: {
-    flexDirection: 'row',
-    gap: 48,
-    marginTop: 44,
-  },
-  face: {
-    alignItems: 'center',
-    backgroundColor: '#ffd59e',
-    borderColor: '#7b4c28',
-    borderRadius: 74,
-    borderWidth: 4,
-    height: 148,
-    width: 168,
+  catImage: {
+    height: 260,
+    width: 174,
   },
   glasses: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginTop: -22,
-    zIndex: 3,
-  },
-  glassesBridge: {
-    backgroundColor: '#263238',
-    height: 4,
-    width: 14,
-  },
-  glassesLens: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    borderColor: '#263238',
-    borderRadius: 15,
-    borderWidth: 4,
-    height: 30,
-    width: 34,
+    height: 32,
+    left: 93,
+    position: 'absolute',
+    top: 72,
+    width: 44,
+    zIndex: 4,
   },
   hat: {
-    alignItems: 'center',
-    borderRadius: 8,
-    justifyContent: 'center',
-    marginBottom: -4,
-    minHeight: 34,
-    paddingHorizontal: 10,
-    zIndex: 2,
-  },
-  itemText: {
-    color: '#ffffff',
-    fontSize: 11,
-    fontWeight: '900',
-  },
-  mouth: {
-    color: '#7b4c28',
-    fontSize: 28,
-    fontWeight: '900',
-    marginTop: 4,
+    height: 54,
+    left: 88,
+    position: 'absolute',
+    top: 16,
+    width: 54,
+    zIndex: 4,
   },
   neckItem: {
-    alignItems: 'center',
-    borderRadius: 12,
-    justifyContent: 'center',
-    marginTop: 4,
-    minHeight: 24,
-    paddingHorizontal: 10,
+    height: 26,
+    left: 84,
+    position: 'absolute',
+    top: 124,
+    width: 64,
+    zIndex: 4,
+  },
+  roomCatImage: {
+    height: 210,
+    width: 140,
+  },
+  roomGlasses: {
+    height: 26,
+    left: 96,
+    top: 62,
+    width: 36,
+  },
+  roomHat: {
+    height: 44,
+    left: 91,
+    top: 18,
+    width: 44,
+  },
+  roomNeckItem: {
+    height: 22,
+    left: 88,
+    top: 104,
+    width: 52,
+  },
+  roomShirt: {
+    height: 34,
+    left: 80,
+    top: 122,
+    width: 68,
+  },
+  roomShoe: {
+    height: 28,
+    width: 30,
+  },
+  roomToy: {
+    height: 46,
+    right: 36,
+    top: 146,
+    width: 46,
+  },
+  secondShoe: {
+    transform: [{ scaleX: -1 }],
   },
   shirt: {
-    alignItems: 'center',
-    borderRadius: 8,
-    justifyContent: 'center',
-    marginTop: 6,
-    minHeight: 28,
-    paddingHorizontal: 12,
-    width: 100,
+    height: 42,
+    left: 72,
+    position: 'absolute',
+    top: 145,
+    width: 86,
+    zIndex: 4,
   },
   shoe: {
-    borderRadius: 8,
-    height: 18,
-    width: 48,
+    height: 34,
+    width: 36,
   },
   shoes: {
     flexDirection: 'row',
-    gap: 34,
-    marginTop: -12,
+    gap: 38,
+    left: 60,
+    position: 'absolute',
+    top: 234,
+    zIndex: 5,
   },
   toy: {
-    alignItems: 'center',
-    borderRadius: 24,
-    height: 52,
-    justifyContent: 'center',
-    marginLeft: 148,
-    marginTop: -44,
-    width: 72,
+    height: 58,
+    position: 'absolute',
+    right: 18,
+    top: 178,
+    width: 58,
+    zIndex: 4,
   },
   wrap: {
     alignItems: 'center',
-    minHeight: 210,
+    justifyContent: 'center',
+    minHeight: 284,
     width: 230,
   },
 });

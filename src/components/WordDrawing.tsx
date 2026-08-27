@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { wordImages } from '../data/assetImages';
 import { WordCard } from '../types';
 
 type WordDrawingProps = {
@@ -9,10 +10,9 @@ type WordDrawingProps = {
 export function WordDrawing({ word, small = false }: WordDrawingProps) {
   return (
     <View style={[styles.drawing, small && styles.small, { backgroundColor: word.color }]}>
-      <View style={[styles.shape, small && styles.smallShape]} />
-      <Text style={[styles.label, small && styles.smallLabel]} numberOfLines={1} adjustsFontSizeToFit>
-        {word.drawing}
-      </Text>
+      <View style={[styles.imagePlate, small && styles.smallImagePlate]}>
+        <Image resizeMode="contain" source={wordImages[word.id]} style={styles.image} />
+      </View>
     </View>
   );
 }
@@ -27,32 +27,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minWidth: 110,
     overflow: 'hidden',
-    padding: 10,
+    padding: 12,
     width: '100%',
   },
-  label: {
-    color: '#263238',
-    fontSize: 20,
-    fontWeight: '900',
-    marginTop: 6,
-    textAlign: 'center',
+  image: {
+    height: '100%',
+    width: '100%',
   },
-  shape: {
+  imagePlate: {
+    alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.78)',
-    borderRadius: 999,
-    height: 48,
-    width: 64,
+    borderRadius: 8,
+    height: '100%',
+    justifyContent: 'center',
+    padding: 10,
+    width: '100%',
   },
   small: {
     borderWidth: 3,
     minWidth: 74,
     padding: 7,
   },
-  smallLabel: {
-    fontSize: 13,
-  },
-  smallShape: {
-    height: 32,
-    width: 44,
+  smallImagePlate: {
+    padding: 6,
   },
 });

@@ -1,12 +1,13 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DimensionValue } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { useProgress } from '../context/ProgressContext';
+import { foliageImages } from '../data/assetImages';
 import { levels } from '../data/gameContent';
 import { Level, RootStackParamList } from '../types';
 
@@ -105,30 +106,25 @@ export function MapScreen({ navigation }: Props) {
             />
           </Svg>
           <View style={[styles.tree, styles.treeOne]}>
-            <View style={styles.treeTop} />
-            <View style={styles.treeTrunk} />
+            <Image resizeMode="contain" source={foliageImages.tree1} style={styles.treeImage} />
           </View>
           <View style={[styles.tree, styles.treeTwo]}>
-            <View style={styles.treeTop} />
-            <View style={styles.treeTrunk} />
+            <Image resizeMode="contain" source={foliageImages.tree2} style={styles.treeImage} />
           </View>
           <View style={[styles.tree, styles.treeThree]}>
-            <View style={styles.treeTop} />
-            <View style={styles.treeTrunk} />
+            <Image resizeMode="contain" source={foliageImages.tree3} style={styles.treeImage} />
           </View>
           <View style={[styles.tree, styles.treeFour]}>
-            <View style={styles.treeTop} />
-            <View style={styles.treeTrunk} />
+            <Image resizeMode="contain" source={foliageImages.tree1} style={styles.treeImage} />
           </View>
           <View style={[styles.tree, styles.treeFive]}>
-            <View style={styles.treeTop} />
-            <View style={styles.treeTrunk} />
+            <Image resizeMode="contain" source={foliageImages.tree2} style={styles.treeImage} />
           </View>
-          <View style={[styles.bush, styles.bushOne]} />
-          <View style={[styles.bush, styles.bushTwo]} />
-          <View style={[styles.bush, styles.bushThree]} />
-          <View style={[styles.bush, styles.bushFour]} />
-          <View style={[styles.bush, styles.bushFive]} />
+          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushOne]} />
+          <Image resizeMode="contain" source={foliageImages.bush2} style={[styles.bushImage, styles.bushTwo]} />
+          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushThree]} />
+          <Image resizeMode="contain" source={foliageImages.bush2} style={[styles.bushImage, styles.bushFour]} />
+          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushFive]} />
           <View style={[styles.puddle, styles.puddleOne]} />
           <View style={[styles.puddle, styles.puddleTwo]} />
           <View style={[styles.puddle, styles.puddleThree]} />
@@ -219,14 +215,11 @@ export function MapScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  bush: {
-    backgroundColor: '#4fa85c',
-    borderColor: '#2f7d3f',
-    borderRadius: 999,
-    borderWidth: 2,
-    height: 26,
+  bushImage: {
+    height: 46,
     position: 'absolute',
-    width: 54,
+    width: 76,
+    zIndex: 3,
   },
   bushOne: {
     left: 18,
@@ -537,20 +530,9 @@ const styles = StyleSheet.create({
     left: 26,
     top: 1120,
   },
-  treeTop: {
-    backgroundColor: '#287c3f',
-    borderColor: '#15592a',
-    borderRadius: 999,
-    borderWidth: 2,
-    height: 54,
-    width: 54,
-  },
-  treeTrunk: {
-    backgroundColor: '#8d552c',
-    borderRadius: 5,
-    height: 30,
-    marginTop: -8,
-    width: 14,
+  treeImage: {
+    height: 92,
+    width: 82,
   },
   treeTwo: {
     right: 26,

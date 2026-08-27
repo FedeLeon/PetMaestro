@@ -73,5 +73,6 @@ export type ProgressState = {
   equippedItemId: string | null;
   equippedCatItems: Partial<Record<'neck' | 'head' | 'eyes' | 'body' | 'feet' | 'toy', string | null>>;
   placedFurnitureIds: string[];
+  furniturePositions: Record<string, { x: number; y: number }>;
   completedLevels: number[];
 };

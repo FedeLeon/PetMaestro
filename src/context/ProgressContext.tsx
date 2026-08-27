@@ -4,6 +4,8 @@ import { levels, shopItems } from '../data/gameContent';
 import { ProgressState } from '../types';
 
 const STORAGE_KEY = 'petmaestro.progress.v1';
+const DEV_INFINITE_COINS = true;
+const DEV_COIN_BALANCE = 99999;
 
 const initialProgress: ProgressState = {
   unlockedLevel: 1,
@@ -12,6 +14,7 @@ const initialProgress: ProgressState = {
   equippedItemId: null,
   equippedCatItems: {},
   placedFurnitureIds: [],
+  furniturePositions: {},
   completedLevels: [],
 };
 
@@ -22,6 +25,7 @@ type ProgressContextValue = {
   buyItem: (itemId: string) => Promise<{ ok: boolean; reason?: string }>;
   equipItem: (itemId: string | null) => Promise<void>;
   toggleFurniture: (itemId: string) => Promise<void>;
+  setFurniturePosition: (itemId: string, position: { x: number; y: number }) => Promise<void>;
   resetProgress: () => Promise<void>;
 };
 
@@ -30,6 +34,13 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 export function ProgressProvider({ children }: PropsWithChildren) {
   const [progress, setProgress] = useState<ProgressState>(initialProgress);
   const [isReady, setIsReady] = useState(false);
+  const visibleProgress = useMemo(
+    () => ({
+      ...progress,
+      coins: DEV_INFINITE_COINS ? DEV_COIN_BALANCE : progress.coins,
+    }),
+    [progress],
+  );
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY)
@@ -74,34 +85,19 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     }
 
     if (progress.ownedItems.includes(itemId)) {
-      if (item.target === 'house') {
-        await toggleFurniture(itemId);
-      } else {
-        await equipItem(itemId);
-      }
-      return { ok: true };
+      return { ok: false, reason: 'Ya lo compraste.' };
     }
 
-    if (progress.coins < item.price) {
+    if (!DEV_INFINITE_COINS && progress.coins < item.price) {
       return { ok: false, reason: 'Necesitas mas moneditas.' };
     }
 
     const nextOwnedItems = [...progress.ownedItems, itemId];
     const nextProgress: ProgressState = {
       ...progress,
-      coins: progress.coins - item.price,
+      coins: DEV_INFINITE_COINS ? progress.coins : progress.coins - item.price,
       ownedItems: nextOwnedItems,
     };
-
-    if (item.target === 'house') {
-      nextProgress.placedFurnitureIds = [...progress.placedFurnitureIds, itemId];
-    } else if (item.slot !== 'furniture') {
-      nextProgress.equippedCatItems = {
-        ...progress.equippedCatItems,
-        [item.slot]: itemId,
-      };
-      nextProgress.equippedItemId = itemId;
-    }
 
     await saveProgress(nextProgress);
 
@@ -149,13 +145,32 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     await saveProgress({ ...progress, placedFurnitureIds });
   };
 
+  const setFurniturePosition = async (itemId: string, position: { x: number; y: number }) => {
+    await saveProgress({
+      ...progress,
+      furniturePositions: {
+        ...progress.furniturePositions,
+        [itemId]: position,
+      },
+    });
+  };
+
   const resetProgress = async () => {
     await saveProgress(initialProgress);
   };
 
   const value = useMemo(
-    () => ({ progress, isReady, completeLevel, buyItem, equipItem, toggleFurniture, resetProgress }),
-    [progress, isReady],
+    () => ({
+      progress: visibleProgress,
+      isReady,
+      completeLevel,
+      buyItem,
+      equipItem,
+      toggleFurniture,
+      setFurniturePosition,
+      resetProgress,
+    }),
+    [visibleProgress, isReady],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
