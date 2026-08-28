@@ -1,12 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { PetCat } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
-import { catItemImages } from '../data/assetImages';
+import { catItemImages, petImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
@@ -30,53 +30,58 @@ export function PetScreen({ navigation }: Props) {
         <CoinBadge coins={progress.coins} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.stage}>
+      <View style={styles.stage}>
+        <ImageBackground
+          imageStyle={styles.stageBackgroundImage}
+          resizeMode="cover"
+          source={petImages.dressingRoom}
+          style={styles.stageBackground}
+        >
           <PetCat equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} />
-        </View>
+        </ImageBackground>
+      </View>
 
+      <View style={styles.itemsSection}>
         <Text style={styles.sectionTitle}>Items comprados</Text>
-        <View style={styles.itemsGrid}>
-          {ownedCatItems.length === 0 ? (
-            <View style={styles.emptyBox}>
-              <Text style={styles.emptyText}>Aun no hay accesorios. Gana moneditas y visita la tienda.</Text>
-            </View>
-          ) : (
-            ownedCatItems.map((itemId) => {
-              const item = shopItems.find((entry) => entry.id === itemId);
+        <ScrollView contentContainerStyle={styles.itemsScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.itemsGrid}>
+            {ownedCatItems.length === 0 ? (
+              <View style={styles.emptyBox}>
+                <Text style={styles.emptyText}>Aun no hay accesorios. Gana moneditas y visita la tienda.</Text>
+              </View>
+            ) : (
+              ownedCatItems.map((itemId) => {
+                const item = shopItems.find((entry) => entry.id === itemId);
 
-              if (!item || item.target !== 'cat' || item.slot === 'furniture' || item.slot === 'animal') {
-                return null;
-              }
+                if (!item || item.target !== 'cat' || item.slot === 'furniture' || item.slot === 'animal') {
+                  return null;
+                }
 
-              const equipped = progress.equippedCatItems[item.slot] === item.id;
+                const equipped = progress.equippedCatItems[item.slot] === item.id;
 
-              return (
-                <TouchableOpacity
-                  key={item.id}
-                  onPress={() => equipItem(item.id)}
-                  style={[styles.itemCard, equipped && styles.equippedCard]}
-                >
-                  <View style={[styles.itemPreview, { backgroundColor: item.color }]}>
-                    <Image resizeMode="contain" source={catItemImages[item.id]} style={styles.itemPreviewImage} />
-                  </View>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                </TouchableOpacity>
-              );
-            })
-          )}
-        </View>
-      </ScrollView>
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => equipItem(item.id)}
+                    style={[styles.itemCard, equipped && styles.equippedCard]}
+                  >
+                    <View style={[styles.itemPreview, { backgroundColor: item.color }]}>
+                      <Image resizeMode="contain" source={catItemImages[item.id]} style={styles.itemPreviewImage} />
+                    </View>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                  </TouchableOpacity>
+                );
+              })
+            )}
+          </View>
+        </ScrollView>
+      </View>
       <AppBottomMenu />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    padding: 20,
-    paddingBottom: 128,
-  },
   emptyBox: {
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     flexBasis: '31%',
-    height: 112,
+    height: 104,
     justifyContent: 'center',
     padding: 12,
   },
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
   itemPreview: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 58,
+    height: 52,
     justifyContent: 'center',
     paddingHorizontal: 8,
     width: '100%',
@@ -141,6 +146,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 12,
   },
+  itemsScroll: {
+    paddingBottom: 128,
+  },
+  itemsSection: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
   screen: {
     backgroundColor: '#fff7e8',
     flex: 1,
@@ -149,17 +161,29 @@ const styles = StyleSheet.create({
     color: '#372413',
     fontSize: 24,
     fontWeight: '900',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   stage: {
     alignItems: 'center',
-    backgroundColor: '#dff4ff',
     borderColor: '#9ed3ea',
-    borderRadius: 8,
+    borderRadius: 0,
     borderWidth: 2,
-    justifyContent: 'center',
-    marginBottom: 24,
-    minHeight: 300,
+    height: 340,
+    margin: 0,
+    marginBottom: 12,
+    overflow: 'hidden',
+    width: '100%',
+  },
+  stageBackground: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+  },
+  stageBackgroundImage: {
+    height: '100%',
+    borderRadius: 6,
+    width: '100%',
   },
   title: {
     color: '#372413',
@@ -173,5 +197,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 2,
+    marginLeft: 8,
   },
 });

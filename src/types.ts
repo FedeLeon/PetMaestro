@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Shop: undefined;
   ShopCategory: { categoryId: ShopCategory['id'] };
   House: undefined;
+  Drawing: undefined;
 };
 
 export type WordCard = {
@@ -27,6 +28,12 @@ export type Round =
       id: string;
       type: 'translation-choice';
       promptLanguage: 'spanish' | 'english';
+      answerId: string;
+      optionIds: string[];
+    }
+  | {
+      id: string;
+      type: 'audio-choice';
       answerId: string;
       optionIds: string[];
     }
@@ -74,6 +81,27 @@ export type ProgressState = {
   equippedCatItems: Partial<Record<'neck' | 'head' | 'eyes' | 'body' | 'feet' | 'toy', string | null>>;
   placedFurnitureIds: string[];
   placedAnimalIds: string[];
-  furniturePositions: Record<string, { x: number; y: number }>;
   completedLevels: number[];
+  drawingStrokes: DrawingStroke[];
+  needs: PetNeeds;
+  needsUpdatedAt: number;
+};
+
+export type PetNeeds = {
+  hunger: number;
+  hygiene: number;
+  bathroom: number;
+  play: number;
+  energy: number;
+};
+
+export type DrawingPoint = {
+  x: number;
+  y: number;
+};
+
+export type DrawingStroke = {
+  color: string;
+  points: DrawingPoint[];
+  width: number;
 };

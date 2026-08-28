@@ -2,13 +2,25 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CoinBadge } from '../components/CoinBadge';
+import { AudioButton, speakWord } from '../components/AudioButton';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { WordDrawing } from '../components/WordDrawing';
 import { useProgress } from '../context/ProgressContext';
-import { getWord, levels } from '../data/gameContent';
+import { getWord, levels, words } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
+
+function shuffle<T>(items: T[]) {
+  const shuffledItems = [...items];
+
+  for (let index = shuffledItems.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffledItems[index], shuffledItems[randomIndex]] = [shuffledItems[randomIndex], shuffledItems[index]];
+  }
+
+  return shuffledItems;
+}
 
 export function GameScreen({ navigation, route }: Props) {
   const { completeLevel, progress } = useProgress();
@@ -21,16 +33,32 @@ export function GameScreen({ navigation, route }: Props) {
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const round = level.rounds[roundIndex];
   const isFinished = earnedCoins !== null;
+  const displayIds = useMemo(() => {
+    const ids = round.type === 'match-pair' ? round.pairIds : round.optionIds;
+    return shuffle([...ids, ...words.map((word) => word.id).filter((wordId) => !ids.includes(wordId))].slice(0, 4));
+  }, [round]);
+  const matchPictureIds = useMemo(() => {
+    if (round.type !== 'match-pair') {
+      return displayIds;
+    }
+
+    return shuffle(displayIds);
+  }, [displayIds, round.type]);
 
   const prompt = useMemo(() => {
     if (round.type === 'match-pair') {
       return 'Une cada palabra con su dibujo';
     }
 
-    const answer = getWord(round.answerId);
-    const text = round.promptLanguage === 'spanish' ? answer.spanish : answer.english;
+    if (round.type === 'audio-choice') {
+      return 'Escucha y elige el sonido';
+    }
 
-    return round.type === 'picture-choice' ? `Toca el dibujo: ${text}` : `Que significa: ${text}?`;
+    const answer = getWord(round.answerId);
+
+    return round.type === 'picture-choice'
+      ? `Escucha y toca: ${answer.english.toUpperCase()}`
+      : `Que significa: ${answer.english.toUpperCase()}?`;
   }, [round]);
 
   const finishRound = async (wasCorrect: boolean) => {
@@ -80,9 +108,22 @@ export function GameScreen({ navigation, route }: Props) {
     setMatchedIds(nextMatchedIds);
     setSelectedWordId(null);
 
-    if (nextMatchedIds.length === round.pairIds.length) {
+    if (nextMatchedIds.length === displayIds.length) {
       void finishRound(true);
     }
+  };
+
+  const playRoundPrompt = () => {
+    if (round.type === 'match-pair') {
+      return;
+    }
+
+    if (round.type === 'audio-choice') {
+      return;
+    }
+
+    const word = getWord(round.answerId);
+    return <AudioButton word={word} size={48} />;
   };
 
   if (isFinished) {
@@ -128,67 +169,91 @@ export function GameScreen({ navigation, route }: Props) {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.prompt}>{prompt}</Text>
+        <View style={styles.promptRow}>
+          <Text style={styles.prompt}>{prompt}</Text>
+          {playRoundPrompt()}
+        </View>
+        {round.type === 'audio-choice' ? (
+          <View style={styles.audioPromptDrawing}>
+            <WordDrawing word={getWord(round.answerId)} />
+          </View>
+        ) : null}
         {feedback ? <Text style={styles.feedback}>{feedback}</Text> : null}
 
         {round.type === 'match-pair' ? (
           <View style={styles.matchBoard}>
             <View style={styles.matchColumn}>
-              {round.pairIds.map((wordId) => {
+              {displayIds.map((wordId) => {
                 const word = getWord(wordId);
                 const matched = matchedIds.includes(wordId);
 
                 return (
-                  <TouchableOpacity
-                    disabled={matched}
+                  <View
                     key={wordId}
-                    onPress={() => setSelectedWordId(wordId)}
                     style={[
                       styles.matchWord,
                       selectedWordId === wordId && styles.selectedMatch,
                       matched && styles.matched,
                     ]}
                   >
-                    <Text style={styles.matchWordText}>{word.english}</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      disabled={matched}
+                      onPress={() => {
+                        setSelectedWordId(wordId);
+                        void speakWord(word.english.toUpperCase());
+                      }}
+                      style={styles.matchWordMain}
+                    >
+                      <Text style={styles.matchWordText}>{word.english.toUpperCase()}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.matchAudioButton}>
+                      <AudioButton word={word} />
+                    </View>
+                  </View>
                 );
               })}
             </View>
             <View style={styles.matchColumn}>
-              {round.pairIds.map((wordId) => {
+              {matchPictureIds.map((wordId) => {
                 const word = getWord(wordId);
                 const matched = matchedIds.includes(wordId);
 
                 return (
-                  <TouchableOpacity
-                    disabled={matched}
-                    key={wordId}
-                    onPress={() => handleMatchPicture(wordId)}
-                    style={[styles.matchPicture, matched && styles.matched]}
-                  >
-                    <WordDrawing word={word} small />
-                    <Text style={styles.pictureCaption}>{word.spanish}</Text>
-                  </TouchableOpacity>
+                  <View key={wordId} style={[styles.matchPicture, matched && styles.matched]}>
+                    <TouchableOpacity disabled={matched} onPress={() => handleMatchPicture(wordId)} style={styles.matchPictureMain}>
+                      <View style={styles.matchPictureDrawing}>
+                        <WordDrawing word={word} small />
+                      </View>
+                      <Text style={styles.pictureCaption}>{word.spanish.toUpperCase()}</Text>
+                    </TouchableOpacity>
+                  </View>
                 );
               })}
             </View>
           </View>
         ) : (
           <View style={styles.optionsGrid}>
-            {round.optionIds.map((wordId) => {
+            {displayIds.map((wordId) => {
               const word = getWord(wordId);
               const label =
                 round.type === 'picture-choice'
-                  ? word.spanish
-                  : round.promptLanguage === 'spanish'
-                    ? word.english
-                    : word.spanish;
+                  ? word.spanish.toUpperCase()
+                  : round.type === 'audio-choice'
+                    ? word.english.toUpperCase()
+                  : round.type === 'translation-choice'
+                      ? word.spanish.toUpperCase()
+                      : word.spanish.toUpperCase();
 
               return (
-                <TouchableOpacity key={wordId} style={styles.option} onPress={() => handleChoice(wordId)}>
-                  {round.type === 'picture-choice' ? <WordDrawing word={word} /> : null}
-                  <Text style={styles.optionText}>{label}</Text>
-                </TouchableOpacity>
+                <View key={wordId} style={[styles.option, round.type === 'translation-choice' && styles.translationOption]}>
+                  <TouchableOpacity onPress={() => handleChoice(wordId)} style={styles.optionMain}>
+                    {round.type === 'picture-choice' || round.type === 'translation-choice' ? (
+                      <WordDrawing word={word} small={round.type === 'translation-choice'} />
+                    ) : null}
+                    <Text style={styles.optionText}>{label}</Text>
+                  </TouchableOpacity>
+                  {round.type === 'audio-choice' ? <AudioButton word={word} language="english" /> : null}
+                </View>
               );
             })}
           </View>
@@ -207,6 +272,11 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 18,
     padding: 16,
+  },
+  audioPromptDrawing: {
+    alignSelf: 'center',
+    maxWidth: 220,
+    width: '48%',
   },
   feedback: {
     color: '#ff7a59',
@@ -244,6 +314,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
   },
+  matchPictureMain: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    width: '100%',
+  },
+  matchPictureDrawing: {
+    alignSelf: 'center',
+    width: '92%',
+  },
+  matchAudioButton: {
+    marginBottom: 10,
+  },
   matchWord: {
     alignItems: 'center',
     backgroundColor: '#dff4ff',
@@ -253,6 +336,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 8,
+  },
+  matchWordMain: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    width: '100%',
   },
   matchWordText: {
     color: '#22313b',
@@ -275,6 +364,12 @@ const styles = StyleSheet.create({
     minHeight: 160,
     padding: 10,
   },
+  optionMain: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    width: '100%',
+  },
   optionText: {
     color: '#372413',
     fontSize: 22,
@@ -289,9 +384,11 @@ const styles = StyleSheet.create({
   },
   pictureCaption: {
     color: '#6c5a42',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
-    marginTop: 5,
+    lineHeight: 16,
+    marginTop: 2,
+    textAlign: 'center',
   },
   primaryButton: {
     alignItems: 'center',
@@ -320,6 +417,13 @@ const styles = StyleSheet.create({
     lineHeight: 33,
     marginBottom: 14,
     textAlign: 'center',
+  },
+  promptRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+    marginBottom: 14,
   },
   resultCard: {
     alignItems: 'center',
@@ -379,6 +483,9 @@ const styles = StyleSheet.create({
   selectedMatch: {
     backgroundColor: '#ffe1d6',
     borderColor: '#ff7a59',
+  },
+  translationOption: {
+    minHeight: 190,
   },
   topBar: {
     alignItems: 'center',

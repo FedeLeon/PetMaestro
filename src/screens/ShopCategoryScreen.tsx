@@ -6,7 +6,7 @@ import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { useProgress } from '../context/ProgressContext';
-import { catItemImages, furnitureImages, uiImages } from '../data/assetImages';
+import { catItemImages, farmAnimalImages, furnitureImages, uiImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
@@ -54,7 +54,11 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
           {visibleItems.map((item) => {
             const owned = progress.ownedItems.includes(item.id);
             const canBuy = progress.coins >= item.price;
-            const itemImage = item.target === 'cat' ? catItemImages[item.id] : furnitureImages[item.id];
+            const itemImage = item.target === 'cat'
+              ? catItemImages[item.id]
+              : item.target === 'yard'
+                ? farmAnimalImages[item.id]
+                : furnitureImages[item.id];
 
             return (
               <View key={item.id} style={[styles.card, owned && styles.ownedCard]}>

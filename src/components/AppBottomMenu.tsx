@@ -1,7 +1,7 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { navigationImages } from '../data/assetImages';
 import { RootStackParamList } from '../types';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
@@ -11,9 +11,9 @@ export function AppBottomMenu() {
   const route = useRoute();
 
   const menuItems = [
-    { routeName: 'Pet' as const, label: 'Mascota', icon: 'cat' },
-    { routeName: 'House' as const, label: 'Casa', icon: 'home-heart' },
-    { routeName: 'Shop' as const, label: 'Tienda', icon: 'storefront' },
+    { routeName: 'Pet' as const, label: 'Mascota', image: navigationImages.pet },
+    { routeName: 'House' as const, label: 'Casa', image: navigationImages.house },
+    { routeName: 'Shop' as const, label: 'Tienda', image: navigationImages.shop },
   ];
 
   return (
@@ -28,12 +28,7 @@ export function AppBottomMenu() {
             onPress={() => navigation.navigate(item.routeName)}
             style={[styles.button, active && styles.activeButton]}
           >
-            <MaterialCommunityIcons
-              color={active ? '#ffffff' : '#26796e'}
-              name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-              size={28}
-            />
-            <Text style={[styles.label, active && styles.activeLabel]}>{item.label}</Text>
+            <Image accessibilityLabel={item.label} resizeMode="contain" source={item.image} style={styles.icon} />
           </TouchableOpacity>
         );
       })}
@@ -46,33 +41,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff7a59',
     borderColor: '#ff7a59',
   },
-  activeLabel: {
-    color: '#ffffff',
-  },
   button: {
     alignItems: 'center',
     backgroundColor: '#e8fbf7',
     borderColor: '#bde8df',
-    borderRadius: 8,
+    borderRadius: 34,
     borderWidth: 2,
-    flex: 1,
-    flexDirection: 'column',
-    gap: 8,
+    height: 68,
     justifyContent: 'center',
-    minHeight: 58,
+    width: 68,
   },
-  label: {
-    color: '#26796e',
-    fontSize: 13,
-    fontWeight: '900',
+  icon: {
+    height: 48,
+    width: 52,
   },
   menu: {
     backgroundColor: '#ffffff',
     borderTopColor: '#f0dcc0',
     borderTopWidth: 2,
     bottom: 0,
+    alignItems: 'center',
     flexDirection: 'row',
     gap: 12,
+    justifyContent: 'center',
     left: 0,
     padding: 16,
     position: 'absolute',

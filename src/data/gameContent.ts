@@ -1,4 +1,4 @@
-import { Level, ShopCategory, ShopItem, WordCard } from '../types';
+import { Level, Round, ShopCategory, ShopItem, WordCard } from '../types';
 
 export const words: WordCard[] = [
   { id: 'cat', spanish: 'gato', english: 'cat', drawing: 'CAT', color: '#f6b26b' },
@@ -21,112 +21,130 @@ export const words: WordCard[] = [
   { id: 'bed', spanish: 'cama', english: 'bed', drawing: 'BED', color: '#c27ba0' },
   { id: 'chair', spanish: 'silla', english: 'chair', drawing: 'CHAIR', color: '#8d552c' },
   { id: 'door', spanish: 'puerta', english: 'door', drawing: 'DOOR', color: '#a47148' },
+  { id: 'cloud', spanish: 'nube', english: 'cloud', drawing: 'CLOUD', color: '#b7d7f0' },
+  { id: 'banana', spanish: 'banana', english: 'banana', drawing: 'BANANA', color: '#ffd966' },
+  { id: 'bread', spanish: 'pan', english: 'bread', drawing: 'BREAD', color: '#e6b566' },
+  { id: 'milk', spanish: 'leche', english: 'milk', drawing: 'MILK', color: '#f4cccc' },
+  { id: 'puzzle', spanish: 'rompecabezas', english: 'puzzle', drawing: 'PUZZLE', color: '#76a5af' },
+  { id: 'kite', spanish: 'cometa', english: 'kite', drawing: 'KITE', color: '#ea9999' },
+  { id: 'blocks', spanish: 'bloques', english: 'blocks', drawing: 'BLOCKS', color: '#f6b26b' },
+  { id: 'butterfly', spanish: 'mariposa', english: 'butterfly', drawing: 'BUTTERFLY', color: '#c27ba0' },
+  { id: 'boat', spanish: 'barco', english: 'boat', drawing: 'BOAT', color: '#6d9eeb' },
+  { id: 'wave', spanish: 'ola', english: 'wave', drawing: 'WAVE', color: '#46bdc6' },
+  { id: 'shirt', spanish: 'remera', english: 'shirt', drawing: 'SHIRT', color: '#6aa84f' },
+  { id: 'socks', spanish: 'medias', english: 'socks', drawing: 'SOCKS', color: '#e691b5' },
+  { id: 'table', spanish: 'mesa', english: 'table', drawing: 'TABLE', color: '#8d552c' },
+  { id: 'lamp', spanish: 'lampara', english: 'lamp', drawing: 'LAMP', color: '#d6bf77' },
+  { id: 'lion', spanish: 'leon', english: 'lion', drawing: 'LION', color: '#f6b26b' },
+  { id: 'elephant', spanish: 'elefante', english: 'elephant', drawing: 'ELEPHANT', color: '#9fc5e8' },
+  { id: 'monkey', spanish: 'mono', english: 'monkey', drawing: 'MONKEY', color: '#b45f06' },
+  { id: 'bear', spanish: 'oso', english: 'bear', drawing: 'BEAR', color: '#8d552c' },
 ];
 
-export const levels: Level[] = [
+const levelDefinitions: Level[] = [
   {
     id: 1,
     title: 'Primeros amigos',
     theme: 'Mascotas',
-    description: 'Aprende palabras de mascotas y objetos cercanos para acompanar al gatito.',
+    description: 'Aprende los nombres de cuatro mascotas en dos idiomas.',
     icon: 'paw',
     reward: 12,
     rounds: [
-      { id: '1-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'cat', optionIds: ['cat', 'dog', 'fish'] },
-      { id: '1-2', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'dog', optionIds: ['dog', 'cat', 'ball'] },
-      { id: '1-3', type: 'match-pair', pairIds: ['cat', 'dog', 'fish'] },
-      { id: '1-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'ball', optionIds: ['ball', 'apple', 'sun'] },
-      { id: '1-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'fish', optionIds: ['fish', 'tree', 'book'] },
+      { id: '1-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'cat', optionIds: ['cat', 'dog', 'fish', 'bird'] },
+      { id: '1-2', type: 'audio-choice', answerId: 'dog', optionIds: ['dog', 'cat', 'bird', 'fish'] },
+      { id: '1-3', type: 'match-pair', pairIds: ['cat', 'dog', 'fish', 'bird'] },
+      { id: '1-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'fish', optionIds: ['fish', 'cat', 'dog', 'bird'] },
+      { id: '1-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'bird', optionIds: ['bird', 'cat', 'dog', 'fish'] },
     ],
   },
   {
     id: 2,
     title: 'Cielo feliz',
     theme: 'Cielo',
-    description: 'Reconoce sol, luna y estrellas con palabras simples en dos idiomas.',
+    description: 'Reconoce el sol, la luna, las estrellas y las nubes.',
     icon: 'weather-sunny',
     reward: 14,
     rounds: [
-      { id: '2-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'sun', optionIds: ['sun', 'moon', 'star'] },
-      { id: '2-2', type: 'translation-choice', promptLanguage: 'english', answerId: 'moon', optionIds: ['moon', 'sun', 'car'] },
-      { id: '2-3', type: 'match-pair', pairIds: ['sun', 'moon', 'star'] },
-      { id: '2-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'star', optionIds: ['star', 'book', 'apple'] },
-      { id: '2-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'sun', optionIds: ['sun', 'house', 'fish'] },
+      { id: '2-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'sun', optionIds: ['sun', 'moon', 'star', 'cloud'] },
+      { id: '2-2', type: 'audio-choice', answerId: 'moon', optionIds: ['moon', 'sun', 'star', 'cloud'] },
+      { id: '2-3', type: 'match-pair', pairIds: ['sun', 'moon', 'star', 'cloud'] },
+      { id: '2-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'star', optionIds: ['star', 'cloud', 'moon', 'sun'] },
+      { id: '2-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'cloud', optionIds: ['cloud', 'sun', 'moon', 'star'] },
     ],
   },
   {
     id: 3,
     title: 'Merienda',
     theme: 'Comida',
-    description: 'Practica palabras de comida y cosas del momento de jugar y leer.',
+    description: 'Practica palabras de comida para una merienda deliciosa.',
     icon: 'food-apple',
     reward: 16,
     rounds: [
-      { id: '3-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'apple', optionIds: ['apple', 'ball', 'cat'] },
-      { id: '3-2', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'apple', optionIds: ['apple', 'book', 'tree'] },
-      { id: '3-3', type: 'match-pair', pairIds: ['apple', 'fish', 'book'] },
-      { id: '3-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'fish', optionIds: ['fish', 'dog', 'moon'] },
-      { id: '3-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'book', optionIds: ['book', 'car', 'sun'] },
+      { id: '3-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'apple', optionIds: ['apple', 'banana', 'bread', 'milk'] },
+      { id: '3-2', type: 'audio-choice', answerId: 'banana', optionIds: ['banana', 'apple', 'bread', 'milk'] },
+      { id: '3-3', type: 'match-pair', pairIds: ['apple', 'banana', 'bread', 'milk'] },
+      { id: '3-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'bread', optionIds: ['bread', 'milk', 'apple', 'banana'] },
+      { id: '3-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'milk', optionIds: ['milk', 'apple', 'banana', 'bread'] },
     ],
   },
   {
     id: 4,
     title: 'Paseo',
     theme: 'Casa y calle',
-    description: 'Descubre palabras del paseo: casa, auto y arbol.',
+    description: 'Descubre palabras de la casa y del paseo por la calle.',
     icon: 'home-heart',
     reward: 18,
     rounds: [
-      { id: '4-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'house', optionIds: ['house', 'tree', 'car'] },
-      { id: '4-2', type: 'translation-choice', promptLanguage: 'english', answerId: 'car', optionIds: ['car', 'ball', 'moon'] },
-      { id: '4-3', type: 'match-pair', pairIds: ['house', 'car', 'tree'] },
-      { id: '4-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'tree', optionIds: ['tree', 'star', 'dog'] },
-      { id: '4-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'house', optionIds: ['house', 'fish', 'apple'] },
+      { id: '4-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'house', optionIds: ['house', 'tree', 'car', 'door'] },
+      { id: '4-2', type: 'audio-choice', answerId: 'car', optionIds: ['car', 'house', 'tree', 'door'] },
+      { id: '4-3', type: 'match-pair', pairIds: ['house', 'car', 'tree', 'door'] },
+      { id: '4-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'tree', optionIds: ['tree', 'door', 'house', 'car'] },
+      { id: '4-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'door', optionIds: ['door', 'house', 'tree', 'car'] },
     ],
   },
   {
     id: 5,
-    title: 'Gran repaso',
-    theme: 'Mezcla',
-    description: 'Mezcla lo aprendido para ganar mas moneditas y seguir avanzando.',
-    icon: 'star-circle',
+    title: 'Hora de jugar',
+    theme: 'Juegos',
+    description: 'Aprende palabras de juegos y juguetes coloridos.',
+    icon: 'toy-brick',
     reward: 22,
     rounds: [
-      { id: '5-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'book', optionIds: ['book', 'car', 'ball'] },
-      { id: '5-2', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'star', optionIds: ['star', 'sun', 'moon'] },
-      { id: '5-3', type: 'match-pair', pairIds: ['cat', 'apple', 'house'] },
-      { id: '5-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'tree', optionIds: ['tree', 'fish', 'dog'] },
-      { id: '5-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'ball', optionIds: ['ball', 'book', 'car'] },
+      { id: '5-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'ball', optionIds: ['ball', 'puzzle', 'kite', 'blocks'] },
+      { id: '5-2', type: 'audio-choice', answerId: 'puzzle', optionIds: ['puzzle', 'ball', 'kite', 'blocks'] },
+      { id: '5-3', type: 'match-pair', pairIds: ['ball', 'puzzle', 'kite', 'blocks'] },
+      { id: '5-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'kite', optionIds: ['kite', 'blocks', 'ball', 'puzzle'] },
+      { id: '5-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'blocks', optionIds: ['blocks', 'ball', 'puzzle', 'kite'] },
     ],
   },
   {
     id: 6,
     title: 'Jardin',
     theme: 'Naturaleza',
-    description: 'Aprende palabras del jardin con flores, arboles y pajaros.',
+    description: 'Aprende palabras del jardin con flores y animales pequeños.',
     icon: 'flower',
     reward: 24,
     rounds: [
-      { id: '6-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'flower', optionIds: ['flower', 'tree', 'star'] },
-      { id: '6-2', type: 'translation-choice', promptLanguage: 'english', answerId: 'bird', optionIds: ['bird', 'fish', 'dog'] },
-      { id: '6-3', type: 'match-pair', pairIds: ['flower', 'tree', 'bird'] },
-      { id: '6-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'tree', optionIds: ['tree', 'house', 'car'] },
-      { id: '6-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'flower', optionIds: ['flower', 'moon', 'book'] },
+      { id: '6-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'flower', optionIds: ['flower', 'tree', 'bird', 'butterfly'] },
+      { id: '6-2', type: 'audio-choice', answerId: 'bird', optionIds: ['bird', 'flower', 'tree', 'butterfly'] },
+      { id: '6-3', type: 'match-pair', pairIds: ['flower', 'tree', 'bird', 'butterfly'] },
+      { id: '6-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'butterfly', optionIds: ['butterfly', 'tree', 'flower', 'bird'] },
+      { id: '6-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'tree', optionIds: ['tree', 'flower', 'bird', 'butterfly'] },
     ],
   },
   {
     id: 7,
     title: 'Dia de lluvia',
     theme: 'Agua',
-    description: 'Practica palabras de agua y objetos que aparecen cuando llueve.',
+    description: 'Practica palabras del agua, el mar y los paseos en barco.',
     icon: 'water',
     reward: 26,
     rounds: [
-      { id: '7-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'water', optionIds: ['water', 'sun', 'apple'] },
-      { id: '7-2', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'water', optionIds: ['water', 'ball', 'cat'] },
-      { id: '7-3', type: 'match-pair', pairIds: ['water', 'fish', 'moon'] },
-      { id: '7-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'fish', optionIds: ['fish', 'bird', 'book'] },
-      { id: '7-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'moon', optionIds: ['moon', 'tree', 'dog'] },
+      { id: '7-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'water', optionIds: ['water', 'fish', 'boat', 'wave'] },
+      { id: '7-2', type: 'audio-choice', answerId: 'boat', optionIds: ['boat', 'water', 'fish', 'wave'] },
+      { id: '7-3', type: 'match-pair', pairIds: ['water', 'fish', 'boat', 'wave'] },
+      { id: '7-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'fish', optionIds: ['fish', 'wave', 'water', 'boat'] },
+      { id: '7-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'wave', optionIds: ['wave', 'water', 'fish', 'boat'] },
     ],
   },
   {
@@ -137,44 +155,75 @@ export const levels: Level[] = [
     icon: 'tshirt-crew',
     reward: 28,
     rounds: [
-      { id: '8-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'shoe', optionIds: ['shoe', 'hat', 'book'] },
-      { id: '8-2', type: 'translation-choice', promptLanguage: 'english', answerId: 'hat', optionIds: ['hat', 'car', 'tree'] },
-      { id: '8-3', type: 'match-pair', pairIds: ['shoe', 'hat', 'book'] },
-      { id: '8-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'shoe', optionIds: ['shoe', 'ball', 'apple'] },
-      { id: '8-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'hat', optionIds: ['hat', 'star', 'fish'] },
+      { id: '8-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'shoe', optionIds: ['shoe', 'hat', 'shirt', 'socks'] },
+      { id: '8-2', type: 'audio-choice', answerId: 'hat', optionIds: ['hat', 'shoe', 'shirt', 'socks'] },
+      { id: '8-3', type: 'match-pair', pairIds: ['shoe', 'hat', 'shirt', 'socks'] },
+      { id: '8-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'shirt', optionIds: ['shirt', 'shoe', 'socks', 'hat'] },
+      { id: '8-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'socks', optionIds: ['socks', 'hat', 'shoe', 'shirt'] },
     ],
   },
   {
     id: 9,
     title: 'Casita',
     theme: 'Muebles',
-    description: 'Aprende palabras de la casa para decorar nuevos espacios.',
+    description: 'Aprende palabras de los muebles para decorar la casa.',
     icon: 'sofa',
     reward: 30,
     rounds: [
-      { id: '9-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'bed', optionIds: ['bed', 'chair', 'door'] },
-      { id: '9-2', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'chair', optionIds: ['chair', 'house', 'car'] },
-      { id: '9-3', type: 'match-pair', pairIds: ['bed', 'chair', 'door'] },
-      { id: '9-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'door', optionIds: ['door', 'moon', 'fish'] },
-      { id: '9-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'bed', optionIds: ['bed', 'apple', 'sun'] },
+      { id: '9-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'bed', optionIds: ['bed', 'chair', 'table', 'lamp'] },
+      { id: '9-2', type: 'audio-choice', answerId: 'chair', optionIds: ['chair', 'bed', 'table', 'lamp'] },
+      { id: '9-3', type: 'match-pair', pairIds: ['bed', 'chair', 'table', 'lamp'] },
+      { id: '9-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'table', optionIds: ['table', 'lamp', 'bed', 'chair'] },
+      { id: '9-5', type: 'translation-choice', promptLanguage: 'english', answerId: 'lamp', optionIds: ['lamp', 'bed', 'chair', 'table'] },
     ],
   },
   {
     id: 10,
-    title: 'Super palabras',
-    theme: 'Desafio',
-    description: 'Un desafio con palabras mezcladas para llegar mas lejos en el camino.',
-    icon: 'trophy',
+    title: 'Safari de palabras',
+    theme: 'Animales salvajes',
+    description: 'Conoce cuatro animales nuevos y aprende sus nombres en ingles.',
+    icon: 'paw',
     reward: 35,
     rounds: [
-      { id: '10-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'bird', optionIds: ['bird', 'cat', 'shoe'] },
-      { id: '10-2', type: 'translation-choice', promptLanguage: 'english', answerId: 'door', optionIds: ['door', 'flower', 'ball'] },
-      { id: '10-3', type: 'match-pair', pairIds: ['water', 'hat', 'chair'] },
-      { id: '10-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'flower', optionIds: ['flower', 'bed', 'car'] },
-      { id: '10-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'shoe', optionIds: ['shoe', 'moon', 'tree'] },
+      { id: '10-1', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'lion', optionIds: ['lion', 'elephant', 'monkey', 'bear'] },
+      { id: '10-2', type: 'audio-choice', answerId: 'elephant', optionIds: ['elephant', 'lion', 'monkey', 'bear'] },
+      { id: '10-3', type: 'match-pair', pairIds: ['lion', 'elephant', 'monkey', 'bear'] },
+      { id: '10-4', type: 'picture-choice', promptLanguage: 'english', answerId: 'monkey', optionIds: ['monkey', 'bear', 'lion', 'elephant'] },
+      { id: '10-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'bear', optionIds: ['bear', 'lion', 'elephant', 'monkey'] },
     ],
   },
 ];
+
+const reviewRoundTypes = ['picture-choice', 'audio-choice', 'translation-choice', 'picture-choice'] as const;
+
+function addReviewRounds(level: Level): Level {
+  const firstRound = level.rounds[0];
+  const wordIds = firstRound.type === 'match-pair' ? firstRound.pairIds : firstRound.optionIds;
+  const reviewRounds = wordIds.map((wordId, index): Round => {
+    const type = reviewRoundTypes[index % reviewRoundTypes.length];
+
+    if (type === 'audio-choice') {
+      return {
+        answerId: wordId,
+        id: `${level.id}-review-${index + 1}`,
+        optionIds: wordIds,
+        type,
+      };
+    }
+
+    return {
+      answerId: wordId,
+      id: `${level.id}-review-${index + 1}`,
+      optionIds: wordIds,
+      promptLanguage: 'english',
+      type,
+    };
+  });
+
+  return { ...level, rounds: [...level.rounds, ...reviewRounds] };
+}
+
+export const levels = levelDefinitions.map(addReviewRounds);
 
 export const shopItems: ShopItem[] = [
   { id: 'party-hat', name: 'Gorrito fiesta', price: 25, category: 'hats', target: 'cat', slot: 'head', color: '#f6b26b', label: 'GORRO', icon: 'party-popper' },

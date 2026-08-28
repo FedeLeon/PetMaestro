@@ -2,10 +2,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Animated,
   Image,
   ImageBackground,
-  PanResponder,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,18 +12,21 @@ import {
   View,
 } from 'react-native';
 import type { GestureResponderEvent } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
+import { BlinkingFarmAnimal } from '../components/BlinkingFarmAnimal';
+import { NeedsMeters } from '../components/NeedsMeters';
 import { SparkleBurst, WalkingPetCat, WalkingPetCatHandle } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
-import { furnitureImages, houseImages } from '../data/assetImages';
+import { farmAnimalBlinkImages, farmAnimalImages, furnitureImages, houseImages, shopCategoryImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
-import { RootStackParamList, ShopItem } from '../types';
+import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
 
-const WIDE_ROOM_WIDTH = 920;
+const WIDE_ROOM_WIDTH = 1300;
 const KITCHEN_ROOM_WIDTH = 760;
 const BATHROOM_ROOM_WIDTH = 720;
 const EXTERIOR_YARD_WIDTH = 960;
@@ -33,45 +34,42 @@ const ROOM_HEIGHT = 420;
 const ROOM_FLOOR_HEIGHT = 184;
 
 const furnitureDefaults: Record<string, { x: number; y: number }> = {
-  'soft-bed': { x: 24, y: 44 },
-  'small-table': { x: 142, y: 58 },
-  'fish-lamp': { x: 226, y: 22 },
-  'window-plant': { x: 34, y: 26 },
-  'red-sofa': { x: 392, y: 48 },
-  'bookcase-open': { x: 590, y: 12 },
-  'round-rug': { x: 414, y: 64 },
-  'floor-lamp': { x: 526, y: 8 },
-  'tv-cabinet': { x: 430, y: 54 },
+  'soft-bed': { x: 0, y: 55 },
+  'small-table': { x: 500, y: -8 },
+  'fish-lamp': { x: 580, y: -38 },
+  'window-plant': { x: 430, y: -4 },
+  'red-sofa': { x: 860, y: -35 },
+  'bookcase-open': { x: 1212, y: -67 },
+  'round-rug': { x: 690, y: 58 },
+  'floor-lamp': { x: 950, y: -210 },
+  'tv-cabinet': { x: 45, y: -65 },
 };
 
 const furnitureSizes: Record<string, { width: number; height: number }> = {
-  'soft-bed': { width: 112, height: 92 },
-  'small-table': { width: 90, height: 74 },
-  'fish-lamp': { width: 78, height: 100 },
-  'window-plant': { width: 76, height: 88 },
-  'red-sofa': { width: 128, height: 92 },
-  'bookcase-open': { width: 82, height: 118 },
-  'round-rug': { width: 126, height: 82 },
-  'floor-lamp': { width: 62, height: 132 },
-  'tv-cabinet': { width: 122, height: 78 },
+  'soft-bed': { width: 176, height: 108 },
+  'small-table': { width: 104, height: 86 },
+  'fish-lamp': { width: 92, height: 142 },
+  'window-plant': { width: 72, height: 94 },
+  'red-sofa': { width: 193, height: 113 },
+  'bookcase-open': { width: 116, height: 166 },
+  'round-rug': { width: 190, height: 116 },
+  'floor-lamp': { width: 176, height: 392 },
+  'tv-cabinet': { width: 303, height: 168 },
 };
 
 const animalPositions: Record<string, { x: number; y: number }> = {
-  'farm-cow': { x: 130, y: 176 },
-  'farm-pig': { x: 750, y: 204 },
-  'farm-sheep': { x: 230, y: 216 },
-  'farm-horse': { x: 675, y: 152 },
-  'farm-duck': { x: 342, y: 238 },
+  'farm-cow': { x: 72, y: 220 },
+  'farm-pig': { x: 820, y: 220 },
+  'farm-sheep': { x: 214, y: 228 },
+  'farm-horse': { x: 704, y: 214 },
+  'farm-duck': { x: 342, y: 286 },
   'farm-rabbit': { x: 600, y: 244 },
 };
 
 export function HouseScreen({ navigation }: Props) {
-  const { progress, setFurniturePosition, toggleAnimal, toggleFurniture } = useProgress();
+  const { progress, toggleAnimal, toggleFurniture } = useProgress();
   const [houseView, setHouseView] = useState<'outside' | 'inside' | 'kitchen' | 'bathroom'>('outside');
-  const [activeFurnitureId, setActiveFurnitureId] = useState<string | null>(null);
-  const [isDraggingFurniture, setIsDraggingFurniture] = useState(false);
   const [exteriorViewportWidth, setExteriorViewportWidth] = useState(0);
-  const [roomSize, setRoomSize] = useState({ height: 0, width: 0 });
   const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
   const exteriorScrollRef = useRef<ScrollView>(null);
   const walkingCatRef = useRef<WalkingPetCatHandle>(null);
@@ -121,35 +119,56 @@ export function HouseScreen({ navigation }: Props) {
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <HeaderBackButton />
-        <View style={styles.titleGroup}>
-          <MaterialCommunityIcons color="#26796e" name="home-heart" size={28} />
-          <Text style={styles.title}>Casa</Text>
+        <View style={styles.headerTopRow}>
+          <HeaderBackButton />
+          <View style={styles.titleGroup}>
+            <MaterialCommunityIcons color="#26796e" name="home-heart" size={28} />
+            <Text style={styles.title}>Casa</Text>
+          </View>
+          <CoinBadge coins={progress.coins} />
         </View>
-        <CoinBadge coins={progress.coins} />
+        <NeedsMeters needs={progress.needs} />
       </View>
 
       <View style={styles.sceneArea}>
         {houseView === 'inside' ? (
           <View style={styles.room}>
-            <ScrollView horizontal scrollEnabled={!isDraggingFurniture} showsHorizontalScrollIndicator={false}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <ImageBackground
                 imageStyle={styles.roomBackgroundImage}
                 resizeMode="stretch"
                 source={houseImages.interiorWide}
                 style={styles.mainRoomPane}
               >
-                <View
-                  onLayout={(event) => {
-                    const { height, width } = event.nativeEvent.layout;
-                    setRoomSize({ height, width });
-                  }}
-                  style={styles.floor}
-                >
+                <View style={styles.floor}>
                   <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.floorTouch} />
                   {sparkle ? (
                     <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
                   ) : null}
+                  {placedFurniture.length > 0 && (
+                    <View pointerEvents="none" style={styles.furnitureStage}>
+                      {placedFurniture.map((item) => {
+                        const source = furnitureImages[item.id];
+
+                        return source ? (
+                          <View
+                            key={item.id}
+                            style={[
+                              styles.fixedFurniture,
+                              {
+                                height: furnitureSizes[item.id]?.height ?? 86,
+                                left: furnitureDefaults[item.id]?.x ?? 24,
+                                top: furnitureDefaults[item.id]?.y ?? 120,
+                                width: furnitureSizes[item.id]?.width ?? 86,
+                              },
+                            ]}
+                          >
+                            <Image resizeMode="contain" source={source} style={styles.furnitureImage} />
+                          </View>
+                        ) : null;
+                      })}
+                    </View>
+                  )}
                   <WalkingPetCat
                     style={styles.roomCat}
                     equippedCatItems={progress.equippedCatItems}
@@ -162,34 +181,28 @@ export function HouseScreen({ navigation }: Props) {
                     ref={walkingCatRef}
                     size="room"
                   />
-                  {placedFurniture.length > 0 && (
-                    <View pointerEvents="box-none" style={styles.furnitureStage}>
-                      {placedFurniture.map((item) => {
-                        const source = furnitureImages[item.id];
-
-                        return source ? (
-                          <DraggableFurniture
-                            isActive={activeFurnitureId === item.id}
-                            item={item}
-                            key={item.id}
-                            onDragEnd={() => {
-                              setActiveFurnitureId(null);
-                              setIsDraggingFurniture(false);
-                            }}
-                            onDragStart={() => {
-                              setActiveFurnitureId(item.id);
-                              setIsDraggingFurniture(true);
-                            }}
-                            onMoveEnd={setFurniturePosition}
-                            position={progress.furniturePositions[item.id] ?? furnitureDefaults[item.id] ?? { x: 24, y: 120 }}
-                            roomSize={roomSize}
-                            source={source}
-                          />
-                        ) : null;
-                      })}
-                    </View>
-                  )}
                 </View>
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  onPress={() => navigation.navigate('Drawing')}
+                  style={styles.drawingFrameHit}
+                >
+                  <View pointerEvents="none" style={styles.drawingArtwork}>
+                    <Svg height="100%" width="100%">
+                      {progress.drawingStrokes.filter((stroke) => stroke.color !== '#ffffff').map((stroke, index) => (
+                        <Path
+                          d={drawingPointsToPath(stroke.points, 150, 150)}
+                          key={`${index}-${stroke.points.length}`}
+                          fill="none"
+                          stroke={stroke.color}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={Math.max(1.5, stroke.width * 0.4)}
+                        />
+                      ))}
+                    </Svg>
+                  </View>
+                </TouchableOpacity>
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('outside')} style={styles.insideDoorHit} />
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('kitchen')} style={styles.kitchenDoorHit} />
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('bathroom')} style={styles.bathroomDoorHit} />
@@ -272,16 +285,26 @@ export function HouseScreen({ navigation }: Props) {
                 {sparkle ? (
                   <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
                 ) : null}
+                <View pointerEvents="none" style={styles.exteriorBarn}>
+                  <Image resizeMode="contain" source={shopCategoryImages.pets} style={styles.exteriorBarnImage} />
+                </View>
                 {placedAnimals.map((animal) => {
                   const position = animalPositions[animal.id] ?? { x: EXTERIOR_YARD_WIDTH / 2, y: 220 };
 
                   return (
-                    <View key={animal.id} style={[styles.yardAnimal, { left: position.x, top: position.y }]}>
-                      <MaterialCommunityIcons
-                        color={animal.color}
-                        name={animal.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-                        size={54}
-                      />
+                    <View
+                      key={animal.id}
+                      style={[styles.yardAnimal, animal.id === 'farm-duck' && styles.frontYardAnimal, { left: position.x, top: position.y }]}
+                    >
+                      {farmAnimalImages[animal.id] ? (
+                        <BlinkingFarmAnimal frames={farmAnimalBlinkImages[animal.id] ?? [farmAnimalImages[animal.id]]} style={styles.yardAnimalImage} />
+                      ) : (
+                        <MaterialCommunityIcons
+                          color={animal.color}
+                          name={animal.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+                          size={54}
+                        />
+                      )}
                     </View>
                   );
                 })}
@@ -353,7 +376,11 @@ export function HouseScreen({ navigation }: Props) {
                         style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
                       >
                         <View style={[styles.inventoryPreview, { backgroundColor: item.color }]}>
-                          <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={34} />
+                          {farmAnimalImages[item.id] ? (
+                            <Image resizeMode="contain" source={farmAnimalImages[item.id]} style={styles.inventoryAnimalImage} />
+                          ) : (
+                            <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={34} />
+                          )}
                         </View>
                         <Text style={styles.inventoryName}>{item.name}</Text>
                       </TouchableOpacity>
@@ -368,114 +395,33 @@ export function HouseScreen({ navigation }: Props) {
   );
 }
 
-type DraggableFurnitureProps = {
-  isActive: boolean;
-  item: ShopItem;
-  onDragEnd: () => void;
-  onDragStart: () => void;
-  onMoveEnd: (itemId: string, position: { x: number; y: number }) => Promise<void>;
-  position: { x: number; y: number };
-  roomSize: { height: number; width: number };
-  source: number;
-};
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
-
-function clampFurniturePosition(position: { x: number; y: number }, roomSize: { height: number; width: number }, size: { height: number; width: number }) {
-  if (!roomSize.height || !roomSize.width) {
-    return position;
+function drawingPointsToPath(points: { x: number; y: number }[], width: number, height: number) {
+  if (points.length === 0) {
+    return '';
   }
 
-  return {
-    x: clamp(position.x, 0, Math.max(0, roomSize.width - size.width)),
-    y: clamp(position.y, 0, Math.max(0, roomSize.height - size.height)),
+  const [firstPoint, ...rest] = points;
+  const safeFirstPoint = {
+    x: Math.max(0, Math.min(1, firstPoint.x)),
+    y: Math.max(0, Math.min(1, firstPoint.y)),
   };
-}
-
-function DraggableFurniture({ isActive, item, onDragEnd, onDragStart, onMoveEnd, position, roomSize, source }: DraggableFurnitureProps) {
-  const size = furnitureSizes[item.id] ?? { height: 86, width: 86 };
-  const initialPosition = clampFurniturePosition(position, roomSize, size);
-  const pan = useRef(new Animated.ValueXY(initialPosition)).current;
-  const latestPosition = useRef(initialPosition);
-  const roomSizeRef = useRef(roomSize);
-
-  useEffect(() => {
-    const nextPosition = clampFurniturePosition(position, roomSize, size);
-    latestPosition.current = nextPosition;
-    pan.setValue(nextPosition);
-  }, [pan, position, roomSize, size]);
-
-  useEffect(() => {
-    roomSizeRef.current = roomSize;
-  }, [roomSize]);
-
-  const responder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponderCapture: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onStartShouldSetPanResponderCapture: () => true,
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        onDragStart();
-        pan.setOffset(latestPosition.current);
-        pan.setValue({ x: 0, y: 0 });
-      },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_event, gesture) => {
-        pan.flattenOffset();
-        const currentRoomSize = roomSizeRef.current;
-        const nextPosition = clampFurniturePosition(
-          {
-            x: latestPosition.current.x + gesture.dx,
-            y: latestPosition.current.y + gesture.dy,
-          },
-          currentRoomSize,
-          size,
-        );
-
-        latestPosition.current = nextPosition;
-        pan.setValue(nextPosition);
-        void onMoveEnd(item.id, nextPosition);
-        onDragEnd();
-      },
-      onPanResponderTerminate: () => {
-        pan.flattenOffset();
-        pan.setValue(latestPosition.current);
-        onDragEnd();
-      },
-      onPanResponderTerminationRequest: () => false,
-      onShouldBlockNativeResponder: () => true,
+  return [
+    `M ${safeFirstPoint.x * width} ${safeFirstPoint.y * height}`,
+    ...rest.map((point) => {
+      const safePoint = {
+        x: Math.max(0, Math.min(1, point.x)),
+        y: Math.max(0, Math.min(1, point.y)),
+      };
+      return `L ${safePoint.x * width} ${safePoint.y * height}`;
     }),
-  ).current;
-
-  return (
-    <Animated.View
-      {...responder.panHandlers}
-      style={[
-        styles.draggableFurniture,
-        {
-          height: size.height,
-          left: pan.x,
-          top: pan.y,
-          width: size.width,
-          zIndex: isActive ? 30 : 4,
-        },
-      ]}
-    >
-      <Image resizeMode="contain" source={source} style={styles.draggableFurnitureImage} />
-    </Animated.View>
-  );
+  ].join(' ');
 }
 
 const styles = StyleSheet.create({
   bathroomDoorHit: {
     height: 148,
     position: 'absolute',
-    right: 20,
+    right: 54,
     top: 82,
     width: 108,
     zIndex: 1,
@@ -511,11 +457,11 @@ const styles = StyleSheet.create({
     width: BATHROOM_ROOM_WIDTH,
   },
   doorTileButton: {
-    bottom: 10,
-    height: 106,
-    left: 118,
+    bottom: 6,
+    height: 112,
+    left: 92,
     position: 'absolute',
-    width: 86,
+    width: 110,
     zIndex: 3,
   },
   emptyInventory: {
@@ -526,15 +472,33 @@ const styles = StyleSheet.create({
     padding: 16,
     width: '100%',
   },
-  draggableFurniture: {
+  fixedFurniture: {
     left: 0,
     position: 'absolute',
     top: 0,
     zIndex: 3,
   },
-  draggableFurnitureImage: {
+  furnitureImage: {
     height: '100%',
     width: '100%',
+  },
+  drawingArtwork: {
+    aspectRatio: 1,
+    left: 15,
+    overflow: 'hidden',
+    position: 'absolute',
+    top: 15,
+    width: 150,
+    zIndex: 1,
+  },
+  drawingFrameHit: {
+    aspectRatio: 1,
+    left: 468,
+    overflow: 'hidden',
+    position: 'absolute',
+    top: 76,
+    width: 180,
+    zIndex: 8,
   },
   emptyText: {
     color: '#6c5a42',
@@ -547,6 +511,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 4,
   },
+  exteriorBarn: {
+    height: 174,
+    left: 706,
+    position: 'absolute',
+    top: 36,
+    width: 190,
+    zIndex: 1,
+  },
+  exteriorBarnImage: {
+    height: '100%',
+    width: '100%',
+  },
   exteriorTouch: {
     bottom: 0,
     left: 0,
@@ -555,9 +531,12 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 0,
   },
+  frontYardAnimal: {
+    zIndex: 4,
+  },
   exteriorHouseBody: {
     alignItems: 'center',
-    bottom: 62,
+    bottom: 125,
     height: 214,
     left: EXTERIOR_YARD_WIDTH / 2 - 146,
     position: 'absolute',
@@ -600,15 +579,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderBottomColor: '#f0dcc0',
     borderBottomWidth: 2,
+    paddingBottom: 6,
+    paddingHorizontal: 14,
+    paddingTop: 6,
+  },
+  headerTopRow: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 8,
-    paddingHorizontal: 14,
-    paddingTop: 8,
+    width: '100%',
   },
   insideDoorHit: {
     height: 178,
-    left: 286,
+    left: 682,
     position: 'absolute',
     top: 68,
     width: 166,
@@ -634,10 +617,10 @@ const styles = StyleSheet.create({
   },
   kitchenDoorHit: {
     height: 190,
-    left: 48,
+    left: 278,
     position: 'absolute',
     top: 68,
-    width: 134,
+    width: 154,
     zIndex: 1,
   },
   kitchenExitDoorHit: {
@@ -694,6 +677,10 @@ const styles = StyleSheet.create({
     height: 46,
     width: '100%',
   },
+  inventoryAnimalImage: {
+    height: 64,
+    width: '100%',
+  },
   inventoryPreview: {
     alignItems: 'center',
     borderRadius: 8,
@@ -710,20 +697,22 @@ const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     height: ROOM_HEIGHT,
     overflow: 'hidden',
   },
   roomCat: {
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 20,
   },
   roomBackgroundImage: {
     borderRadius: 6,
   },
   sceneArea: {
-    paddingBottom: 12,
+    paddingBottom: 0,
     paddingHorizontal: 0,
-    paddingTop: 12,
+    paddingTop: 0,
   },
   screen: {
     backgroundColor: '#fff7e8',
@@ -747,17 +736,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 2,
+    marginLeft: 8,
   },
   yardAnimal: {
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.82)',
-    borderColor: '#ffffff',
-    borderRadius: 999,
-    borderWidth: 3,
-    height: 72,
+    height: 104,
     justifyContent: 'center',
     position: 'absolute',
-    width: 72,
+    width: 104,
     zIndex: 2,
+  },
+  yardAnimalImage: {
+    height: 100,
+    width: 100,
   },
 });

@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native';
-import { wordImages } from '../data/assetImages';
+import { uiImages, wordImages } from '../data/assetImages';
 import { WordCard } from '../types';
 
 type WordDrawingProps = {
@@ -13,6 +13,7 @@ export function WordDrawing({ word, small = false }: WordDrawingProps) {
       <View style={[styles.imagePlate, small && styles.smallImagePlate]}>
         <Image resizeMode="contain" source={wordImages[word.id]} style={styles.image} />
       </View>
+      <Image resizeMode="contain" source={uiImages.wordCardFrame} style={styles.cardFrame} />
     </View>
   );
 }
@@ -28,7 +29,14 @@ const styles = StyleSheet.create({
     minWidth: 110,
     overflow: 'hidden',
     padding: 12,
+    position: 'relative',
     width: '100%',
+  },
+  cardFrame: {
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
+    zIndex: 2,
   },
   image: {
     height: '100%',

@@ -1,10 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { useProgress } from '../context/ProgressContext';
+import { shopCategoryImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
@@ -42,11 +43,15 @@ export function ShopScreen({ navigation }: Props) {
                 style={styles.categoryCard}
               >
                 <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
-                  <MaterialCommunityIcons
-                    color="#ffffff"
-                    name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-                    size={36}
-                  />
+                  {shopCategoryImages[category.id] ? (
+                    <Image resizeMode="contain" source={shopCategoryImages[category.id]} style={styles.categoryAsset} />
+                  ) : (
+                    <MaterialCommunityIcons
+                      color="#ffffff"
+                      name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+                      size={36}
+                    />
+                  )}
                 </View>
                 <Text style={styles.categoryTitle}>{category.label}</Text>
                 <Text style={styles.categoryDescription} numberOfLines={2}>
@@ -88,9 +93,13 @@ const styles = StyleSheet.create({
   categoryIcon: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 60,
+    height: 72,
     justifyContent: 'center',
     width: '100%',
+  },
+  categoryAsset: {
+    height: 86,
+    width: '92%',
   },
   categoryMeta: {
     color: '#ff7a59',
@@ -148,5 +157,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 2,
+    marginLeft: 8,
   },
 });

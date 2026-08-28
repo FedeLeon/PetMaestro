@@ -1,13 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { DimensionValue } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import { Animated, ImageBackground, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DimensionValue, useWindowDimensions } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { useProgress } from '../context/ProgressContext';
-import { foliageImages } from '../data/assetImages';
+import { mapImages } from '../data/assetImages';
 import { levels } from '../data/gameContent';
 import { Level, RootStackParamList } from '../types';
 
@@ -28,6 +27,7 @@ const levelPointPositions: { top: number; left: DimensionValue }[] = [
 
 export function MapScreen({ navigation }: Props) {
   const { progress } = useProgress();
+  const { width: screenWidth } = useWindowDimensions();
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const modalScale = useRef(new Animated.Value(0.84)).current;
   const modalOpacity = useRef(new Animated.Value(0)).current;
@@ -60,74 +60,21 @@ export function MapScreen({ navigation }: Props) {
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.kicker}>PetMaestro</Text>
-          <Text style={styles.title}>Camino de palabras</Text>
+        <View style={styles.titleRow}>
+          <MaterialCommunityIcons color="#26796e" name="map" size={27} />
+          <Text style={styles.title}>Mapa de Niveles</Text>
         </View>
         <CoinBadge coins={progress.coins} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.landscape}>
-          <View style={styles.sun} />
-          <View style={[styles.cloud, styles.cloudOne]} />
-          <View style={[styles.cloud, styles.cloudTwo]} />
-          <View style={styles.mountains}>
-            <View style={[styles.mountain, styles.mountainLeft]} />
-            <View style={[styles.mountain, styles.mountainCenter]} />
-            <View style={[styles.mountain, styles.mountainRight]} />
-          </View>
-          <View style={styles.ground} />
-          <Svg height="1320" style={styles.roadSvg} viewBox="0 0 360 1320" width="100%">
-            <Path
-              d="M180 158 C146 198 96 218 108 284 C124 364 275 320 268 402 C260 488 84 456 106 552 C124 632 196 630 214 724 C236 820 78 788 104 890 C128 982 280 940 252 1046 C230 1130 104 1118 152 1210 C174 1252 196 1284 180 1330"
-              fill="none"
-              stroke="#cf9550"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={88}
-            />
-            <Path
-              d="M180 158 C146 198 96 218 108 284 C124 364 275 320 268 402 C260 488 84 456 106 552 C124 632 196 630 214 724 C236 820 78 788 104 890 C128 982 280 940 252 1046 C230 1130 104 1118 152 1210 C174 1252 196 1284 180 1330"
-              fill="none"
-              stroke="#e8b56d"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={72}
-            />
-            <Path
-              d="M180 158 C146 198 96 218 108 284 C124 364 275 320 268 402 C260 488 84 456 106 552 C124 632 196 630 214 724 C236 820 78 788 104 890 C128 982 280 940 252 1046 C230 1130 104 1118 152 1210 C174 1252 196 1284 180 1330"
-              fill="none"
-              stroke="#f2ca87"
-              strokeDasharray="2 22"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={6}
-            />
-          </Svg>
-          <View style={[styles.tree, styles.treeOne]}>
-            <Image resizeMode="contain" source={foliageImages.tree1} style={styles.treeImage} />
-          </View>
-          <View style={[styles.tree, styles.treeTwo]}>
-            <Image resizeMode="contain" source={foliageImages.tree2} style={styles.treeImage} />
-          </View>
-          <View style={[styles.tree, styles.treeThree]}>
-            <Image resizeMode="contain" source={foliageImages.tree3} style={styles.treeImage} />
-          </View>
-          <View style={[styles.tree, styles.treeFour]}>
-            <Image resizeMode="contain" source={foliageImages.tree1} style={styles.treeImage} />
-          </View>
-          <View style={[styles.tree, styles.treeFive]}>
-            <Image resizeMode="contain" source={foliageImages.tree2} style={styles.treeImage} />
-          </View>
-          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushOne]} />
-          <Image resizeMode="contain" source={foliageImages.bush2} style={[styles.bushImage, styles.bushTwo]} />
-          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushThree]} />
-          <Image resizeMode="contain" source={foliageImages.bush2} style={[styles.bushImage, styles.bushFour]} />
-          <Image resizeMode="contain" source={foliageImages.bush1} style={[styles.bushImage, styles.bushFive]} />
-          <View style={[styles.puddle, styles.puddleOne]} />
-          <View style={[styles.puddle, styles.puddleTwo]} />
-          <View style={[styles.puddle, styles.puddleThree]} />
+        <View style={styles.landscapeViewport}>
+          <ImageBackground
+            imageStyle={styles.landscapeImage}
+            resizeMode="cover"
+            source={mapImages.sunnyPathVertical}
+            style={[styles.landscape, { left: -(screenWidth * 0.06), width: screenWidth * 1.12 }]}
+          >
 
           {levels.map((level, index) => {
             const locked = level.id > progress.unlockedLevel;
@@ -155,6 +102,7 @@ export function MapScreen({ navigation }: Props) {
               </TouchableOpacity>
             );
           })}
+          </ImageBackground>
         </View>
       </ScrollView>
 
@@ -262,7 +210,6 @@ const styles = StyleSheet.create({
     borderColor: '#d7f5cf',
   },
   content: {
-    padding: 16,
     paddingBottom: 112,
   },
   disabledPlayButton: {
@@ -289,19 +236,24 @@ const styles = StyleSheet.create({
     right: 0,
     top: 206,
   },
-  kicker: {
-    color: '#ff7a59',
-    fontSize: 14,
-    fontWeight: '900',
-  },
   landscape: {
     backgroundColor: '#9edaf7',
     borderColor: '#77c1e4',
-    borderRadius: 8,
+    borderRadius: 0,
     borderWidth: 2,
-    minHeight: 1320,
+    height: 1536,
     overflow: 'hidden',
     position: 'relative',
+  },
+  landscapeImage: {
+    borderRadius: 0,
+    height: '100%',
+    width: '100%',
+  },
+  landscapeViewport: {
+    height: 1536,
+    overflow: 'hidden',
+    width: '100%',
   },
   levelCaption: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -508,6 +460,11 @@ const styles = StyleSheet.create({
     color: '#372413',
     fontSize: 24,
     fontWeight: '900',
+  },
+  titleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 7,
   },
   tree: {
     alignItems: 'center',

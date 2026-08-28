@@ -5,6 +5,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { ProgressProvider, useProgress } from './src/context/ProgressContext';
 import { GameScreen } from './src/screens/GameScreen';
 import { HouseScreen } from './src/screens/HouseScreen';
+import { DrawingScreen } from './src/screens/DrawingScreen';
 import { MapScreen } from './src/screens/MapScreen';
 import { PetScreen } from './src/screens/PetScreen';
 import { ShopCategoryScreen } from './src/screens/ShopCategoryScreen';
@@ -41,6 +42,7 @@ function AppNavigator() {
         <Stack.Screen name="Shop" component={ShopScreen} />
         <Stack.Screen name="ShopCategory" component={ShopCategoryScreen} />
         <Stack.Screen name="House" component={HouseScreen} />
+        <Stack.Screen name="Drawing" component={DrawingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

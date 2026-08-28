@@ -1,11 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { levels, shopItems } from '../data/gameContent';
-import { ProgressState } from '../types';
+import { PetNeeds, ProgressState } from '../types';
 
 const STORAGE_KEY = 'petmaestro.progress.v1';
 const DEV_INFINITE_COINS = true;
 const DEV_COIN_BALANCE = 99999;
+const NEEDS_TICK_MS = 60_000;
+const NEEDS_DECAY_PER_MINUTE = 1;
+
+const initialNeeds: PetNeeds = {
+  hunger: 100,
+  hygiene: 100,
+  bathroom: 100,
+  play: 100,
+  energy: 100,
+};
 
 const initialProgress: ProgressState = {
   unlockedLevel: 1,
@@ -15,8 +25,10 @@ const initialProgress: ProgressState = {
   equippedCatItems: {},
   placedFurnitureIds: [],
   placedAnimalIds: [],
-  furniturePositions: {},
   completedLevels: [],
+  drawingStrokes: [],
+  needs: initialNeeds,
+  needsUpdatedAt: Date.now(),
 };
 
 type ProgressContextValue = {
@@ -27,11 +39,21 @@ type ProgressContextValue = {
   equipItem: (itemId: string | null) => Promise<void>;
   toggleFurniture: (itemId: string) => Promise<void>;
   toggleAnimal: (itemId: string) => Promise<void>;
-  setFurniturePosition: (itemId: string, position: { x: number; y: number }) => Promise<void>;
+  saveDrawing: (strokes: ProgressState['drawingStrokes']) => Promise<void>;
   resetProgress: () => Promise<void>;
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
+
+function decreaseNeeds(needs: PetNeeds, amount: number): PetNeeds {
+  return {
+    hunger: Math.max(0, needs.hunger - amount),
+    hygiene: Math.max(0, needs.hygiene - amount),
+    bathroom: Math.max(0, needs.bathroom - amount),
+    play: Math.max(0, needs.play - amount),
+    energy: Math.max(0, needs.energy - amount),
+  };
+}
 
 export function ProgressProvider({ children }: PropsWithChildren) {
   const [progress, setProgress] = useState<ProgressState>(initialProgress);
@@ -49,13 +71,39 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
         if (raw) {
-          const storedProgress = { ...initialProgress, ...JSON.parse(raw) };
+          const parsedProgress = JSON.parse(raw) as Partial<ProgressState>;
+          const storedNeeds = { ...initialNeeds, ...(parsedProgress.needs ?? {}) };
+          const lastUpdatedAt = parsedProgress.needsUpdatedAt ?? Date.now();
+          const elapsedMinutes = Math.max(0, Math.floor((Date.now() - lastUpdatedAt) / NEEDS_TICK_MS));
+          const storedProgress: ProgressState = {
+            ...initialProgress,
+            ...parsedProgress,
+            needs: decreaseNeeds(storedNeeds, elapsedMinutes * NEEDS_DECAY_PER_MINUTE),
+            needsUpdatedAt: Date.now(),
+          };
           progressRef.current = storedProgress;
           setProgress(storedProgress);
         }
       })
       .finally(() => setIsReady(true));
   }, []);
+
+  useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      const current = progressRef.current;
+      void saveProgress({
+        ...current,
+        needs: decreaseNeeds(current.needs, NEEDS_DECAY_PER_MINUTE),
+        needsUpdatedAt: Date.now(),
+      });
+    }, NEEDS_TICK_MS);
+
+    return () => clearInterval(intervalId);
+  }, [isReady]);
 
   const saveProgress = async (next: ProgressState) => {
     progressRef.current = next;
@@ -172,14 +220,8 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     });
   };
 
-  const setFurniturePosition = async (itemId: string, position: { x: number; y: number }) => {
-    await updateProgress((current) => ({
-      ...current,
-      furniturePositions: {
-        ...current.furniturePositions,
-        [itemId]: position,
-      },
-    }));
+  const saveDrawing = async (strokes: ProgressState['drawingStrokes']) => {
+    await updateProgress((current) => ({ ...current, drawingStrokes: strokes }));
   };
 
   const resetProgress = async () => {
@@ -195,7 +237,7 @@ export function ProgressProvider({ children }: PropsWithChildren) {
       equipItem,
       toggleFurniture,
       toggleAnimal,
-      setFurniturePosition,
+      saveDrawing,
       resetProgress,
     }),
     [visibleProgress, isReady],
