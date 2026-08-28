@@ -6,7 +6,7 @@ import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
 import { useProgress } from '../context/ProgressContext';
-import { catItemImages, furnitureImages } from '../data/assetImages';
+import { catItemImages, furnitureImages, uiImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
@@ -30,27 +30,24 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
     <View style={styles.screen}>
       <View style={styles.header}>
         <HeaderBackButton />
-        <Text style={styles.title} numberOfLines={1} adjustsFontSizeToFit>
-          {category.label}
-        </Text>
-        <CoinBadge coins={progress.coins} />
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.categoryIntro}>
+        <View style={styles.headerInfo}>
           <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
             <MaterialCommunityIcons
               color="#ffffff"
               name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-              size={38}
+              size={26}
             />
           </View>
           <View style={styles.categoryCopy}>
-            <Text style={styles.categoryTitle}>{category.label}</Text>
-            <Text style={styles.categoryDescription}>{category.description}</Text>
+            <Text numberOfLines={1} style={styles.categoryTitle}>
+              {category.label}
+            </Text>
           </View>
         </View>
+        <CoinBadge coins={progress.coins} />
+      </View>
 
+      <ScrollView contentContainerStyle={styles.content}>
         {message ? <Text style={styles.message}>{message}</Text> : null}
 
         <View style={styles.grid}>
@@ -67,10 +64,20 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
                   ) : (
                     <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={30} />
                   )}
-                  <Text style={styles.previewText}>{item.label}</Text>
                 </View>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.price}>{owned ? 'Comprado' : `${item.price} moneditas`}</Text>
+                <Text numberOfLines={2} style={styles.itemName}>
+                  {item.name}
+                </Text>
+                <View style={styles.price}>
+                  {owned ? (
+                    <Text style={styles.priceText}>Comprado</Text>
+                  ) : (
+                    <>
+                      <Text style={styles.priceText}>{item.price}</Text>
+                      <Image resizeMode="contain" source={uiImages.goldenPawCoin} style={styles.priceCoin} />
+                    </>
+                  )}
+                </View>
                 {owned ? (
                   <View style={styles.ownedBadge}>
                     <Text style={styles.ownedBadgeText}>Comprado</Text>
@@ -100,62 +107,67 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff7a59',
     borderRadius: 8,
     justifyContent: 'center',
-    marginTop: 12,
-    minHeight: 48,
-    width: '100%',
+    marginBottom: 2,
+    marginTop: 4,
+    minHeight: 32,
+    width: '88%',
   },
   buyButtonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '900',
   },
   card: {
     alignItems: 'center',
+    aspectRatio: 1,
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
     flexBasis: '47%',
-    flexGrow: 1,
-    minHeight: 218,
-    padding: 12,
-  },
-  categoryCopy: {
-    flex: 1,
-  },
-  categoryDescription: {
-    color: '#6c5a42',
-    fontSize: 15,
-    fontWeight: '800',
-    lineHeight: 21,
-    marginTop: 4,
+    paddingBottom: 6,
+    paddingHorizontal: 5,
+    paddingTop: 5,
   },
   categoryIcon: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 82,
+    height: 42,
     justifyContent: 'center',
-    width: 82,
+    width: 42,
   },
-  categoryIntro: {
+  categoryCopy: {
+    flex: 1,
+    minWidth: 0,
+  },
+  content: {
+    padding: 12,
+    paddingBottom: 128,
+  },
+  header: {
     alignItems: 'center',
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     flexDirection: 'row',
     gap: 14,
-    marginBottom: 16,
-    padding: 14,
+    minHeight: 66,
+    paddingBottom: 8,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+  },
+  headerInfo: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    minWidth: 0,
   },
   categoryTitle: {
     color: '#372413',
-    fontSize: 22,
+    fontSize: 19,
     fontWeight: '900',
-  },
-  content: {
-    padding: 20,
-    paddingBottom: 128,
+    lineHeight: 23,
   },
   disabledButton: {
     backgroundColor: '#c8bba8',
@@ -165,23 +177,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 12,
   },
-  header: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#f0dcc0',
-    borderBottomWidth: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 10,
-    paddingHorizontal: 14,
-    paddingTop: 32,
-  },
   itemName: {
     color: '#372413',
-    fontSize: 17,
+    fontSize: 14,
     fontWeight: '900',
-    marginTop: 10,
-    minHeight: 42,
+    lineHeight: 17,
+    marginTop: 1,
     textAlign: 'center',
   },
   message: {
@@ -203,13 +204,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     justifyContent: 'center',
-    marginTop: 12,
-    minHeight: 48,
-    width: '100%',
+    marginBottom: 2,
+    marginTop: 4,
+    minHeight: 32,
+    width: '88%',
   },
   ownedBadgeText: {
     color: '#287568',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '900',
   },
   ownedCard: {
@@ -218,38 +220,34 @@ const styles = StyleSheet.create({
   preview: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 82,
+    height: 68,
     justifyContent: 'center',
     paddingHorizontal: 8,
     width: '100%',
   },
   previewImage: {
-    height: 52,
+    height: 60,
     width: '100%',
   },
-  previewText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '900',
-    marginTop: 5,
-    textAlign: 'center',
-  },
   price: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+    justifyContent: 'center',
+    marginTop: 0,
+    minHeight: 22,
+  },
+  priceCoin: {
+    height: 26,
+    width: 26,
+  },
+  priceText: {
     color: '#76624a',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
-    marginTop: 4,
   },
   screen: {
     backgroundColor: '#fff7e8',
     flex: 1,
-  },
-  title: {
-    color: '#372413',
-    flex: 1,
-    fontSize: 24,
-    fontWeight: '900',
-    paddingHorizontal: 10,
-    textAlign: 'center',
   },
 });

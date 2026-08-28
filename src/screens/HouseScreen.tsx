@@ -6,16 +6,18 @@ import {
   Image,
   ImageBackground,
   PanResponder,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import type { GestureResponderEvent } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
 import { HeaderBackButton } from '../components/HeaderBackButton';
-import { PetCat } from '../components/PetCat';
+import { SparkleBurst, WalkingPetCat, WalkingPetCatHandle } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
 import { furnitureImages, houseImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
@@ -23,7 +25,8 @@ import { RootStackParamList, ShopItem } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
 
-const MAIN_ROOM_WIDTH = 720;
+const WIDE_ROOM_WIDTH = 920;
+const KITCHEN_ROOM_WIDTH = 760;
 const BATHROOM_ROOM_WIDTH = 720;
 const EXTERIOR_YARD_WIDTH = 960;
 const ROOM_HEIGHT = 420;
@@ -64,12 +67,14 @@ const animalPositions: Record<string, { x: number; y: number }> = {
 
 export function HouseScreen({ navigation }: Props) {
   const { progress, setFurniturePosition, toggleAnimal, toggleFurniture } = useProgress();
-  const [houseView, setHouseView] = useState<'outside' | 'inside' | 'bathroom'>('outside');
+  const [houseView, setHouseView] = useState<'outside' | 'inside' | 'kitchen' | 'bathroom'>('outside');
   const [activeFurnitureId, setActiveFurnitureId] = useState<string | null>(null);
   const [isDraggingFurniture, setIsDraggingFurniture] = useState(false);
   const [exteriorViewportWidth, setExteriorViewportWidth] = useState(0);
   const [roomSize, setRoomSize] = useState({ height: 0, width: 0 });
+  const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
   const exteriorScrollRef = useRef<ScrollView>(null);
+  const walkingCatRef = useRef<WalkingPetCatHandle>(null);
   const ownedFurniture = useMemo(
     () => shopItems.filter((item) => item.target === 'house' && progress.ownedItems.includes(item.id)),
     [progress.ownedItems],
@@ -80,6 +85,22 @@ export function HouseScreen({ navigation }: Props) {
   );
   const placedFurniture = ownedFurniture.filter((item) => progress.placedFurnitureIds.includes(item.id));
   const placedAnimals = ownedAnimals.filter((item) => progress.placedAnimalIds.includes(item.id));
+  const handleFloorPress = (event: GestureResponderEvent) => {
+    const { locationX, locationY, pageX, pageY } = event.nativeEvent;
+    const targetX = Number.isFinite(locationX) ? locationX : pageX;
+    const targetY = Number.isFinite(locationY) ? locationY : pageY;
+
+    if (!Number.isFinite(targetX) || !Number.isFinite(targetY)) {
+      return;
+    }
+
+    const sparkleKey = Date.now();
+    setSparkle({ x: targetX, y: targetY, key: sparkleKey });
+    setTimeout(() => {
+      setSparkle((current) => (current?.key === sparkleKey ? null : current));
+    }, 460);
+    walkingCatRef.current?.walkTo(targetX, targetY);
+  };
 
   useEffect(() => {
     if (houseView !== 'outside' || !exteriorViewportWidth) {
@@ -101,7 +122,10 @@ export function HouseScreen({ navigation }: Props) {
     <View style={styles.screen}>
       <View style={styles.header}>
         <HeaderBackButton />
-        <Text style={styles.title}>Casa</Text>
+        <View style={styles.titleGroup}>
+          <MaterialCommunityIcons color="#26796e" name="home-heart" size={28} />
+          <Text style={styles.title}>Casa</Text>
+        </View>
         <CoinBadge coins={progress.coins} />
       </View>
 
@@ -112,7 +136,7 @@ export function HouseScreen({ navigation }: Props) {
               <ImageBackground
                 imageStyle={styles.roomBackgroundImage}
                 resizeMode="stretch"
-                source={houseImages.interior}
+                source={houseImages.interiorWide}
                 style={styles.mainRoomPane}
               >
                 <View
@@ -122,20 +146,24 @@ export function HouseScreen({ navigation }: Props) {
                   }}
                   style={styles.floor}
                 >
-                  <View pointerEvents="none" style={styles.roomCat}>
-                    <PetCat
-                      equippedCatItems={progress.equippedCatItems}
-                      equippedItemId={progress.equippedItemId}
-                      size="room"
-                    />
-                  </View>
-                  {placedFurniture.length === 0 ? (
-                    <View style={styles.emptyRoom}>
-                      <MaterialCommunityIcons color="#9a6b45" name="sofa-outline" size={48} />
-                      <Text style={styles.emptyText}>Compra muebles en la tienda y colocalos aca.</Text>
-                    </View>
-                  ) : (
-                    <View style={styles.furnitureStage}>
+                  <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.floorTouch} />
+                  {sparkle ? (
+                    <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
+                  ) : null}
+                  <WalkingPetCat
+                    style={styles.roomCat}
+                    equippedCatItems={progress.equippedCatItems}
+                    equippedItemId={progress.equippedItemId}
+                    initialX={112}
+                    initialY={-94}
+                    maxX={WIDE_ROOM_WIDTH - 230}
+                    maxY={-4}
+                    minY={-104}
+                    ref={walkingCatRef}
+                    size="room"
+                  />
+                  {placedFurniture.length > 0 && (
+                    <View pointerEvents="box-none" style={styles.furnitureStage}>
                       {placedFurniture.map((item) => {
                         const source = furnitureImages[item.id];
 
@@ -163,7 +191,37 @@ export function HouseScreen({ navigation }: Props) {
                   )}
                 </View>
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('outside')} style={styles.insideDoorHit} />
+                <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('kitchen')} style={styles.kitchenDoorHit} />
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('bathroom')} style={styles.bathroomDoorHit} />
+              </ImageBackground>
+            </ScrollView>
+          </View>
+        ) : houseView === 'kitchen' ? (
+          <View style={styles.room}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <ImageBackground
+                imageStyle={styles.roomBackgroundImage}
+                resizeMode="stretch"
+                source={houseImages.kitchenInterior}
+                style={styles.kitchenPane}
+              >
+                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.kitchenTouch} />
+                {sparkle ? (
+                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
+                ) : null}
+                <WalkingPetCat
+                  style={styles.kitchenCat}
+                  equippedCatItems={progress.equippedCatItems}
+                  equippedItemId={progress.equippedItemId}
+                  initialX={320}
+                  initialY={132}
+                  maxX={KITCHEN_ROOM_WIDTH - 230}
+                  maxY={132}
+                  minY={48}
+                  ref={walkingCatRef}
+                  size="room"
+                />
+                <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.kitchenExitDoorHit} />
               </ImageBackground>
             </ScrollView>
           </View>
@@ -176,13 +234,22 @@ export function HouseScreen({ navigation }: Props) {
                 source={houseImages.bathroomInterior}
                 style={styles.bathroomPane}
               >
-                <View pointerEvents="none" style={styles.bathroomCat}>
-                  <PetCat
+                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.bathroomTouch} />
+                {sparkle ? (
+                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
+                ) : null}
+                <WalkingPetCat
+                  style={styles.bathroomCat}
                     equippedCatItems={progress.equippedCatItems}
                     equippedItemId={progress.equippedItemId}
+                    initialX={468}
+                    initialY={132}
+                    maxX={BATHROOM_ROOM_WIDTH - 230}
+                    maxY={176}
+                    minY={100}
+                    ref={walkingCatRef}
                     size="room"
                   />
-                </View>
                 <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.bathroomExitDoorHit} />
               </ImageBackground>
             </ScrollView>
@@ -201,6 +268,10 @@ export function HouseScreen({ navigation }: Props) {
                 source={houseImages.exteriorWide}
                 style={styles.exteriorWide}
               >
+                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.exteriorTouch} />
+                {sparkle ? (
+                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
+                ) : null}
                 {placedAnimals.map((animal) => {
                   const position = animalPositions[animal.id] ?? { x: EXTERIOR_YARD_WIDTH / 2, y: 220 };
 
@@ -218,6 +289,18 @@ export function HouseScreen({ navigation }: Props) {
                   <Image resizeMode="contain" source={houseImages.cuteHouse} style={styles.houseImage} />
                   <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.doorTileButton} />
                 </View>
+                <WalkingPetCat
+                  style={styles.exteriorCat}
+                    equippedCatItems={progress.equippedCatItems}
+                    equippedItemId={progress.equippedItemId}
+                    initialX={EXTERIOR_YARD_WIDTH / 2 + 158}
+                    initialY={120}
+                    maxX={EXTERIOR_YARD_WIDTH - 230}
+                    maxY={132}
+                    minY={72}
+                    ref={walkingCatRef}
+                    size="room"
+                  />
               </ImageBackground>
             </ScrollView>
           </View>
@@ -398,10 +481,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   bathroomCat: {
-    bottom: -4,
-    left: 468,
     position: 'absolute',
     zIndex: 4,
+  },
+  bathroomTouch: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
+  },
+  clickSparkle: {
+    zIndex: 20,
   },
   bathroomExitDoorHit: {
     height: 204,
@@ -434,13 +526,6 @@ const styles = StyleSheet.create({
     padding: 16,
     width: '100%',
   },
-  emptyRoom: {
-    alignItems: 'center',
-    gap: 10,
-    justifyContent: 'center',
-    minHeight: 190,
-    padding: 18,
-  },
   draggableFurniture: {
     left: 0,
     position: 'absolute',
@@ -458,12 +543,25 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     textAlign: 'center',
   },
+  exteriorCat: {
+    position: 'absolute',
+    zIndex: 4,
+  },
+  exteriorTouch: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
+  },
   exteriorHouseBody: {
     alignItems: 'center',
     bottom: 62,
     height: 214,
     left: EXTERIOR_YARD_WIDTH / 2 - 146,
     position: 'absolute',
+    transform: [{ scale: 1.2 }],
     width: 293,
     zIndex: 3,
   },
@@ -481,6 +579,14 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 4,
   },
+  floorTouch: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
+  },
   furnitureStage: {
     bottom: 0,
     left: 0,
@@ -496,15 +602,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10,
+    paddingBottom: 8,
     paddingHorizontal: 14,
-    paddingTop: 32,
+    paddingTop: 8,
   },
   insideDoorHit: {
     height: 178,
-    left: 28,
+    left: 286,
     position: 'absolute',
-    top: 48,
+    top: 68,
     width: 166,
     zIndex: 1,
   },
@@ -520,7 +626,42 @@ const styles = StyleSheet.create({
     height: ROOM_HEIGHT - 4,
     overflow: 'hidden',
     position: 'relative',
-    width: MAIN_ROOM_WIDTH,
+    width: WIDE_ROOM_WIDTH,
+  },
+  kitchenCat: {
+    position: 'absolute',
+    zIndex: 4,
+  },
+  kitchenDoorHit: {
+    height: 190,
+    left: 48,
+    position: 'absolute',
+    top: 68,
+    width: 134,
+    zIndex: 1,
+  },
+  kitchenExitDoorHit: {
+    height: 204,
+    position: 'absolute',
+    right: 22,
+    top: 62,
+    width: 132,
+    zIndex: 8,
+  },
+  kitchenPane: {
+    backgroundColor: '#ffffff',
+    height: ROOM_HEIGHT - 4,
+    overflow: 'hidden',
+    position: 'relative',
+    width: KITCHEN_ROOM_WIDTH,
+  },
+  kitchenTouch: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
   },
   houseImage: {
     height: '100%',
@@ -573,8 +714,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   roomCat: {
-    bottom: -6,
-    left: 112,
     position: 'absolute',
     zIndex: 2,
   },
@@ -601,8 +740,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 24,
     fontWeight: '900',
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    textAlign: 'left',
+  },
+  titleGroup: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 2,
   },
   yardAnimal: {
     alignItems: 'center',

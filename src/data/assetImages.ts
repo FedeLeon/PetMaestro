@@ -1,14 +1,40 @@
 export const petImages = {
   cat: require('../../assets/kenney/pets/dressup-cat.png'),
+  catBlink: [
+    require('../../assets/generated/cat/cat-blink-01.png'),
+    require('../../assets/generated/cat/cat-blink-02.png'),
+    require('../../assets/generated/cat/cat-blink-03.png'),
+  ],
+  catWalk: [
+    require('../../assets/generated/cat/cat-walk-01.png'),
+    require('../../assets/generated/cat/cat-walk-02.png'),
+    require('../../assets/generated/cat/cat-walk-03.png'),
+    require('../../assets/generated/cat/cat-walk-04.png'),
+  ],
+};
+
+export const uiImages = {
+  clickSparkles: [
+    require('../../assets/generated/ui/click-sparkle-01.png'),
+    require('../../assets/generated/ui/click-sparkle-02.png'),
+    require('../../assets/generated/ui/click-sparkle-03.png'),
+    require('../../assets/generated/ui/click-sparkle-04.png'),
+  ],
+  goldenPawCoin: require('../../assets/generated/ui/golden-paw-coin.png'),
 };
 
 export const catItemImages: Record<string, number> = {
-  'party-hat': require('../../assets/kenney/cat-items/party-hat.png'),
-  'star-hat': require('../../assets/kenney/cat-items/star-hat.png'),
-  'blue-cap': require('../../assets/kenney/cat-items/blue-cap.png'),
-  'pink-beanie': require('../../assets/kenney/cat-items/pink-beanie.png'),
-  'wizard-hat-purple': require('../../assets/kenney/cat-items/wizard-hat-purple.png'),
-  'red-bow': require('../../assets/kenney/cat-items/red-bow.png'),
+  'party-hat': require('../../assets/generated/cat-items/party-hat-v2.png'),
+  'star-hat': require('../../assets/generated/cat-items/star-hat-v2.png'),
+  'blue-cap': require('../../assets/generated/cat-items/blue-cap-v2.png'),
+  'pink-beanie': require('../../assets/generated/cat-items/pink-beanie-v2.png'),
+  'wizard-hat-purple': require('../../assets/generated/cat-items/wizard-hat-purple-v2.png'),
+  'red-bow': require('../../assets/generated/cat-items/red-bow-v2.png'),
+  'golden-crown': require('../../assets/generated/cat-items/crown.png'),
+  'rainbow-beanie': require('../../assets/generated/cat-items/rainbow-beanie.png'),
+  'flower-sunhat': require('../../assets/generated/cat-items/flower-sunhat.png'),
+  'bear-hood': require('../../assets/generated/cat-items/bear-hood.png'),
+  'explorer-hat': require('../../assets/generated/cat-items/explorer-hat.png'),
   'round-glasses': require('../../assets/kenney/cat-items/round-glasses.png'),
   'heart-glasses': require('../../assets/kenney/cat-items/heart-glasses.png'),
   'star-glasses': require('../../assets/kenney/cat-items/star-glasses.png'),
@@ -62,6 +88,8 @@ export const houseImages = {
   cuteHouse: require('../../assets/kenney/house-2d/cute-cat-house.png'),
   exteriorWide: require('../../assets/generated/house/exterior-yard-wide.png'),
   interior: require('../../assets/generated/house/interior-room.png'),
+  interiorWide: require('../../assets/generated/house/interior-room-wide.png'),
+  kitchenInterior: require('../../assets/generated/house/kitchen-room.png'),
   yard: require('../../assets/kenney/house-2d/tiny-farm-yard.png'),
 };
 

@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: '#fff7e8',
     flex: 1,
-    paddingTop: 44,
+    paddingTop: 12,
   },
   secondaryButton: {
     alignItems: 'center',

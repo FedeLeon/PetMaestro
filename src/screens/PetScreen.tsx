@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
@@ -22,7 +23,10 @@ export function PetScreen({ navigation }: Props) {
     <View style={styles.screen}>
       <View style={styles.header}>
         <HeaderBackButton />
-        <Text style={styles.title}>Mi gatito</Text>
+        <View style={styles.titleGroup}>
+          <MaterialCommunityIcons color="#26796e" name="cat" size={28} />
+          <Text style={styles.title}>Mi gatito</Text>
+        </View>
         <CoinBadge coins={progress.coins} />
       </View>
 
@@ -98,9 +102,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10,
+    paddingBottom: 8,
     paddingHorizontal: 14,
-    paddingTop: 32,
+    paddingTop: 8,
   },
   itemCard: {
     alignItems: 'center',
@@ -162,7 +166,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 24,
     fontWeight: '900',
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    textAlign: 'left',
+  },
+  titleGroup: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 2,
   },
 });

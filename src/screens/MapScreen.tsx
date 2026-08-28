@@ -275,9 +275,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10,
+    paddingBottom: 8,
     paddingHorizontal: 20,
-    paddingTop: 32,
+    paddingTop: 8,
   },
   ground: {
     backgroundColor: '#78c85f',

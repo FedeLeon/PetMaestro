@@ -17,7 +17,10 @@ export function ShopScreen({ navigation }: Props) {
     <View style={styles.screen}>
       <View style={styles.header}>
         <HeaderBackButton />
-        <Text style={styles.title}>Tienda</Text>
+        <View style={styles.titleGroup}>
+          <MaterialCommunityIcons color="#26796e" name="storefront" size={28} />
+          <Text style={styles.title}>Tienda</Text>
+        </View>
         <CoinBadge coins={progress.coins} />
       </View>
 
@@ -118,9 +121,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10,
+    paddingBottom: 8,
     paddingHorizontal: 14,
-    paddingTop: 32,
+    paddingTop: 8,
   },
   screen: {
     backgroundColor: '#fff7e8',
@@ -138,7 +141,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 24,
     fontWeight: '900',
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    textAlign: 'left',
+  },
+  titleGroup: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 2,
   },
 });

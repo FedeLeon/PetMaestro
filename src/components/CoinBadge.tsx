@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { uiImages } from '../data/assetImages';
 
 type CoinBadgeProps = {
   coins: number;
@@ -7,7 +8,7 @@ type CoinBadgeProps = {
 export function CoinBadge({ coins }: CoinBadgeProps) {
   return (
     <View style={styles.badge}>
-      <Text style={styles.coin}>$</Text>
+      <Image resizeMode="contain" source={uiImages.goldenPawCoin} style={styles.coin} />
       <Text style={styles.text}>{coins}</Text>
     </View>
   );
@@ -26,14 +27,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
   },
   coin: {
-    backgroundColor: '#f6c445',
-    borderRadius: 14,
-    color: '#744d00',
-    fontSize: 18,
-    fontWeight: '900',
     height: 28,
-    lineHeight: 28,
-    textAlign: 'center',
     width: 28,
   },
   text: {
