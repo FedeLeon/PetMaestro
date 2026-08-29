@@ -21,6 +21,12 @@ export const uiImages = {
     require('../../assets/generated/ui/click-sparkle-03.png'),
     require('../../assets/generated/ui/click-sparkle-04.png'),
   ],
+  successCelebration: [
+    require('../../assets/generated/ui/success/muy-bien-1.png'),
+    require('../../assets/generated/ui/success/muy-bien-2.png'),
+    require('../../assets/generated/ui/success/muy-bien-3.png'),
+    require('../../assets/generated/ui/success/muy-bien-4.png'),
+  ],
   goldenPawCoin: require('../../assets/generated/ui/golden-paw-coin.png'),
   wordCardFrame: require('../../assets/generated/ui/word-card-frame-v2.png'),
 };
@@ -34,6 +40,7 @@ export const needsImages = {
 };
 
 export const navigationImages = {
+  map: require('../../assets/generated/navigation/map-treasure.png'),
   pet: require('../../assets/generated/navigation/pet.png'),
   house: require('../../assets/generated/navigation/house.png'),
   shop: require('../../assets/generated/navigation/shop.png'),
@@ -138,6 +145,42 @@ export const farmAnimalBlinkImages: Record<string, number[]> = {
     require('../../assets/generated/farm-blink/sheep-01.png'),
     require('../../assets/generated/farm-blink/sheep-02.png'),
     require('../../assets/generated/farm-blink/sheep-03.png'),
+  ],
+};
+
+export const farmAnimalGrazeImages: Record<string, number[]> = {
+  'farm-cow': [
+    require('../../assets/generated/farm-graze/cow-1.png'),
+    require('../../assets/generated/farm-graze/cow-2.png'),
+    require('../../assets/generated/farm-graze/cow-3.png'),
+  ],
+  'farm-horse': [
+    require('../../assets/generated/farm-graze/horse-1.png'),
+    require('../../assets/generated/farm-graze/horse-2.png'),
+    require('../../assets/generated/farm-graze/horse-3.png'),
+  ],
+  'farm-sheep': [
+    require('../../assets/generated/farm-graze/sheep-1.png'),
+    require('../../assets/generated/farm-graze/sheep-2.png'),
+    require('../../assets/generated/farm-graze/sheep-3.png'),
+  ],
+};
+
+export const farmAnimalActionImages: Record<string, number[]> = {
+  'farm-duck': [
+    require('../../assets/generated/farm-action/duck/duck-01.png'),
+    require('../../assets/generated/farm-action/duck/duck-02.png'),
+    require('../../assets/generated/farm-action/duck/duck-03.png'),
+  ],
+  'farm-pig': [
+    require('../../assets/generated/farm-action/pig/pig-01.png'),
+    require('../../assets/generated/farm-action/pig/pig-02.png'),
+    require('../../assets/generated/farm-action/pig/pig-03.png'),
+  ],
+  'farm-rabbit': [
+    require('../../assets/generated/farm-action/rabbit/rabbit-01.png'),
+    require('../../assets/generated/farm-action/rabbit/rabbit-02.png'),
+    require('../../assets/generated/farm-action/rabbit/rabbit-03.png'),
   ],
 };
 

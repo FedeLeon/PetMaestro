@@ -6,12 +6,20 @@ import {
   ImageBackground,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import type { GestureResponderEvent } from 'react-native';
+import {
+  BATHROOM_ROOM_WIDTH,
+  EXTERIOR_YARD_WIDTH,
+  KITCHEN_ROOM_WIDTH,
+  ROOM_FLOOR_HEIGHT,
+  ROOM_HEIGHT,
+  styles,
+  WIDE_ROOM_WIDTH,
+} from '../styles/screens/houseScreen.styles';
 import Svg, { Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { CoinBadge } from '../components/CoinBadge';
@@ -20,18 +28,19 @@ import { BlinkingFarmAnimal } from '../components/BlinkingFarmAnimal';
 import { NeedsMeters } from '../components/NeedsMeters';
 import { SparkleBurst, WalkingPetCat, WalkingPetCatHandle } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
-import { farmAnimalBlinkImages, farmAnimalImages, furnitureImages, houseImages, shopCategoryImages } from '../data/assetImages';
+import {
+  farmAnimalActionImages,
+  farmAnimalBlinkImages,
+  farmAnimalGrazeImages,
+  farmAnimalImages,
+  furnitureImages,
+  houseImages,
+  shopCategoryImages,
+} from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
 import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
-
-const WIDE_ROOM_WIDTH = 1300;
-const KITCHEN_ROOM_WIDTH = 760;
-const BATHROOM_ROOM_WIDTH = 720;
-const EXTERIOR_YARD_WIDTH = 960;
-const ROOM_HEIGHT = 420;
-const ROOM_FLOOR_HEIGHT = 184;
 
 const furnitureDefaults: Record<string, { x: number; y: number }> = {
   'soft-bed': { x: 0, y: 55 },
@@ -58,10 +67,10 @@ const furnitureSizes: Record<string, { width: number; height: number }> = {
 };
 
 const animalPositions: Record<string, { x: number; y: number }> = {
-  'farm-cow': { x: 72, y: 220 },
-  'farm-pig': { x: 820, y: 220 },
-  'farm-sheep': { x: 214, y: 228 },
-  'farm-horse': { x: 704, y: 214 },
+  'farm-cow': { x: 72, y: 157 },
+  'farm-pig': { x: 834, y: 164 },
+  'farm-sheep': { x: 214, y: 236 },
+  'farm-horse': { x: 704, y: 153 },
   'farm-duck': { x: 342, y: 286 },
   'farm-rabbit': { x: 600, y: 244 },
 };
@@ -297,7 +306,15 @@ export function HouseScreen({ navigation }: Props) {
                       style={[styles.yardAnimal, animal.id === 'farm-duck' && styles.frontYardAnimal, { left: position.x, top: position.y }]}
                     >
                       {farmAnimalImages[animal.id] ? (
-                        <BlinkingFarmAnimal frames={farmAnimalBlinkImages[animal.id] ?? [farmAnimalImages[animal.id]]} style={styles.yardAnimalImage} />
+                        <BlinkingFarmAnimal
+                          actionFrames={farmAnimalActionImages[animal.id] ?? farmAnimalGrazeImages[animal.id]}
+                          frames={farmAnimalBlinkImages[animal.id] ?? [farmAnimalImages[animal.id]]}
+                          style={[
+                            styles.yardAnimalImage,
+                            animal.id === 'farm-cow' && styles.cowYardAnimalImage,
+                            animal.id === 'farm-horse' && styles.horseYardAnimalImage,
+                          ]}
+                        />
                       ) : (
                         <MaterialCommunityIcons
                           color={animal.color}
@@ -332,7 +349,6 @@ export function HouseScreen({ navigation }: Props) {
 
       {houseView === 'inside' || houseView === 'outside' ? (
         <View style={styles.inventorySection}>
-          <Text style={styles.sectionTitle}>{houseView === 'inside' ? 'Mis muebles' : 'Mis animales'}</Text>
           <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}>
             <View style={styles.inventoryGrid}>
               {houseView === 'inside' && ownedFurniture.length === 0 ? (
@@ -416,338 +432,3 @@ function drawingPointsToPath(points: { x: number; y: number }[], width: number, 
     }),
   ].join(' ');
 }
-
-const styles = StyleSheet.create({
-  bathroomDoorHit: {
-    height: 148,
-    position: 'absolute',
-    right: 54,
-    top: 82,
-    width: 108,
-    zIndex: 1,
-  },
-  bathroomCat: {
-    position: 'absolute',
-    zIndex: 4,
-  },
-  bathroomTouch: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 0,
-  },
-  clickSparkle: {
-    zIndex: 20,
-  },
-  bathroomExitDoorHit: {
-    height: 204,
-    left: 36,
-    position: 'absolute',
-    top: 50,
-    width: 132,
-    zIndex: 8,
-  },
-  bathroomPane: {
-    backgroundColor: '#ffffff',
-    height: ROOM_HEIGHT - 4,
-    overflow: 'hidden',
-    position: 'relative',
-    width: BATHROOM_ROOM_WIDTH,
-  },
-  doorTileButton: {
-    bottom: 6,
-    height: 112,
-    left: 92,
-    position: 'absolute',
-    width: 110,
-    zIndex: 3,
-  },
-  emptyInventory: {
-    backgroundColor: '#ffffff',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    padding: 16,
-    width: '100%',
-  },
-  fixedFurniture: {
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    zIndex: 3,
-  },
-  furnitureImage: {
-    height: '100%',
-    width: '100%',
-  },
-  drawingArtwork: {
-    aspectRatio: 1,
-    left: 15,
-    overflow: 'hidden',
-    position: 'absolute',
-    top: 15,
-    width: 150,
-    zIndex: 1,
-  },
-  drawingFrameHit: {
-    aspectRatio: 1,
-    left: 468,
-    overflow: 'hidden',
-    position: 'absolute',
-    top: 76,
-    width: 180,
-    zIndex: 8,
-  },
-  emptyText: {
-    color: '#6c5a42',
-    fontSize: 16,
-    fontWeight: '800',
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  exteriorCat: {
-    position: 'absolute',
-    zIndex: 4,
-  },
-  exteriorBarn: {
-    height: 174,
-    left: 706,
-    position: 'absolute',
-    top: 36,
-    width: 190,
-    zIndex: 1,
-  },
-  exteriorBarnImage: {
-    height: '100%',
-    width: '100%',
-  },
-  exteriorTouch: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 0,
-  },
-  frontYardAnimal: {
-    zIndex: 4,
-  },
-  exteriorHouseBody: {
-    alignItems: 'center',
-    bottom: 125,
-    height: 214,
-    left: EXTERIOR_YARD_WIDTH / 2 - 146,
-    position: 'absolute',
-    transform: [{ scale: 1.2 }],
-    width: 293,
-    zIndex: 3,
-  },
-  exteriorWide: {
-    height: ROOM_HEIGHT - 4,
-    position: 'relative',
-    width: EXTERIOR_YARD_WIDTH,
-  },
-  floor: {
-    bottom: 0,
-    left: 0,
-    height: ROOM_FLOOR_HEIGHT,
-    position: 'absolute',
-    right: 0,
-    width: '100%',
-    zIndex: 4,
-  },
-  floorTouch: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 0,
-  },
-  furnitureStage: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 6,
-  },
-  header: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#f0dcc0',
-    borderBottomWidth: 2,
-    paddingBottom: 6,
-    paddingHorizontal: 14,
-    paddingTop: 6,
-  },
-  headerTopRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  insideDoorHit: {
-    height: 178,
-    left: 682,
-    position: 'absolute',
-    top: 68,
-    width: 166,
-    zIndex: 1,
-  },
-  inventoryScroll: {
-    paddingBottom: 128,
-  },
-  inventorySection: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  mainRoomPane: {
-    backgroundColor: '#ffffff',
-    height: ROOM_HEIGHT - 4,
-    overflow: 'hidden',
-    position: 'relative',
-    width: WIDE_ROOM_WIDTH,
-  },
-  kitchenCat: {
-    position: 'absolute',
-    zIndex: 4,
-  },
-  kitchenDoorHit: {
-    height: 190,
-    left: 278,
-    position: 'absolute',
-    top: 68,
-    width: 154,
-    zIndex: 1,
-  },
-  kitchenExitDoorHit: {
-    height: 204,
-    position: 'absolute',
-    right: 22,
-    top: 62,
-    width: 132,
-    zIndex: 8,
-  },
-  kitchenPane: {
-    backgroundColor: '#ffffff',
-    height: ROOM_HEIGHT - 4,
-    overflow: 'hidden',
-    position: 'relative',
-    width: KITCHEN_ROOM_WIDTH,
-  },
-  kitchenTouch: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 0,
-  },
-  houseImage: {
-    height: '100%',
-    width: '100%',
-  },
-  inventoryCard: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    flexBasis: '30.6%',
-    height: 104,
-    justifyContent: 'center',
-    padding: 8,
-  },
-  inventoryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  inventoryName: {
-    color: '#372413',
-    fontSize: 12,
-    fontWeight: '900',
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  inventoryImage: {
-    height: 46,
-    width: '100%',
-  },
-  inventoryAnimalImage: {
-    height: 64,
-    width: '100%',
-  },
-  inventoryPreview: {
-    alignItems: 'center',
-    borderRadius: 8,
-    height: 48,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  placedInventoryCard: {
-    borderColor: '#57b8a9',
-    borderWidth: 5,
-  },
-  room: {
-    backgroundColor: '#ffffff',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    height: ROOM_HEIGHT,
-    overflow: 'hidden',
-  },
-  roomCat: {
-    position: 'absolute',
-    zIndex: 20,
-  },
-  roomBackgroundImage: {
-    borderRadius: 6,
-  },
-  sceneArea: {
-    paddingBottom: 0,
-    paddingHorizontal: 0,
-    paddingTop: 0,
-  },
-  screen: {
-    backgroundColor: '#fff7e8',
-    flex: 1,
-  },
-  sectionTitle: {
-    color: '#372413',
-    fontSize: 24,
-    fontWeight: '900',
-    marginBottom: 12,
-  },
-  title: {
-    color: '#372413',
-    flex: 1,
-    fontSize: 24,
-    fontWeight: '900',
-    textAlign: 'left',
-  },
-  titleGroup: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    gap: 2,
-    marginLeft: 8,
-  },
-  yardAnimal: {
-    alignItems: 'center',
-    height: 104,
-    justifyContent: 'center',
-    position: 'absolute',
-    width: 104,
-    zIndex: 2,
-  },
-  yardAnimalImage: {
-    height: 100,
-    width: 100,
-  },
-});

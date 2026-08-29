@@ -19,6 +19,7 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Six replacement cat hat accessories (party, star, blue cap, pink beanie, wizard and red bow): generated with OpenAI image generation for this project.
 - Golden cat-paw coin icon: generated with OpenAI image generation for this project.
 - Four centered click sparkle animation frames: generated with OpenAI image generation for this project.
+- Four centered "MUY BIEN" success animation frames with stars and cat paws: generated with OpenAI image generation for this project, then cropped from a transparent sprite sheet.
 - Cat glasses, shirts, shoes and toys replacements: generated with OpenAI image generation for this project.
 - Cat house furniture replacements: generated with OpenAI image generation for this project.
 - Farm animal assets for the exterior corrals: generated with OpenAI image generation for this project.
@@ -37,6 +38,9 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Dressing-room background for the pet screen: generated with OpenAI image generation for this project.
 - Five pet-needs icons (hunger, hygiene, bathroom, play and energy): generated with OpenAI image generation for this project.
 - Six three-frame blink sprite sets for the farm animals (cow, pig, sheep, horse, duck and rabbit): generated with OpenAI image generation using the existing animal assets as references, then cropped into individual transparent frames.
+- Three three-frame grazing sprite sets for the cow, sheep and horse: generated with OpenAI image generation using the existing animal assets as references, then cropped into individual transparent frames.
 - Three navigation illustrations (pet, house and shop): generated with OpenAI image generation for this project.
+- Treasure-map navigation illustration: generated with OpenAI image generation for this project.
+- Three three-frame ear/wing animation sprite sets for the pig, rabbit and duck: generated with OpenAI image generation using the existing animal assets as references, then cropped into individual transparent frames.
 
 Kenney and OpenGameArt credits are not required for these CC0 assets, but attribution is appreciated by the creators.

@@ -16,6 +16,11 @@ type SparkleBurstProps = {
   style?: StyleProp<ViewStyle>;
 };
 
+type SuccessCelebrationProps = {
+  height?: number;
+  width?: number;
+};
+
 export type WalkingPetCatHandle = {
   walkTo: (targetX: number, targetY: number) => void;
 };
@@ -125,6 +130,28 @@ export function SparkleBurst({ size = 76, style }: SparkleBurstProps) {
   );
 }
 
+export function SuccessCelebration({ height = 160, width = 240 }: SuccessCelebrationProps) {
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    if (frame >= uiImages.successCelebration.length - 1) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setFrame((currentFrame) => Math.min(currentFrame + 1, uiImages.successCelebration.length - 1));
+    }, 135);
+
+    return () => clearTimeout(timeoutId);
+  }, [frame]);
+
+  return (
+    <View pointerEvents="none" style={[styles.successWindow, { height, width }]}>
+      <Image resizeMode="contain" source={uiImages.successCelebration[frame]} style={styles.successImage} />
+    </View>
+  );
+}
+
 export const WalkingPetCat = forwardRef<WalkingPetCatHandle, WalkingPetCatProps>(function WalkingPetCat(
   { initialX, initialY, maxX, maxY, minY, style, ...petCatProps },
   ref,
@@ -220,19 +247,19 @@ const styles = StyleSheet.create({
     width: 174,
   },
   glasses: {
-    height: 32,
-    left: 93,
+    height: 100,
+    left: 64,
     position: 'absolute',
-    top: 72,
-    width: 44,
+    top: 25,
+    width: 100,
     zIndex: 4,
   },
   hat: {
-    height: 54,
-    left: 88,
+    height: 100,
+    left: 65,
     position: 'absolute',
-    top: 16,
-    width: 54,
+    top: -28,
+    width: 100,
     zIndex: 4,
   },
   neckItem: {
@@ -285,11 +312,11 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: -1 }],
   },
   shirt: {
-    height: 42,
-    left: 72,
+    height: 130,
+    left: 66,
     position: 'absolute',
-    top: 145,
-    width: 86,
+    top: 90,
+    width: 100,
     zIndex: 4,
   },
   shoe: {
@@ -328,5 +355,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     zIndex: 20,
+  },
+  successImage: {
+    height: '100%',
+    width: '100%',
+  },
+  successWindow: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -11,6 +11,7 @@ export function AppBottomMenu() {
   const route = useRoute();
 
   const menuItems = [
+    { routeName: 'Map' as const, label: 'Mapa', image: navigationImages.map },
     { routeName: 'Pet' as const, label: 'Mascota', image: navigationImages.pet },
     { routeName: 'House' as const, label: 'Casa', image: navigationImages.house },
     { routeName: 'Shop' as const, label: 'Tienda', image: navigationImages.shop },
@@ -62,10 +63,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 12,
+    gap: 8,
     justifyContent: 'center',
     left: 0,
-    padding: 16,
+    padding: 12,
     position: 'absolute',
     right: 0,
   },

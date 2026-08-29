@@ -1,0 +1,92 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  categoryCard: {
+    alignItems: 'center',
+    aspectRatio: 1,
+    backgroundColor: '#ffffff',
+    borderColor: '#f0dcc0',
+    borderRadius: 8,
+    borderWidth: 2,
+    flexBasis: '47%',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  categoryDescription: {
+    color: '#6c5a42',
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  categoryIcon: {
+    alignItems: 'center',
+    borderRadius: 8,
+    height: 72,
+    justifyContent: 'center',
+    width: '100%',
+  },
+  categoryAsset: {
+    height: 86,
+    width: '92%',
+  },
+  categoryMeta: {
+    color: '#ff7a59',
+    fontSize: 12,
+    fontWeight: '900',
+    textAlign: 'center',
+  },
+  categoryTitle: {
+    color: '#372413',
+    fontSize: 18,
+    fontWeight: '900',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  content: {
+    padding: 20,
+    paddingBottom: 128,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  header: {
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderBottomColor: '#f0dcc0',
+    borderBottomWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 8,
+    paddingHorizontal: 14,
+    paddingTop: 8,
+  },
+  screen: {
+    backgroundColor: '#fff7e8',
+    flex: 1,
+  },
+  subtitle: {
+    color: '#6c5a42',
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 24,
+    marginBottom: 14,
+  },
+  title: {
+    color: '#372413',
+    flex: 1,
+    fontSize: 24,
+    fontWeight: '900',
+    textAlign: 'left',
+  },
+  titleGroup: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 2,
+    marginLeft: 8,
+  },
+});

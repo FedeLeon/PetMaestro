@@ -1,15 +1,42 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { styles } from '../styles/screens/gameScreen.styles';
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { CoinBadge } from '../components/CoinBadge';
-import { AudioButton, speakWord } from '../components/AudioButton';
+import { AudioButton, useWordAudio } from '../components/AudioButton';
 import { HeaderBackButton } from '../components/HeaderBackButton';
+import { SuccessCelebration } from '../components/PetCat';
 import { WordDrawing } from '../components/WordDrawing';
 import { useProgress } from '../context/ProgressContext';
 import { getWord, levels, words } from '../data/gameContent';
+import { uiImages } from '../data/assetImages';
 import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
+
+type MatchWordOptionProps = {
+  disabled: boolean;
+  onPress: () => void;
+  word: (typeof words)[number];
+};
+
+function MatchWordOption({ disabled, onPress, word }: MatchWordOptionProps) {
+  const playAudio = useWordAudio(word);
+
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={() => {
+        playAudio();
+        onPress();
+      }}
+      style={styles.matchWordMain}
+    >
+      <Text style={styles.matchWordText}>{word.english.toUpperCase()}</Text>
+    </TouchableOpacity>
+  );
+}
 
 function shuffle<T>(items: T[]) {
   const shuffledItems = [...items];
@@ -28,8 +55,11 @@ export function GameScreen({ navigation, route }: Props) {
   const [roundIndex, setRoundIndex] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [disabledChoiceIds, setDisabledChoiceIds] = useState<string[]>([]);
+  const [isCelebrating, setIsCelebrating] = useState(false);
   const [earnedCoins, setEarnedCoins] = useState<number | null>(null);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
+  const [selectedPictureId, setSelectedPictureId] = useState<string | null>(null);
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const round = level.rounds[roundIndex];
   const isFinished = earnedCoins !== null;
@@ -51,23 +81,27 @@ export function GameScreen({ navigation, route }: Props) {
     }
 
     if (round.type === 'audio-choice') {
-      return 'Escucha y elige el sonido';
+      return 'Escucha las palabras y elige la correcta';
     }
 
     const answer = getWord(round.answerId);
 
     return round.type === 'picture-choice'
-      ? `Escucha y toca: ${answer.english.toUpperCase()}`
+      ? 'Escucha el sonido y elige la tarjeta correcta'
       : `Que significa: ${answer.english.toUpperCase()}?`;
   }, [round]);
 
   const finishRound = async (wasCorrect: boolean) => {
     const nextCorrectAnswers = correctAnswers + (wasCorrect ? 1 : 0);
-    setFeedback(wasCorrect ? 'Muy bien!' : 'Intentalo de nuevo');
+    setFeedback(wasCorrect ? '' : 'Intentalo de nuevo');
+    setIsCelebrating(wasCorrect);
 
     setTimeout(async () => {
       setFeedback('');
+      setIsCelebrating(false);
+      setDisabledChoiceIds([]);
       setSelectedWordId(null);
+      setSelectedPictureId(null);
       setMatchedIds([]);
 
       if (roundIndex + 1 >= level.rounds.length) {
@@ -79,38 +113,79 @@ export function GameScreen({ navigation, route }: Props) {
 
       setCorrectAnswers(nextCorrectAnswers);
       setRoundIndex(roundIndex + 1);
-    }, 650);
+    }, wasCorrect ? 900 : 650);
   };
 
   const handleChoice = (wordId: string) => {
-    if (feedback || isFinished || round.type === 'match-pair') {
+    if (isCelebrating || isFinished || round.type === 'match-pair' || disabledChoiceIds.includes(wordId)) {
       return;
     }
 
-    void finishRound(wordId === round.answerId);
+    const wasCorrect = wordId === round.answerId;
+
+    if (!wasCorrect && (round.type === 'picture-choice' || round.type === 'audio-choice')) {
+      setDisabledChoiceIds((currentIds) => [...currentIds, wordId]);
+      setFeedback('Intentalo de nuevo');
+      return;
+    }
+
+    void finishRound(wasCorrect);
   };
 
-  const handleMatchPicture = (wordId: string) => {
-    if (!selectedWordId || feedback || round.type !== 'match-pair') {
-      return;
-    }
+  const rejectMatch = () => {
+    setFeedback('Busca su pareja');
+    setTimeout(() => {
+      setFeedback('');
+      setSelectedWordId(null);
+      setSelectedPictureId(null);
+    }, 650);
+  };
 
-    if (selectedWordId !== wordId) {
-      setFeedback('Busca su pareja');
-      setTimeout(() => {
-        setFeedback('');
-        setSelectedWordId(null);
-      }, 650);
-      return;
-    }
-
+  const completeMatch = (wordId: string) => {
     const nextMatchedIds = [...matchedIds, wordId];
     setMatchedIds(nextMatchedIds);
     setSelectedWordId(null);
+    setSelectedPictureId(null);
 
     if (nextMatchedIds.length === displayIds.length) {
       void finishRound(true);
     }
+  };
+
+  const handleMatchWord = (wordId: string) => {
+    if (feedback || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
+      return;
+    }
+
+    if (!selectedPictureId) {
+      setSelectedWordId(wordId);
+      return;
+    }
+
+    if (selectedPictureId !== wordId) {
+      rejectMatch();
+      return;
+    }
+
+    completeMatch(wordId);
+  };
+
+  const handleMatchPicture = (wordId: string) => {
+    if (feedback || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
+      return;
+    }
+
+    if (!selectedWordId) {
+      setSelectedPictureId(wordId);
+      return;
+    }
+
+    if (selectedWordId !== wordId) {
+      rejectMatch();
+      return;
+    }
+
+    completeMatch(wordId);
   };
 
   const playRoundPrompt = () => {
@@ -131,25 +206,38 @@ export function GameScreen({ navigation, route }: Props) {
       <View style={styles.screen}>
         <View style={styles.topBar}>
           <HeaderBackButton />
-          <View style={styles.levelInfo}>
-            <Text style={styles.levelTitle}>{level.title}</Text>
-            <Text style={styles.progressText}>Resultado</Text>
+          <View style={styles.levelHeaderTitle}>
+            <MaterialCommunityIcons
+              color="#26796e"
+              name={level.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+              size={27}
+            />
+            <View style={styles.levelInfo}>
+              <Text style={styles.levelTitle}>{level.title}</Text>
+              <Text style={styles.progressText}>Resultado</Text>
+            </View>
           </View>
           <CoinBadge coins={progress.coins} />
         </View>
-        <View style={styles.resultCard}>
-          <Text style={styles.resultKicker}>Nivel completo</Text>
-          <Text style={styles.resultTitle}>{level.title}</Text>
-          <Text style={styles.resultScore}>
-            Aciertos: {correctAnswers}/{level.rounds.length}
-          </Text>
-          <Text style={styles.resultCoins}>Ganaste {earnedCoins} moneditas</Text>
-          <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('Map')}>
-            <Text style={styles.primaryButtonText}>Volver al mapa</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => navigation.navigate('Pet')}>
-            <Text style={styles.secondaryButtonText}>Ver mi gatito</Text>
-          </TouchableOpacity>
+        <View style={styles.resultArea}>
+          <View style={styles.resultCard}>
+            <View style={styles.resultCardInner}>
+              <View style={styles.resultDecorations}>
+                <MaterialCommunityIcons color="#f6c445" name="paw" size={24} />
+                <MaterialCommunityIcons color="#ff7a59" name="star-four-points" size={22} />
+                <MaterialCommunityIcons color="#f6c445" name="paw" size={24} />
+              </View>
+              <Text style={styles.resultKicker}>Nivel completo</Text>
+              <Text style={styles.resultTitle}>{level.title}</Text>
+              <View style={styles.resultCoinsRow}>
+                <Text style={styles.resultCoins}>Ganaste {earnedCoins}</Text>
+                <Image resizeMode="contain" source={uiImages.goldenPawCoin} style={styles.resultCoinImage} />
+              </View>
+              <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('Map')}>
+                <Text style={styles.primaryButtonText}>Volver al mapa</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
     );
@@ -196,16 +284,7 @@ export function GameScreen({ navigation, route }: Props) {
                       matched && styles.matched,
                     ]}
                   >
-                    <TouchableOpacity
-                      disabled={matched}
-                      onPress={() => {
-                        setSelectedWordId(wordId);
-                        void speakWord(word.english.toUpperCase());
-                      }}
-                      style={styles.matchWordMain}
-                    >
-                      <Text style={styles.matchWordText}>{word.english.toUpperCase()}</Text>
-                    </TouchableOpacity>
+                    <MatchWordOption disabled={matched} onPress={() => handleMatchWord(wordId)} word={word} />
                     <View style={styles.matchAudioButton}>
                       <AudioButton word={word} />
                     </View>
@@ -219,7 +298,10 @@ export function GameScreen({ navigation, route }: Props) {
                 const matched = matchedIds.includes(wordId);
 
                 return (
-                  <View key={wordId} style={[styles.matchPicture, matched && styles.matched]}>
+                  <View
+                    key={wordId}
+                    style={[styles.matchPicture, selectedPictureId === wordId && styles.selectedMatch, matched && styles.matched]}
+                  >
                     <TouchableOpacity disabled={matched} onPress={() => handleMatchPicture(wordId)} style={styles.matchPictureMain}>
                       <View style={styles.matchPictureDrawing}>
                         <WordDrawing word={word} small />
@@ -235,6 +317,7 @@ export function GameScreen({ navigation, route }: Props) {
           <View style={styles.optionsGrid}>
             {displayIds.map((wordId) => {
               const word = getWord(wordId);
+              const disabled = disabledChoiceIds.includes(wordId);
               const label =
                 round.type === 'picture-choice'
                   ? word.spanish.toUpperCase()
@@ -245,8 +328,15 @@ export function GameScreen({ navigation, route }: Props) {
                       : word.spanish.toUpperCase();
 
               return (
-                <View key={wordId} style={[styles.option, round.type === 'translation-choice' && styles.translationOption]}>
-                  <TouchableOpacity onPress={() => handleChoice(wordId)} style={styles.optionMain}>
+                <View
+                  key={wordId}
+                  style={[styles.option, round.type === 'translation-choice' && styles.translationOption, disabled && styles.disabledOption]}
+                >
+                  <TouchableOpacity
+                    disabled={disabled || isCelebrating}
+                    onPress={() => handleChoice(wordId)}
+                    style={styles.optionMain}
+                  >
                     {round.type === 'picture-choice' || round.type === 'translation-choice' ? (
                       <WordDrawing word={word} small={round.type === 'translation-choice'} />
                     ) : null}
@@ -259,238 +349,11 @@ export function GameScreen({ navigation, route }: Props) {
           </View>
         )}
       </View>
+      {isCelebrating ? (
+        <View pointerEvents="none" style={styles.celebrationOverlay}>
+          <SuccessCelebration height={280} width={420} />
+        </View>
+      ) : null}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#ffffff',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    flex: 1,
-    margin: 18,
-    padding: 16,
-  },
-  audioPromptDrawing: {
-    alignSelf: 'center',
-    maxWidth: 220,
-    width: '48%',
-  },
-  feedback: {
-    color: '#ff7a59',
-    fontSize: 24,
-    fontWeight: '900',
-    marginBottom: 12,
-    minHeight: 32,
-    textAlign: 'center',
-  },
-  levelInfo: {
-    flex: 1,
-    paddingHorizontal: 10,
-  },
-  levelTitle: {
-    color: '#372413',
-    fontSize: 18,
-    fontWeight: '900',
-  },
-  matchBoard: {
-    flex: 1,
-    flexDirection: 'row',
-    gap: 12,
-  },
-  matchColumn: {
-    flex: 1,
-    gap: 12,
-  },
-  matchPicture: {
-    alignItems: 'center',
-    backgroundColor: '#fff7e8',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    flex: 1,
-    justifyContent: 'center',
-    padding: 8,
-  },
-  matchPictureMain: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  matchPictureDrawing: {
-    alignSelf: 'center',
-    width: '92%',
-  },
-  matchAudioButton: {
-    marginBottom: 10,
-  },
-  matchWord: {
-    alignItems: 'center',
-    backgroundColor: '#dff4ff',
-    borderColor: '#9ed3ea',
-    borderRadius: 8,
-    borderWidth: 2,
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-  },
-  matchWordMain: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  matchWordText: {
-    color: '#22313b',
-    fontSize: 20,
-    fontWeight: '900',
-    textAlign: 'center',
-  },
-  matched: {
-    opacity: 0.35,
-  },
-  option: {
-    alignItems: 'center',
-    backgroundColor: '#fff7e8',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    flexBasis: '47%',
-    flexGrow: 1,
-    justifyContent: 'center',
-    minHeight: 160,
-    padding: 10,
-  },
-  optionMain: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  optionText: {
-    color: '#372413',
-    fontSize: 22,
-    fontWeight: '900',
-    marginTop: 8,
-    textAlign: 'center',
-  },
-  optionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  pictureCaption: {
-    color: '#6c5a42',
-    fontSize: 13,
-    fontWeight: '800',
-    lineHeight: 16,
-    marginTop: 2,
-    textAlign: 'center',
-  },
-  primaryButton: {
-    alignItems: 'center',
-    backgroundColor: '#ff7a59',
-    borderRadius: 8,
-    justifyContent: 'center',
-    marginTop: 28,
-    minHeight: 58,
-    paddingHorizontal: 16,
-  },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  progressText: {
-    color: '#76624a',
-    fontSize: 14,
-    fontWeight: '800',
-    marginTop: 2,
-  },
-  prompt: {
-    color: '#22313b',
-    fontSize: 26,
-    fontWeight: '900',
-    lineHeight: 33,
-    marginBottom: 14,
-    textAlign: 'center',
-  },
-  promptRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 10,
-    justifyContent: 'center',
-    marginBottom: 14,
-  },
-  resultCard: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#f0dcc0',
-    borderRadius: 8,
-    borderWidth: 2,
-    margin: 24,
-    padding: 24,
-  },
-  resultCoins: {
-    color: '#b77900',
-    fontSize: 24,
-    fontWeight: '900',
-    marginTop: 12,
-    textAlign: 'center',
-  },
-  resultKicker: {
-    color: '#57b8a9',
-    fontSize: 18,
-    fontWeight: '900',
-  },
-  resultScore: {
-    color: '#76624a',
-    fontSize: 18,
-    fontWeight: '800',
-    marginTop: 12,
-  },
-  resultTitle: {
-    color: '#372413',
-    fontSize: 32,
-    fontWeight: '900',
-    marginTop: 8,
-    textAlign: 'center',
-  },
-  screen: {
-    backgroundColor: '#fff7e8',
-    flex: 1,
-    paddingTop: 12,
-  },
-  secondaryButton: {
-    alignItems: 'center',
-    borderColor: '#57b8a9',
-    borderRadius: 8,
-    borderWidth: 2,
-    justifyContent: 'center',
-    marginTop: 12,
-    minHeight: 54,
-    paddingHorizontal: 16,
-    width: '100%',
-  },
-  secondaryButtonText: {
-    color: '#26796e',
-    fontSize: 18,
-    fontWeight: '900',
-  },
-  selectedMatch: {
-    backgroundColor: '#ffe1d6',
-    borderColor: '#ff7a59',
-  },
-  translationOption: {
-    minHeight: 190,
-  },
-  topBar: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 6,
-    paddingHorizontal: 14,
-  },
-});
