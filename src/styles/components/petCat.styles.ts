@@ -1,0 +1,26 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  catImage: { height: 260, width: 174 },
+  bottom: { height: 112, left: 55, position: 'absolute', top: 156, width: 120, zIndex: 5 },
+  glasses: { height: 100, left: 64, position: 'absolute', top: 25, width: 100, zIndex: 4 },
+  hat: { height: 100, left: 65, position: 'absolute', top: -28, width: 100, zIndex: 4 },
+  neckItem: { height: 26, left: 84, position: 'absolute', top: 124, width: 64, zIndex: 4 },
+  roomCatImage: { height: 210, width: 140 },
+  roomBottom: { height: 66, left: 84, top: 143, width: 64 },
+  roomGlasses: { height: 26, left: 96, top: 62, width: 36 },
+  roomHat: { height: 44, left: 91, top: 18, width: 44 },
+  roomNeckItem: { height: 22, left: 88, top: 104, width: 52 },
+  roomShirt: { height: 34, left: 80, top: 122, width: 68 },
+  roomShoe: { height: 48, width: 58 },
+  roomToy: { height: 46, right: 36, top: 146, width: 46 },
+  shirt: { height: 130, left: 66, position: 'absolute', top: 90, width: 100, zIndex: 4 },
+  shoe: { height: 64, width: 76 },
+  shoes: { left: 52, position: 'absolute', top: 226, zIndex: 5 },
+  toy: { height: 58, position: 'absolute', right: 18, top: 178, width: 58, zIndex: 4 },
+  wrap: { alignItems: 'center', justifyContent: 'center', minHeight: 284, width: 230 },
+  walkingCat: { height: 284, position: 'absolute', width: 230, zIndex: 5 },
+  sparkleWindow: { overflow: 'hidden', position: 'absolute', zIndex: 20 },
+  successImage: { height: '100%', width: '100%' },
+  successWindow: { alignItems: 'center', justifyContent: 'center' },
+});

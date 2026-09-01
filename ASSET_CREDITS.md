@@ -21,6 +21,7 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Four centered click sparkle animation frames: generated with OpenAI image generation for this project.
 - Four centered "MUY BIEN" success animation frames with stars and cat paws: generated with OpenAI image generation for this project, then cropped from a transparent sprite sheet.
 - Cat glasses, shirts, shoes and toys replacements: generated with OpenAI image generation for this project.
+- Six lower-body cat clothing assets (three skirts and three pants): generated with OpenAI image generation for this project.
 - Cat house furniture replacements: generated with OpenAI image generation for this project.
 - Farm animal assets for the exterior corrals: generated with OpenAI image generation for this project.
 - Tall sunny level-map landscape with continuous winding path: generated with OpenAI image generation for this project.

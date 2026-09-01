@@ -57,16 +57,16 @@ export type ShopItem = {
   id: string;
   name: string;
   price: number;
-  category: 'hats' | 'glasses' | 'shirts' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
+  category: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
   target: 'cat' | 'house' | 'yard';
-  slot: 'neck' | 'head' | 'eyes' | 'body' | 'feet' | 'toy' | 'furniture' | 'animal';
+  slot: 'neck' | 'head' | 'eyes' | 'body' | 'bottom' | 'feet' | 'toy' | 'furniture' | 'animal';
   color: string;
   label: string;
   icon: string;
 };
 
 export type ShopCategory = {
-  id: 'hats' | 'glasses' | 'shirts' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
+  id: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
   label: string;
   description: string;
   icon: string;
@@ -78,7 +78,7 @@ export type ProgressState = {
   coins: number;
   ownedItems: string[];
   equippedItemId: string | null;
-  equippedCatItems: Partial<Record<'neck' | 'head' | 'eyes' | 'body' | 'feet' | 'toy', string | null>>;
+  equippedCatItems: Partial<Record<'neck' | 'head' | 'eyes' | 'body' | 'bottom' | 'feet' | 'toy', string | null>>;
   placedFurnitureIds: string[];
   placedAnimalIds: string[];
   completedLevels: number[];

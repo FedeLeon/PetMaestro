@@ -4,8 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
-import { CoinBadge } from '../components/CoinBadge';
-import { HeaderBackButton } from '../components/HeaderBackButton';
+import { AppTopMenu } from '../components/AppTopMenu';
 import { useProgress } from '../context/ProgressContext';
 import { catItemImages, farmAnimalImages, furnitureImages, uiImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
@@ -29,24 +28,10 @@ export function ShopCategoryScreen({ navigation, route }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <HeaderBackButton />
-        <View style={styles.headerInfo}>
-          <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
-            <MaterialCommunityIcons
-              color="#ffffff"
-              name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-              size={26}
-            />
-          </View>
-          <View style={styles.categoryCopy}>
-            <Text numberOfLines={1} style={styles.categoryTitle}>
-              {category.label}
-            </Text>
-          </View>
-        </View>
-        <CoinBadge coins={progress.coins} />
-      </View>
+      <AppTopMenu
+        icon={category.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+        title={category.label}
+      />
 
       <ScrollView contentContainerStyle={styles.content}>
         {message ? <Text style={styles.message}>{message}</Text> : null}

@@ -49,6 +49,8 @@ export const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 112,
+    paddingHorizontal: 24,
+    paddingTop: 10,
   },
   disabledPlayButton: {
     backgroundColor: '#c8bba8',
@@ -79,7 +81,7 @@ export const styles = StyleSheet.create({
     borderColor: '#77c1e4',
     borderRadius: 0,
     borderWidth: 2,
-    height: 1536,
+    height: 420,
     overflow: 'hidden',
     position: 'relative',
   },

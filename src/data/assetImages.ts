@@ -72,6 +72,12 @@ export const catItemImages: Record<string, number> = {
   'heart-shirt': require('../../assets/generated/cat-items/heart-shirt-v2.png'),
   'star-shirt': require('../../assets/generated/cat-items/star-shirt-v2.png'),
   'rainbow-shirt': require('../../assets/generated/cat-items/rainbow-shirt-v2.png'),
+  'pink-skirt': require('../../assets/generated/cat-items/pink-skirt-v2.png'),
+  'denim-skirt': require('../../assets/generated/cat-items/denim-skirt-v2.png'),
+  'rainbow-skirt': require('../../assets/generated/cat-items/rainbow-skirt-v2.png'),
+  'blue-pants': require('../../assets/generated/cat-items/blue-pants-v2.png'),
+  'purple-pants': require('../../assets/generated/cat-items/purple-pants-v2.png'),
+  'green-pants': require('../../assets/generated/cat-items/green-pants-v2.png'),
   'tiny-shoes': require('../../assets/generated/cat-items/tiny-shoes-v2.png'),
   'sunny-shoes': require('../../assets/generated/cat-items/sunny-shoes-v2.png'),
   'red-sneakers': require('../../assets/generated/cat-items/red-sneakers-v2.png'),
@@ -195,13 +201,14 @@ export const houseImages = {
 };
 
 export const mapImages = {
-  sunnyPathVertical: require('../../assets/generated/map-sunny-path-vertical.png'),
+  sunnyPath: require('../../assets/generated/map-sunny-path-vertical.png'),
 };
 
 export const shopCategoryImages: Record<string, number> = {
   hats: require('../../assets/generated/cat-items/party-hat-v2.png'),
   glasses: require('../../assets/generated/cat-items/round-glasses-v2.png'),
   shirts: require('../../assets/generated/cat-items/red-shirt-v2.png'),
+  bottoms: require('../../assets/generated/cat-items/pink-skirt-v2.png'),
   shoes: require('../../assets/generated/cat-items/tiny-shoes-v2.png'),
   'cat-toys': require('../../assets/generated/cat-items/yarn-ball-v2.png'),
   furniture: require('../../assets/generated/furniture/soft-bed.png'),

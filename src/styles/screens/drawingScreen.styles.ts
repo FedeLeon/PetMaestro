@@ -14,7 +14,9 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     aspectRatio: 1,
     overflow: 'hidden',
-    width: '100%',
+    flex: 1,
+    maxHeight: 460,
+    maxWidth: 460,
   },
   colorButton: {
     borderColor: '#ffffff',
@@ -24,7 +26,9 @@ export const styles = StyleSheet.create({
     width: 34,
   },
   content: {
+    flexDirection: 'row',
     flex: 1,
+    gap: 20,
     minHeight: 0,
     overflow: 'hidden',
     padding: 14,
@@ -40,7 +44,9 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    marginTop: 14,
+    flex: 1,
+    marginTop: 0,
+    maxWidth: 360,
     padding: 14,
   },
   eraserButton: {

@@ -3,7 +3,7 @@
     "name": "PetMaestro",
     "slug": "petmaestro",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {

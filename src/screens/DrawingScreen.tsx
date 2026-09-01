@@ -6,8 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { PanResponder, Text, TouchableOpacity, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
-import { CoinBadge } from '../components/CoinBadge';
-import { HeaderBackButton } from '../components/HeaderBackButton';
+import { AppTopMenu } from '../components/AppTopMenu';
 import { useProgress } from '../context/ProgressContext';
 import { DrawingPoint, DrawingStroke, RootStackParamList } from '../types';
 
@@ -215,14 +214,7 @@ export function DrawingScreen({}: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <HeaderBackButton />
-        <View style={styles.titleGroup}>
-          <MaterialCommunityIcons color="#26796e" name="palette" size={28} />
-          <Text style={styles.title}>Mi dibujo</Text>
-        </View>
-        <CoinBadge coins={progress.coins} />
-      </View>
+      <AppTopMenu icon="palette" title="Mi dibujo" />
 
       <View style={styles.content}>
         <View

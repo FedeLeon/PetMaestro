@@ -3,9 +3,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from '../styles/screens/gameScreen.styles';
 import { useMemo, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { CoinBadge } from '../components/CoinBadge';
+import { AppTopMenu } from '../components/AppTopMenu';
 import { AudioButton, useWordAudio } from '../components/AudioButton';
-import { HeaderBackButton } from '../components/HeaderBackButton';
 import { SuccessCelebration } from '../components/PetCat';
 import { WordDrawing } from '../components/WordDrawing';
 import { useProgress } from '../context/ProgressContext';
@@ -18,10 +17,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 type MatchWordOptionProps = {
   disabled: boolean;
   onPress: () => void;
+  styles: typeof styles;
   word: (typeof words)[number];
 };
 
-function MatchWordOption({ disabled, onPress, word }: MatchWordOptionProps) {
+function MatchWordOption({ disabled, onPress, styles, word }: MatchWordOptionProps) {
   const playAudio = useWordAudio(word);
 
   return (
@@ -204,21 +204,7 @@ export function GameScreen({ navigation, route }: Props) {
   if (isFinished) {
     return (
       <View style={styles.screen}>
-        <View style={styles.topBar}>
-          <HeaderBackButton />
-          <View style={styles.levelHeaderTitle}>
-            <MaterialCommunityIcons
-              color="#26796e"
-              name={level.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-              size={27}
-            />
-            <View style={styles.levelInfo}>
-              <Text style={styles.levelTitle}>{level.title}</Text>
-              <Text style={styles.progressText}>Resultado</Text>
-            </View>
-          </View>
-          <CoinBadge coins={progress.coins} />
-        </View>
+        <AppTopMenu icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
         <View style={styles.resultArea}>
           <View style={styles.resultCard}>
             <View style={styles.resultCardInner}>
@@ -245,16 +231,7 @@ export function GameScreen({ navigation, route }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.topBar}>
-        <HeaderBackButton />
-        <View style={styles.levelInfo}>
-          <Text style={styles.levelTitle}>{level.title}</Text>
-          <Text style={styles.progressText}>
-            Ronda {roundIndex + 1}/{level.rounds.length}
-          </Text>
-        </View>
-        <CoinBadge coins={progress.coins} />
-      </View>
+      <AppTopMenu icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
 
       <View style={styles.card}>
         <View style={styles.promptRow}>
@@ -284,7 +261,7 @@ export function GameScreen({ navigation, route }: Props) {
                       matched && styles.matched,
                     ]}
                   >
-                    <MatchWordOption disabled={matched} onPress={() => handleMatchWord(wordId)} word={word} />
+                    <MatchWordOption disabled={matched} onPress={() => handleMatchWord(wordId)} styles={styles} word={word} />
                     <View style={styles.matchAudioButton}>
                       <AudioButton word={word} />
                     </View>

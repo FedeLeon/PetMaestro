@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     flex: 1,
-    margin: 18,
-    padding: 16,
+    margin: 12,
+    padding: 12,
   },
   celebrationOverlay: {
     alignItems: 'center',
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   matchBoard: {
     flex: 1,
     flexDirection: 'row',
-    gap: 12,
+    gap: 24,
   },
   matchColumn: {
     flex: 1,
@@ -113,7 +113,7 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '47%',
+    flexBasis: '31%',
     flexGrow: 1,
     justifyContent: 'center',
     minHeight: 160,

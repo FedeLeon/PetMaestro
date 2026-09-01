@@ -1,7 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, View, ViewStyle } from 'react-native';
 import { catItemImages, petImages, uiImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
+import { styles } from '../styles/components/petCat.styles';
 import { ProgressState } from '../types';
 
 type PetCatProps = {
@@ -44,6 +45,7 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large', 
   const hat = getEquippedItem('head');
   const glasses = getEquippedItem('eyes');
   const shirt = getEquippedItem('body');
+  const bottom = getEquippedItem('bottom');
   const shoes = getEquippedItem('feet');
   const neck = getEquippedItem('neck');
   const toy = getEquippedItem('toy');
@@ -91,14 +93,12 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large', 
       {shirt ? (
         <Image resizeMode="stretch" source={catItemImages[shirt.id]} style={[styles.shirt, isRoomSize && styles.roomShirt]} />
       ) : null}
+      {bottom ? (
+        <Image resizeMode="contain" source={catItemImages[bottom.id]} style={[styles.bottom, isRoomSize && styles.roomBottom]} />
+      ) : null}
       {shoes ? (
         <View style={styles.shoes}>
           <Image resizeMode="contain" source={catItemImages[shoes.id]} style={[styles.shoe, isRoomSize && styles.roomShoe]} />
-          <Image
-            resizeMode="contain"
-            source={catItemImages[shoes.id]}
-            style={[styles.shoe, styles.secondShoe, isRoomSize && styles.roomShoe]}
-          />
         </View>
       ) : null}
       {toy ? (
@@ -239,129 +239,4 @@ export const WalkingPetCat = forwardRef<WalkingPetCatHandle, WalkingPetCatProps>
       <PetCat {...petCatProps} walking={walking} />
     </View>
   );
-});
-
-const styles = StyleSheet.create({
-  catImage: {
-    height: 260,
-    width: 174,
-  },
-  glasses: {
-    height: 100,
-    left: 64,
-    position: 'absolute',
-    top: 25,
-    width: 100,
-    zIndex: 4,
-  },
-  hat: {
-    height: 100,
-    left: 65,
-    position: 'absolute',
-    top: -28,
-    width: 100,
-    zIndex: 4,
-  },
-  neckItem: {
-    height: 26,
-    left: 84,
-    position: 'absolute',
-    top: 124,
-    width: 64,
-    zIndex: 4,
-  },
-  roomCatImage: {
-    height: 210,
-    width: 140,
-  },
-  roomGlasses: {
-    height: 26,
-    left: 96,
-    top: 62,
-    width: 36,
-  },
-  roomHat: {
-    height: 44,
-    left: 91,
-    top: 18,
-    width: 44,
-  },
-  roomNeckItem: {
-    height: 22,
-    left: 88,
-    top: 104,
-    width: 52,
-  },
-  roomShirt: {
-    height: 34,
-    left: 80,
-    top: 122,
-    width: 68,
-  },
-  roomShoe: {
-    height: 28,
-    width: 30,
-  },
-  roomToy: {
-    height: 46,
-    right: 36,
-    top: 146,
-    width: 46,
-  },
-  secondShoe: {
-    transform: [{ scaleX: -1 }],
-  },
-  shirt: {
-    height: 130,
-    left: 66,
-    position: 'absolute',
-    top: 90,
-    width: 100,
-    zIndex: 4,
-  },
-  shoe: {
-    height: 34,
-    width: 36,
-  },
-  shoes: {
-    flexDirection: 'row',
-    gap: 38,
-    left: 60,
-    position: 'absolute',
-    top: 234,
-    zIndex: 5,
-  },
-  toy: {
-    height: 58,
-    position: 'absolute',
-    right: 18,
-    top: 178,
-    width: 58,
-    zIndex: 4,
-  },
-  wrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 284,
-    width: 230,
-  },
-  walkingCat: {
-    height: 284,
-    position: 'absolute',
-    width: 230,
-    zIndex: 5,
-  },
-  sparkleWindow: {
-    overflow: 'hidden',
-    position: 'absolute',
-    zIndex: 20,
-  },
-  successImage: {
-    height: '100%',
-    width: '100%',
-  },
-  successWindow: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });

@@ -1,8 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { RootStackParamList } from '../types';
+import { styles } from '../styles/components/headerBackButton.styles';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
@@ -30,14 +31,3 @@ export function HeaderBackButton() {
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#57b8a9',
-    borderRadius: 8,
-    height: 46,
-    justifyContent: 'center',
-    width: 46,
-  },
-});

@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '47%',
+    flexBasis: '23%',
     paddingBottom: 6,
     paddingHorizontal: 5,
     paddingTop: 5,
@@ -40,7 +40,8 @@ export const styles = StyleSheet.create({
     minWidth: 0,
   },
   content: {
-    padding: 12,
+    paddingHorizontal: 24,
+    paddingTop: 10,
     paddingBottom: 128,
   },
   header: {
@@ -51,9 +52,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 14,
     minHeight: 66,
-    paddingBottom: 8,
-    paddingHorizontal: 12,
-    paddingTop: 8,
+    paddingBottom: 5,
+    paddingHorizontal: 18,
+    paddingTop: 5,
   },
   headerInfo: {
     alignItems: 'center',

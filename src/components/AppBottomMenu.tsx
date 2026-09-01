@@ -1,7 +1,8 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { navigationImages } from '../data/assetImages';
+import { styles } from '../styles/components/appBottomMenu.styles';
 import { RootStackParamList } from '../types';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
@@ -36,38 +37,3 @@ export function AppBottomMenu() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  activeButton: {
-    backgroundColor: '#ff7a59',
-    borderColor: '#ff7a59',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#e8fbf7',
-    borderColor: '#bde8df',
-    borderRadius: 34,
-    borderWidth: 2,
-    height: 68,
-    justifyContent: 'center',
-    width: 68,
-  },
-  icon: {
-    height: 48,
-    width: 52,
-  },
-  menu: {
-    backgroundColor: '#ffffff',
-    borderTopColor: '#f0dcc0',
-    borderTopWidth: 2,
-    bottom: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 8,
-    justifyContent: 'center',
-    left: 0,
-    padding: 12,
-    position: 'absolute',
-    right: 0,
-  },
-});

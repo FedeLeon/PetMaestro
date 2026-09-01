@@ -4,8 +4,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, ImageBackground, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { DimensionValue, useWindowDimensions } from 'react-native';
+import { AppTopMenu } from '../components/AppTopMenu';
 import { AppBottomMenu } from '../components/AppBottomMenu';
-import { CoinBadge } from '../components/CoinBadge';
 import { useProgress } from '../context/ProgressContext';
 import { mapImages } from '../data/assetImages';
 import { levels } from '../data/gameContent';
@@ -60,20 +60,14 @@ export function MapScreen({ navigation }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <MaterialCommunityIcons color="#26796e" name="map" size={27} />
-          <Text style={styles.title}>Mapa de Niveles</Text>
-        </View>
-        <CoinBadge coins={progress.coins} />
-      </View>
+      <AppTopMenu icon="map" title="Mapa de Niveles" />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.landscapeViewport}>
           <ImageBackground
             imageStyle={styles.landscapeImage}
             resizeMode="cover"
-            source={mapImages.sunnyPathVertical}
+            source={mapImages.sunnyPath}
             style={[styles.landscape, { left: -(screenWidth * 0.06), width: screenWidth * 1.12 }]}
           >
 

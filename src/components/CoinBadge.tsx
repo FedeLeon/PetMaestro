@@ -1,5 +1,6 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { uiImages } from '../data/assetImages';
+import { styles } from '../styles/components/coinBadge.styles';
 
 type CoinBadgeProps = {
   coins: number;
@@ -13,26 +14,3 @@ export function CoinBadge({ coins }: CoinBadgeProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  badge: {
-    alignItems: 'center',
-    backgroundColor: '#fff3b0',
-    borderColor: '#f6c445',
-    borderRadius: 22,
-    borderWidth: 2,
-    flexDirection: 'row',
-    gap: 8,
-    minHeight: 44,
-    paddingHorizontal: 14,
-  },
-  coin: {
-    height: 28,
-    width: 28,
-  },
-  text: {
-    color: '#513b13',
-    fontSize: 18,
-    fontWeight: '900',
-  },
-});

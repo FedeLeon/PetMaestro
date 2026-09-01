@@ -3,8 +3,7 @@ import { styles } from '../styles/screens/shopScreen.styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
-import { CoinBadge } from '../components/CoinBadge';
-import { HeaderBackButton } from '../components/HeaderBackButton';
+import { AppTopMenu } from '../components/AppTopMenu';
 import { useProgress } from '../context/ProgressContext';
 import { shopCategoryImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
@@ -17,14 +16,7 @@ export function ShopScreen({ navigation }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <HeaderBackButton />
-        <View style={styles.titleGroup}>
-          <MaterialCommunityIcons color="#26796e" name="storefront" size={28} />
-          <Text style={styles.title}>Tienda</Text>
-        </View>
-        <CoinBadge coins={progress.coins} />
-      </View>
+      <AppTopMenu icon="storefront" title="Tienda" />
 
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.subtitle}>Elegi una categoria para ver sus items.</Text>

@@ -2,7 +2,11 @@
 
 ## Proposito
 
-PetMaestro es un juego infantil offline para Android, pensado inicialmente para ninos de 4 a 7 anos. El jugador aprende palabras en castellano e ingles mediante ejercicios con imagenes, avanza por un mapa de niveles, gana monedas y cuida a un gatito.
+PetMaestro es un juego infantil offline para Android, pensado inicialmente para ninos de 4 a 7 anos. El jugador aprende palabras en castellano e ingles mediante ejercicios con imagenes, avanza por un mapa de niveles, gana monedas y cuida a un gatito. El juego se desarrolla exclusivamente en orientacion horizontal.
+
+## Regla de orientacion
+
+La APK siempre se ejecuta en `landscape`, configurado en `app.json`. No existe modo vertical y no se debe agregar logica de deteccion de orientacion ni estilos alternativos para `portrait`. Todas las nuevas pantallas, interacciones, assets y animaciones deben disenarse para el espacio horizontal disponible.
 
 El MVP no tiene cuentas, anuncios, compras reales ni backend. El progreso se guarda localmente y la estructura queda preparada para audio, necesidades de la mascota, mas mascotas, logros, misiones y sincronizacion futura.
 
@@ -28,7 +32,7 @@ src/data/assetImages.ts         Registro de assets importados
 src/data/gameContent.ts         Palabras, niveles, rondas y tienda
 src/data/audioAssets.ts         Registro de pronunciaciones locales
 src/screens/                    Logica y JSX de cada pantalla
-src/styles/screens/             StyleSheet separado por pantalla
+src/styles/screens/             StyleSheet horizontal separado por pantalla
 src/types/                      Tipos compartidos
 assets/generated/               Ilustraciones y sprites
 docs/PROJECT_GUIDE.md           Esta guia
@@ -38,20 +42,20 @@ AUDIO_CREDITS.md                Procedencia y licencias de sonidos
 
 ## Separacion de pantallas y estilos
 
-Cada pantalla mantiene su logica, estado local y JSX en src/screens/<Screen>.tsx. Su StyleSheet vive en src/styles/screens/<screen>.styles.ts y exporta una constante llamada styles.
+Cada pantalla mantiene su logica, estado local y JSX en src/screens/<Screen>.tsx. Su unico StyleSheet horizontal vive en src/styles/screens/<screen>.styles.ts y exporta una constante llamada styles.
 
 ```ts
 // src/screens/ExampleScreen.tsx
 import { styles } from '../styles/screens/exampleScreen.styles';
 ```
 
-Los componentes reutilizables pueden conservar estilos locales cuando el estilo pertenece exclusivamente al componente. Los estilos propios de una pantalla deben permanecer en su modulo de estilos. Los archivos de estilos no contienen logica de negocio.
+Los componentes reutilizables pueden conservar estilos locales cuando el estilo pertenece exclusivamente al componente. Los estilos propios de una pantalla deben permanecer en su modulo horizontal de estilos. Los archivos de estilos no contienen logica de negocio.
 
 ## Navegacion
 
 El stack se declara en App.tsx con el header nativo oculto y headers propios.
 
-- MapScreen: pantalla inicial y mapa vertical de niveles.
+- MapScreen: pantalla inicial y mapa de niveles dentro de la experiencia horizontal.
 - GameScreen: rondas, respuestas y feedback.
 - PetScreen: gatito, vestidor y equipamiento.
 - ShopScreen: categorias de la tienda.
@@ -100,6 +104,6 @@ git diff --check
 npm run build:android:preview
 ```
 
-Para navegador usar npm run web y la vista responsive. Para Android usar Expo Go durante desarrollo o EAS preview para una APK instalable.
+Para navegador usar npm run web con una ventana horizontal. Para Android usar Expo Go durante desarrollo o EAS preview para una APK instalable horizontal.
 
 Antes de cerrar una tarea ejecutar typecheck y diff --check, probar el flujo afectado y revisar visualmente textos, botones, gestos, audio, animaciones, zonas tactiles, capas y proporcion de assets. TypeScript no sustituye una prueba visual en web o Android.

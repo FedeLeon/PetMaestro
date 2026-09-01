@@ -1,5 +1,6 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { needsImages } from '../data/assetImages';
+import { styles } from '../styles/components/needsMeters.styles';
 import { PetNeeds } from '../types';
 
 type NeedsMetersProps = {
@@ -33,41 +34,3 @@ export function NeedsMeters({ needs }: NeedsMetersProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 2,
-    marginTop: 2,
-    width: '100%',
-  },
-  fill: {
-    borderRadius: 4,
-    height: '100%',
-  },
-  icon: {
-    height: 36,
-    width: 36,
-  },
-  meter: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flex: 1,
-    gap: 2,
-  },
-  track: {
-    backgroundColor: '#eadfce',
-    borderRadius: 4,
-    height: 8,
-    overflow: 'hidden',
-    flex: 1,
-    minWidth: 12,
-  },
-  value: {
-    color: '#6c5a42',
-    fontSize: 8,
-    fontWeight: '900',
-    width: 18,
-  },
-});

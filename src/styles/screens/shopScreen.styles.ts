@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '47%',
+    flexBasis: '23%',
     justifyContent: 'space-between',
     padding: 10,
   },
@@ -45,7 +45,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   content: {
-    padding: 20,
+    paddingHorizontal: 24,
+    paddingTop: 14,
     paddingBottom: 128,
   },
   grid: {
@@ -60,9 +61,9 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 8,
-    paddingHorizontal: 14,
-    paddingTop: 8,
+    paddingBottom: 5,
+    paddingHorizontal: 18,
+    paddingTop: 5,
   },
   screen: {
     backgroundColor: '#fff7e8',

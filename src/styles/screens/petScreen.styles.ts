@@ -19,6 +19,21 @@ export const styles = StyleSheet.create({
   equippedCard: {
     borderColor: '#ff7a59',
   },
+  categoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  categorySection: {
+    width: '100%',
+  },
+  categorySubtitle: {
+    color: '#7d4e28',
+    fontSize: 15,
+    fontWeight: '900',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
   header: {
     alignItems: 'center',
     backgroundColor: '#ffffff',
@@ -36,8 +51,8 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '31%',
-    height: 104,
+    aspectRatio: 1,
+    flexBasis: '47%',
     justifyContent: 'center',
     padding: 12,
   },
@@ -57,7 +72,7 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   itemPreviewImage: {
-    height: 54,
+    height: 68,
     width: '100%',
   },
   itemsGrid: {
@@ -70,24 +85,35 @@ export const styles = StyleSheet.create({
   },
   itemsSection: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 8,
+  },
+  petCatDisplay: {
+    marginBottom: 260,
+    transform: [{ scale: 2.4 }],
   },
   screen: {
     backgroundColor: '#fff7e8',
     flex: 1,
+  },
+  mainArea: {
+    flex: 1,
+    flexDirection: 'row',
+    minHeight: 0,
   },
   sectionTitle: {
     color: '#372413',
     fontSize: 24,
     fontWeight: '900',
     marginBottom: 8,
+    textAlign: 'center',
   },
   stage: {
     alignItems: 'center',
     borderColor: '#9ed3ea',
     borderRadius: 0,
     borderWidth: 2,
-    height: 340,
+    flex: 5,
+    minHeight: 0,
     margin: 0,
     marginBottom: 12,
     overflow: 'hidden',

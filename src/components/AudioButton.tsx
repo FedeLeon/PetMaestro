@@ -1,7 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAudioPlayer } from 'expo-audio';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { wordAudio } from '../data/audioAssets';
+import { styles } from '../styles/components/audioButton.styles';
 import { WordCard } from '../types';
 
 type Props = {
@@ -34,14 +35,3 @@ export function AudioButton({ word, language = 'english', size = 42 }: Props) {
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#dff4ff',
-    borderColor: '#77c4df',
-    borderRadius: 999,
-    borderWidth: 2,
-    justifyContent: 'center',
-  },
-});
