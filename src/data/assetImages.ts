@@ -28,7 +28,14 @@ export const uiImages = {
     require('../../assets/generated/ui/success/muy-bien-4.png'),
   ],
   goldenPawCoin: require('../../assets/generated/ui/golden-paw-coin.png'),
+  nextWorldArrow: require('../../assets/generated/ui/next-world-arrow-v1.png'),
+  ownedCheck: require('../../assets/generated/ui/owned-check-v1.png'),
   wordCardFrame: require('../../assets/generated/ui/word-card-frame-v2.png'),
+};
+
+export const shopImages = {
+  displayCabinet: require('../../assets/generated/shop/item-display-cabinet-v2.png'),
+  interior: require('../../assets/generated/shop/pet-shop-interior-v2.png'),
 };
 
 export const needsImages = {
@@ -90,14 +97,6 @@ export const catItemImages: Record<string, number> = {
   'bell-ball': require('../../assets/generated/cat-items/bell-ball-v2.png'),
   'feather-wand': require('../../assets/generated/cat-items/feather-wand-v2.png'),
   'star-plush': require('../../assets/generated/cat-items/star-plush-v2.png'),
-};
-
-export const foliageImages = {
-  bush1: require('../../assets/kenney/foliage/bush-1.png'),
-  bush2: require('../../assets/kenney/foliage/bush-2.png'),
-  tree1: require('../../assets/kenney/foliage/tree-1.png'),
-  tree2: require('../../assets/kenney/foliage/tree-2.png'),
-  tree3: require('../../assets/kenney/foliage/tree-3.png'),
 };
 
 export const furnitureImages: Record<string, number> = {
@@ -194,14 +193,13 @@ export const houseImages = {
   bathroomInterior: require('../../assets/generated/house/bathroom-room.png'),
   cuteHouse: require('../../assets/kenney/house-2d/cute-cat-house.png'),
   exteriorWide: require('../../assets/generated/house/exterior-yard-wide.png'),
-  interior: require('../../assets/generated/house/interior-room.png'),
-  interiorWide: require('../../assets/generated/house/interior-room-extra-wide-v2.png'),
+  interiorWide: require('../../assets/generated/house/interior-room-landscape-v4.png'),
   kitchenInterior: require('../../assets/generated/house/kitchen-room.png'),
-  yard: require('../../assets/kenney/house-2d/tiny-farm-yard.png'),
 };
 
 export const mapImages = {
-  sunnyPath: require('../../assets/generated/map-sunny-path-vertical.png'),
+  catCity: require('../../assets/generated/map-cat-city-world-v1.png'),
+  sunnyPath: require('../../assets/generated/map-sunny-path-horizontal-v2.png'),
 };
 
 export const shopCategoryImages: Record<string, number> = {
@@ -213,13 +211,6 @@ export const shopCategoryImages: Record<string, number> = {
   'cat-toys': require('../../assets/generated/cat-items/yarn-ball-v2.png'),
   furniture: require('../../assets/generated/furniture/soft-bed.png'),
   pets: require('../../assets/generated/shop/farm-barn.png'),
-};
-
-export const bathroomImages = {
-  bathtub: require('../../assets/kenney/bathroom/bathtub.png'),
-  mirror: require('../../assets/kenney/bathroom/mirror.png'),
-  sink: require('../../assets/kenney/bathroom/sink.png'),
-  toilet: require('../../assets/kenney/bathroom/toilet.png'),
 };
 
 export const wordImages: Record<string, number> = {

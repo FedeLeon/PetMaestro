@@ -1,5 +1,5 @@
 import { styles } from '../styles/screens/petScreen.styles';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
@@ -7,11 +7,8 @@ import { PetCat } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
 import { catItemImages, petImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
-import { RootStackParamList } from '../types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Pet'>;
-
-export function PetScreen({ navigation }: Props) {
+export function PetScreen() {
   const { equipItem, progress } = useProgress();
   const ownedCatItems = progress.ownedItems.filter((itemId) => {
     const item = shopItems.find((entry) => entry.id === itemId);
@@ -41,10 +38,9 @@ export function PetScreen({ navigation }: Props) {
               <PetCat equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} />
             </View>
         </ImageBackground>
-        </View>
+      </View>
 
       <View style={styles.itemsSection}>
-        <Text style={styles.sectionTitle}>Items comprados</Text>
         <ScrollView contentContainerStyle={styles.itemsScroll} showsVerticalScrollIndicator={false}>
           <View style={styles.itemsGrid}>
             {ownedCatItems.length === 0 ? (
@@ -54,7 +50,10 @@ export function PetScreen({ navigation }: Props) {
             ) : (
               ownedCatItemsByCategory.map(({ category, itemIds }) => (
                 <View key={category.id} style={styles.categorySection}>
-                  <Text style={styles.categorySubtitle}>{category.label.toUpperCase()}</Text>
+                  <View style={styles.categorySubtitleRow}>
+                    <MaterialCommunityIcons color="#7d4e28" name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={22} />
+                    <Text style={styles.categorySubtitle}>{category.label.toUpperCase()}</Text>
+                  </View>
                   <View style={styles.categoryGrid}>
                     {itemIds.map((itemId) => {
                       const item = shopItems.find((entry) => entry.id === itemId);

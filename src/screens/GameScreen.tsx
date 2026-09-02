@@ -50,7 +50,7 @@ function shuffle<T>(items: T[]) {
 }
 
 export function GameScreen({ navigation, route }: Props) {
-  const { completeLevel, progress } = useProgress();
+  const { completeLevel } = useProgress();
   const level = levels.find((item) => item.id === route.params.levelId) ?? levels[0];
   const [roundIndex, setRoundIndex] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
@@ -307,7 +307,7 @@ export function GameScreen({ navigation, route }: Props) {
               return (
                 <View
                   key={wordId}
-                  style={[styles.option, round.type === 'translation-choice' && styles.translationOption, disabled && styles.disabledOption]}
+                  style={[styles.option, round.type === 'audio-choice' && styles.audioOption, round.type === 'translation-choice' && styles.translationOption, disabled && styles.disabledOption]}
                 >
                   <TouchableOpacity
                     disabled={disabled || isCelebrating}

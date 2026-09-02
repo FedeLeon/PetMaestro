@@ -1,0 +1,67 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  screen: {
+    backgroundColor: '#8edcf2',
+    flex: 1,
+  },
+  background: {
+    height: '100%',
+    width: '100%',
+  },
+  overlay: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 250, 240, 0.16)',
+    bottom: 0,
+    justifyContent: 'flex-end',
+    left: 0,
+    paddingBottom: '6%',
+    paddingHorizontal: 24,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  title: {
+    color: '#ffffff',
+    fontSize: 38,
+    fontWeight: '900',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(55, 36, 19, 0.45)',
+    textShadowOffset: { height: 3, width: 2 },
+    textShadowRadius: 4,
+  },
+  subtitle: {
+    color: '#fffaf0',
+    fontSize: 17,
+    fontWeight: '800',
+    marginTop: 4,
+    textShadowColor: 'rgba(55, 36, 19, 0.4)',
+    textShadowOffset: { height: 2, width: 1 },
+    textShadowRadius: 3,
+  },
+  progressTrack: {
+    backgroundColor: 'rgba(255, 255, 255, 0.86)',
+    borderColor: '#ffffff',
+    borderRadius: 999,
+    borderWidth: 3,
+    height: 26,
+    marginTop: 18,
+    maxWidth: 620,
+    overflow: 'hidden',
+    width: '72%',
+  },
+  progressFill: {
+    backgroundColor: '#ff7a59',
+    borderRadius: 999,
+    height: '100%',
+  },
+  percentage: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '900',
+    marginTop: 6,
+    textShadowColor: 'rgba(55, 36, 19, 0.4)',
+    textShadowOffset: { height: 1, width: 1 },
+    textShadowRadius: 2,
+  },
+});

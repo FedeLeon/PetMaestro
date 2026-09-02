@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   Map: undefined;
+  CityMap: undefined;
   Game: { levelId: number };
   Pet: undefined;
   Shop: undefined;

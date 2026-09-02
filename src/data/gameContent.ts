@@ -192,6 +192,26 @@ const levelDefinitions: Level[] = [
       { id: '10-5', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'bear', optionIds: ['bear', 'lion', 'elephant', 'monkey'] },
     ],
   },
+  {
+    id: 11,
+    title: 'Gran evaluacion',
+    theme: 'Todo lo aprendido',
+    description: 'Mezcla palabras de todos los niveles para abrir la ciudad gatuna.',
+    icon: 'trophy',
+    reward: 60,
+    rounds: [
+      { id: '11-1', type: 'picture-choice', promptLanguage: 'english', answerId: 'cat', optionIds: ['cat', 'dog', 'fish', 'bird'] },
+      { id: '11-2', type: 'audio-choice', answerId: 'moon', optionIds: ['moon', 'sun', 'star', 'cloud'] },
+      { id: '11-3', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'apple', optionIds: ['apple', 'banana', 'bread', 'milk'] },
+      { id: '11-4', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'car', optionIds: ['car', 'house', 'tree', 'door'] },
+      { id: '11-5', type: 'audio-choice', answerId: 'puzzle', optionIds: ['puzzle', 'ball', 'kite', 'blocks'] },
+      { id: '11-6', type: 'translation-choice', promptLanguage: 'english', answerId: 'butterfly', optionIds: ['butterfly', 'flower', 'tree', 'bird'] },
+      { id: '11-7', type: 'picture-choice', promptLanguage: 'spanish', answerId: 'boat', optionIds: ['boat', 'water', 'fish', 'wave'] },
+      { id: '11-8', type: 'audio-choice', answerId: 'shirt', optionIds: ['shirt', 'shoe', 'hat', 'socks'] },
+      { id: '11-9', type: 'translation-choice', promptLanguage: 'spanish', answerId: 'lamp', optionIds: ['lamp', 'bed', 'chair', 'table'] },
+      { id: '11-10', type: 'picture-choice', promptLanguage: 'english', answerId: 'elephant', optionIds: ['elephant', 'lion', 'monkey', 'bear'] },
+    ],
+  },
 ];
 
 const reviewRoundTypes = ['picture-choice', 'audio-choice', 'translation-choice', 'picture-choice'] as const;

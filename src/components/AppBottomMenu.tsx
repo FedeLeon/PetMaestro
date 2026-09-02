@@ -21,7 +21,7 @@ export function AppBottomMenu() {
   return (
     <View style={styles.menu}>
       {menuItems.map((item) => {
-        const active = route.name === item.routeName || (item.routeName === 'Shop' && route.name === 'ShopCategory');
+        const active = route.name === item.routeName || (item.routeName === 'Map' && route.name === 'CityMap') || (item.routeName === 'Shop' && route.name === 'ShopCategory');
 
         return (
           <TouchableOpacity

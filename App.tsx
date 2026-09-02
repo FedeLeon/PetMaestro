@@ -1,28 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
 import { ProgressProvider, useProgress } from './src/context/ProgressContext';
 import { GameScreen } from './src/screens/GameScreen';
 import { HouseScreen } from './src/screens/HouseScreen';
 import { DrawingScreen } from './src/screens/DrawingScreen';
 import { MapScreen } from './src/screens/MapScreen';
+import { CityMapScreen } from './src/screens/CityMapScreen';
 import { PetScreen } from './src/screens/PetScreen';
 import { ShopCategoryScreen } from './src/screens/ShopCategoryScreen';
 import { ShopScreen } from './src/screens/ShopScreen';
+import { LoadingScreen } from './src/screens/LoadingScreen';
 import { RootStackParamList } from './src/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigator() {
   const { isReady } = useProgress();
+  const [showLoading, setShowLoading] = useState(true);
 
-  if (!isReady) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator color="#ff7a59" size="large" />
-      </View>
-    );
+  useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => setShowLoading(false), 2200);
+    return () => clearTimeout(timeoutId);
+  }, [isReady]);
+
+  if (!isReady || showLoading) {
+    return <LoadingScreen />;
   }
 
   return (
@@ -37,6 +45,7 @@ function AppNavigator() {
         }}
       >
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="CityMap" component={CityMapScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
         <Stack.Screen name="Pet" component={PetScreen} />
         <Stack.Screen name="Shop" component={ShopScreen} />
@@ -55,12 +64,3 @@ export default function App() {
     </ProgressProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    alignItems: 'center',
-    backgroundColor: '#fffaf0',
-    flex: 1,
-    justifyContent: 'center',
-  },
-});

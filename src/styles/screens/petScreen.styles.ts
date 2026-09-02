@@ -28,11 +28,17 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   categorySubtitle: {
-    color: '#7d4e28',
-    fontSize: 15,
+    color: '#372413',
+    fontSize: 18,
     fontWeight: '900',
-    marginBottom: 6,
     textAlign: 'center',
+  },
+  categorySubtitleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 5,
+    justifyContent: 'center',
+    marginBottom: 8,
   },
   header: {
     alignItems: 'center',
@@ -99,13 +105,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     minHeight: 0,
-  },
-  sectionTitle: {
-    color: '#372413',
-    fontSize: 24,
-    fontWeight: '900',
-    marginBottom: 8,
-    textAlign: 'center',
   },
   stage: {
     alignItems: 'center',

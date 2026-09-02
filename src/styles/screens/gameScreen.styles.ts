@@ -7,8 +7,9 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     flex: 1,
-    margin: 12,
-    padding: 12,
+    margin: 10,
+    minHeight: 0,
+    padding: 14,
   },
   celebrationOverlay: {
     alignItems: 'center',
@@ -21,15 +22,17 @@ export const styles = StyleSheet.create({
   },
   audioPromptDrawing: {
     alignSelf: 'center',
-    maxWidth: 220,
-    width: '48%',
+    flex: 1,
+    maxWidth: 180,
+    minHeight: 0,
+    width: '18%',
   },
   feedback: {
     color: '#ff7a59',
     fontSize: 24,
     fontWeight: '900',
-    marginBottom: 12,
-    minHeight: 32,
+    marginBottom: 6,
+    minHeight: 26,
     textAlign: 'center',
   },
   disabledOption: {
@@ -51,13 +54,19 @@ export const styles = StyleSheet.create({
     fontWeight: '900',
   },
   matchBoard: {
+    alignSelf: 'center',
     flex: 1,
     flexDirection: 'row',
-    gap: 24,
+    gap: 18,
+    maxWidth: 780,
+    minHeight: 0,
+    width: '52%',
   },
   matchColumn: {
+    alignItems: 'center',
     flex: 1,
-    gap: 12,
+    gap: 8,
+    minHeight: 0,
   },
   matchPicture: {
     alignItems: 'center',
@@ -65,9 +74,11 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flex: 1,
+    aspectRatio: 1,
+    flexGrow: 0,
+    height: '22%',
     justifyContent: 'center',
-    padding: 8,
+    padding: 6,
   },
   matchPictureMain: {
     alignItems: 'center',
@@ -77,10 +88,11 @@ export const styles = StyleSheet.create({
   },
   matchPictureDrawing: {
     alignSelf: 'center',
-    width: '92%',
+    maxHeight: 92,
+    width: '78%',
   },
   matchAudioButton: {
-    marginBottom: 10,
+    marginBottom: 4,
   },
   matchWord: {
     alignItems: 'center',
@@ -88,7 +100,9 @@ export const styles = StyleSheet.create({
     borderColor: '#9ed3ea',
     borderRadius: 8,
     borderWidth: 2,
-    flex: 1,
+    aspectRatio: 1,
+    flexGrow: 0,
+    height: '22%',
     justifyContent: 'center',
     paddingHorizontal: 8,
   },
@@ -100,7 +114,7 @@ export const styles = StyleSheet.create({
   },
   matchWordText: {
     color: '#22313b',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '900',
     textAlign: 'center',
   },
@@ -113,11 +127,11 @@ export const styles = StyleSheet.create({
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 2,
-    flexBasis: '31%',
+    flexBasis: '23%',
     flexGrow: 1,
     justifyContent: 'center',
-    minHeight: 160,
-    padding: 10,
+    minHeight: 0,
+    padding: 8,
   },
   optionMain: {
     alignItems: 'center',
@@ -127,15 +141,18 @@ export const styles = StyleSheet.create({
   },
   optionText: {
     color: '#372413',
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '900',
     marginTop: 8,
     textAlign: 'center',
   },
   optionsGrid: {
+    alignItems: 'stretch',
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    gap: 10,
+    minHeight: 0,
   },
   pictureCaption: {
     color: '#6c5a42',
@@ -167,10 +184,9 @@ export const styles = StyleSheet.create({
   },
   prompt: {
     color: '#22313b',
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '900',
-    lineHeight: 33,
-    marginBottom: 14,
+    lineHeight: 28,
     textAlign: 'center',
   },
   promptRow: {
@@ -178,7 +194,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
-    marginBottom: 14,
+    marginBottom: 8,
+    minHeight: 48,
   },
   resultCard: {
     alignItems: 'center',
@@ -242,14 +259,17 @@ export const styles = StyleSheet.create({
   screen: {
     backgroundColor: '#fff7e8',
     flex: 1,
-    paddingTop: 12,
+    paddingTop: 0,
   },
   selectedMatch: {
     backgroundColor: '#ffe1d6',
     borderColor: '#ff7a59',
   },
   translationOption: {
-    minHeight: 190,
+    minHeight: 0,
+  },
+  audioOption: {
+    backgroundColor: '#e9f8ff',
   },
   topBar: {
     alignItems: 'center',

@@ -212,7 +212,7 @@ export const WalkingPetCat = forwardRef<WalkingPetCatHandle, WalkingPetCatProps>
 
       animationFrameRef.current = requestAnimationFrame(animatePosition);
     },
-  }), [maxX]);
+  }), [maxX, maxY, minY]);
 
   useEffect(
     () => () => {

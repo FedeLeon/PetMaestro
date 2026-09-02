@@ -1,76 +1,23 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Image,
-  ImageBackground,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import type { GestureResponderEvent } from 'react-native';
-import {
-  EXTERIOR_YARD_WIDTH,
-  KITCHEN_ROOM_WIDTH,
-  ROOM_FLOOR_HEIGHT,
-  styles,
-  WIDE_ROOM_WIDTH,
-} from '../styles/screens/houseScreen.styles';
-import Svg, { Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
-import { BlinkingFarmAnimal } from '../components/BlinkingFarmAnimal';
-import { SparkleBurst, WalkingPetCat, WalkingPetCatHandle } from '../components/PetCat';
+import { HouseBathroom } from '../components/house/HouseBathroom';
+import { HouseExterior } from '../components/house/HouseExterior';
+import { HouseInterior } from '../components/house/HouseInterior';
+import { HouseKitchen } from '../components/house/HouseKitchen';
+import { WalkingPetCatHandle } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
-import {
-  farmAnimalActionImages,
-  farmAnimalBlinkImages,
-  farmAnimalGrazeImages,
-  farmAnimalImages,
-  furnitureImages,
-  houseImages,
-  shopCategoryImages,
-} from '../data/assetImages';
+import { farmAnimalImages, furnitureImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
-import { RootStackParamList } from '../types';
+import { BATHROOM_ROOM_WIDTH, styles } from '../styles/screens/houseScreen.styles';
+import type { ProgressState, RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
-
-const furnitureDefaults: Record<string, { x: number; y: number }> = {
-  'soft-bed': { x: 0, y: 55 },
-  'small-table': { x: 500, y: -8 },
-  'fish-lamp': { x: 580, y: -38 },
-  'window-plant': { x: 430, y: -4 },
-  'red-sofa': { x: 860, y: -35 },
-  'bookcase-open': { x: 1212, y: -67 },
-  'round-rug': { x: 690, y: 58 },
-  'floor-lamp': { x: 950, y: -210 },
-  'tv-cabinet': { x: 45, y: -65 },
-};
-
-const furnitureSizes: Record<string, { width: number; height: number }> = {
-  'soft-bed': { width: 176, height: 108 },
-  'small-table': { width: 104, height: 86 },
-  'fish-lamp': { width: 92, height: 142 },
-  'window-plant': { width: 72, height: 94 },
-  'red-sofa': { width: 193, height: 113 },
-  'bookcase-open': { width: 116, height: 166 },
-  'round-rug': { width: 190, height: 116 },
-  'floor-lamp': { width: 176, height: 392 },
-  'tv-cabinet': { width: 303, height: 168 },
-};
-
-const animalPositions: Record<string, { x: number; y: number }> = {
-  'farm-cow': { x: 25, y: 340 },
-  'farm-pig': { x: 850, y: 345 },
-  'farm-sheep': { x: 120, y: 375 },
-  'farm-horse': { x: 580, y: 400 },
-  'farm-duck': { x: 330, y: 430 },
-  'farm-rabbit': { x: 500, y: 505 },
-};
-
+type HouseView = 'outside' | 'inside' | 'kitchen' | 'bathroom';
 const BATHROOM_FLOOR_START_RATIO = 0.67;
 const BATHROOM_ASPECT_RATIO = 1.5;
 const WALKING_CAT_HEIGHT = 284;
@@ -78,413 +25,53 @@ const WALKING_CAT_WIDTH = 230;
 
 export function HouseScreen({ navigation }: Props) {
   const { progress, toggleAnimal, toggleFurniture } = useProgress();
-  const [houseView, setHouseView] = useState<'outside' | 'inside' | 'kitchen' | 'bathroom'>('outside');
-  const [exteriorViewport, setExteriorViewport] = useState({ height: 0, width: 0 });
+  const [houseView, setHouseView] = useState<HouseView>('outside');
   const [sceneViewportWidth, setSceneViewportWidth] = useState(0);
   const [bathroomViewport, setBathroomViewport] = useState({ height: 0, width: 0 });
   const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
-  const exteriorScrollRef = useRef<ScrollView>(null);
   const walkingCatRef = useRef<WalkingPetCatHandle>(null);
-  const ownedFurniture = useMemo(
-    () => shopItems.filter((item) => item.target === 'house' && progress.ownedItems.includes(item.id)),
-    [progress.ownedItems],
-  );
-  const ownedAnimals = useMemo(
-    () => shopItems.filter((item) => item.target === 'yard' && progress.ownedItems.includes(item.id)),
-    [progress.ownedItems],
-  );
+  const ownedFurniture = useMemo(() => shopItems.filter((item) => item.target === 'house' && progress.ownedItems.includes(item.id)), [progress.ownedItems]);
+  const ownedAnimals = useMemo(() => shopItems.filter((item) => item.target === 'yard' && progress.ownedItems.includes(item.id)), [progress.ownedItems]);
   const placedFurniture = ownedFurniture.filter((item) => progress.placedFurnitureIds.includes(item.id));
   const placedAnimals = ownedAnimals.filter((item) => progress.placedAnimalIds.includes(item.id));
   const bathroomFloorTop = bathroomViewport.height > 0 ? bathroomViewport.height * BATHROOM_FLOOR_START_RATIO : 450;
-  const bathroomContentWidth = Math.max(
-    bathroomViewport.height > 0 ? bathroomViewport.height * BATHROOM_ASPECT_RATIO : 720,
-    sceneViewportWidth,
-  );
-  const mainRoomContentWidth = Math.max(WIDE_ROOM_WIDTH, sceneViewportWidth);
-  const kitchenContentWidth = Math.max(KITCHEN_ROOM_WIDTH, sceneViewportWidth);
-  const exteriorContentWidth = Math.max(EXTERIOR_YARD_WIDTH, sceneViewportWidth);
-  const exteriorScale = exteriorContentWidth / EXTERIOR_YARD_WIDTH;
-  const exteriorGroundMinY = exteriorViewport.height > 0 ? exteriorViewport.height * 0.30 : 250;
-  const exteriorGroundMaxY = exteriorViewport.height > 0
-    ? Math.max(exteriorGroundMinY, exteriorViewport.height - WALKING_CAT_HEIGHT)
-    : 390;
-  const mainRoomScale = mainRoomContentWidth / WIDE_ROOM_WIDTH;
-  const kitchenScale = kitchenContentWidth / KITCHEN_ROOM_WIDTH;
-  const bathroomMinY = Math.max(0, bathroomFloorTop - WALKING_CAT_HEIGHT);
-  const bathroomMaxY = bathroomViewport.height > 0
-    ? Math.max(bathroomMinY, bathroomViewport.height - WALKING_CAT_HEIGHT)
-    : 390;
-  const bathroomMaxX = Math.max(0, bathroomContentWidth - WALKING_CAT_WIDTH);
+  const bathroomContentWidth = Math.max(bathroomViewport.height > 0 ? bathroomViewport.height * BATHROOM_ASPECT_RATIO : BATHROOM_ROOM_WIDTH, sceneViewportWidth);
+  const handleWalkTo = (targetX: number, targetY: number) => {
+    if (!Number.isFinite(targetX) || !Number.isFinite(targetY)) return;
+    const key = Date.now();
+    setSparkle({ x: targetX, y: targetY, key });
+    setTimeout(() => setSparkle((current) => (current?.key === key ? null : current)), 460);
+    walkingCatRef.current?.walkTo(targetX, targetY);
+  };
   const handleFloorPress = (event: GestureResponderEvent) => {
     const { locationX, locationY, pageX, pageY } = event.nativeEvent;
     const targetX = Number.isFinite(locationX) ? locationX : pageX;
     const targetY = Number.isFinite(locationY) ? locationY : pageY;
-
-    if (!Number.isFinite(targetX) || !Number.isFinite(targetY)) {
-      return;
-    }
-
-    const sparkleKey = Date.now();
-    setSparkle({ x: targetX, y: targetY, key: sparkleKey });
-    setTimeout(() => {
-      setSparkle((current) => (current?.key === sparkleKey ? null : current));
-    }, 460);
-    walkingCatRef.current?.walkTo(targetX, targetY);
+    handleWalkTo(targetX, targetY);
   };
-
-  useEffect(() => {
-    if (houseView !== 'outside' || !exteriorViewport.width) {
-      return;
-    }
-
-    const timeoutId = setTimeout(() => {
-      exteriorScrollRef.current?.scrollTo({
-        animated: false,
-        x: Math.max(0, (EXTERIOR_YARD_WIDTH - exteriorViewport.width) / 2),
-        y: 0,
-      });
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
-  }, [exteriorViewport.width, houseView]);
-
-  return (
-    <View style={styles.screen}>
-      <AppTopMenu icon="home-heart" title="Casa" />
-
-      <View style={styles.contentRow}>
-      <View
-        onLayout={(event) => setSceneViewportWidth(event.nativeEvent.layout.width)}
-        style={[styles.sceneArea, houseView === 'bathroom' && styles.bathroomSceneArea]}
-      >
-        {houseView === 'inside' ? (
-          <View style={styles.room}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              <ImageBackground
-                imageStyle={styles.roomBackgroundImage}
-                resizeMode="stretch"
-                source={houseImages.interiorWide}
-                style={[styles.mainRoomPane, { width: mainRoomContentWidth }]}
-              >
-                <View style={styles.floor}>
-                  <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.floorTouch} />
-                  {sparkle ? (
-                    <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
-                  ) : null}
-                  {placedFurniture.length > 0 && (
-                    <View pointerEvents="none" style={styles.furnitureStage}>
-                      {placedFurniture.map((item) => {
-                        const source = furnitureImages[item.id];
-
-                        return source ? (
-                          <View
-                            key={item.id}
-                            style={[
-                              styles.fixedFurniture,
-                              {
-                                height: furnitureSizes[item.id]?.height ?? 86,
-                                left: furnitureDefaults[item.id]?.x ?? 24,
-                                top: furnitureDefaults[item.id]?.y ?? 120,
-                                width: furnitureSizes[item.id]?.width ?? 86,
-                              },
-                            ]}
-                          >
-                            <Image resizeMode="contain" source={source} style={styles.furnitureImage} />
-                          </View>
-                        ) : null;
-                      })}
-                    </View>
-                  )}
-                  <WalkingPetCat
-                    style={styles.roomCat}
-                    equippedCatItems={progress.equippedCatItems}
-                    equippedItemId={progress.equippedItemId}
-                    initialX={112}
-                    initialY={-94}
-                    maxX={WIDE_ROOM_WIDTH - 230}
-                    maxY={-4}
-                    minY={-104}
-                    ref={walkingCatRef}
-                    size="room"
-                  />
-                </View>
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  onPress={() => navigation.navigate('Drawing')}
-                  style={styles.drawingFrameHit}
-                >
-                  <View pointerEvents="none" style={styles.drawingArtwork}>
-                    <Svg height="100%" width="100%">
-                      {progress.drawingStrokes.filter((stroke) => stroke.color !== '#ffffff').map((stroke, index) => (
-                        <Path
-                          d={drawingPointsToPath(stroke.points, 150, 150)}
-                          key={`${index}-${stroke.points.length}`}
-                          fill="none"
-                          stroke={stroke.color}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={Math.max(1.5, stroke.width * 0.4)}
-                        />
-                      ))}
-                    </Svg>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  onPress={() => setHouseView('outside')}
-                  style={[styles.insideDoorHit, { left: 660 * mainRoomScale, width: 220 * mainRoomScale }]}
-                />
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  onPress={() => setHouseView('kitchen')}
-                  style={[styles.kitchenDoorHit, { left: 278 * mainRoomScale, width: 154 * mainRoomScale }]}
-                />
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  onPress={() => setHouseView('bathroom')}
-                  style={[styles.bathroomDoorHit, { right: 42 * mainRoomScale, width: 150 * mainRoomScale }]}
-                />
-              </ImageBackground>
-            </ScrollView>
-          </View>
-        ) : houseView === 'kitchen' ? (
-          <View style={styles.room}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              <ImageBackground
-                imageStyle={styles.roomBackgroundImage}
-                resizeMode="stretch"
-                source={houseImages.kitchenInterior}
-                style={[styles.kitchenPane, { width: kitchenContentWidth }]}
-              >
-                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.kitchenTouch} />
-                {sparkle ? (
-                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
-                ) : null}
-                <WalkingPetCat
-                  style={styles.kitchenCat}
-                  equippedCatItems={progress.equippedCatItems}
-                  equippedItemId={progress.equippedItemId}
-                  initialX={320}
-                  initialY={132}
-                  maxX={KITCHEN_ROOM_WIDTH - 230}
-                  maxY={132}
-                  minY={48}
-                  ref={walkingCatRef}
-                  size="room"
-                />
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  onPress={() => setHouseView('inside')}
-                  style={[styles.kitchenExitDoorHit, { right: 22 * kitchenScale, width: 132 * kitchenScale }]}
-                />
-              </ImageBackground>
-            </ScrollView>
-          </View>
-        ) : houseView === 'bathroom' ? (
-          <View
-            onLayout={(event) => {
-              const { height, width } = event.nativeEvent.layout;
-              setBathroomViewport({ height, width });
-            }}
-            style={styles.bathroomRoom}
-          >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              <ImageBackground
-                imageStyle={styles.roomBackgroundImage}
-                resizeMode="stretch"
-                source={houseImages.bathroomInterior}
-                style={[styles.bathroomPane, { width: bathroomContentWidth }]}
-              >
-                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.bathroomTouch} />
-                {sparkle ? (
-                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
-                ) : null}
-                <WalkingPetCat
-                  style={styles.bathroomCat}
-                  equippedCatItems={progress.equippedCatItems}
-                  equippedItemId={progress.equippedItemId}
-                  initialX={360}
-                  initialY={bathroomMinY}
-                  maxX={bathroomMaxX}
-                  maxY={bathroomMaxY}
-                  minY={bathroomMinY}
-                  ref={walkingCatRef}
-                  size="room"
-                />
-                <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.bathroomExitDoorHit} />
-              </ImageBackground>
-            </ScrollView>
-          </View>
-        ) : (
-          <View
-            onLayout={(event) => {
-              setExteriorViewport(event.nativeEvent.layout);
-            }}
-            style={styles.room}
-          >
-            <ScrollView horizontal ref={exteriorScrollRef} showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              <ImageBackground
-                imageStyle={styles.roomBackgroundImage}
-                resizeMode="stretch"
-                source={houseImages.exteriorWide}
-                style={[styles.exteriorWide, { width: exteriorContentWidth }]}
-              >
-                <Pressable accessibilityLabel="Caminar hasta este lugar" onPressIn={handleFloorPress} style={styles.exteriorTouch} />
-                {sparkle ? (
-                  <SparkleBurst key={sparkle.key} size={60} style={[styles.clickSparkle, { left: sparkle.x - 30, top: sparkle.y - 30 }]} />
-                ) : null}
-                <View
-                  pointerEvents="none"
-                  style={[styles.exteriorBarn, { left: exteriorContentWidth * 0.78 - 95 + 48, top: 240 }]}
-                >
-                  <Image resizeMode="contain" source={shopCategoryImages.pets} style={styles.exteriorBarnImage} />
-                </View>
-                {placedAnimals.map((animal) => {
-                  const position = animalPositions[animal.id] ?? { x: EXTERIOR_YARD_WIDTH / 2, y: 340 };
-
-                  return (
-                    <View
-                      key={animal.id}
-                      pointerEvents="none"
-                      style={[
-                        styles.yardAnimal,
-                        animal.id === 'farm-duck' && styles.frontYardAnimal,
-                        { left: position.x * exteriorScale, top: position.y },
-                      ]}
-                    >
-                      {farmAnimalImages[animal.id] ? (
-                        <BlinkingFarmAnimal
-                          actionFrames={farmAnimalActionImages[animal.id] ?? farmAnimalGrazeImages[animal.id]}
-                          frames={farmAnimalBlinkImages[animal.id] ?? [farmAnimalImages[animal.id]]}
-                          style={[
-                            styles.yardAnimalImage,
-                            animal.id === 'farm-cow' && styles.cowYardAnimalImage,
-                            animal.id === 'farm-horse' && styles.horseYardAnimalImage,
-                          ]}
-                        />
-                      ) : (
-                        <MaterialCommunityIcons
-                          color={animal.color}
-                          name={animal.icon as keyof typeof MaterialCommunityIcons.glyphMap}
-                          size={54}
-                        />
-                      )}
-                    </View>
-                  );
-                })}
-                <View
-                  style={[
-                    styles.exteriorHouseBody,
-                    { left: exteriorContentWidth / 2 - 146, top: Math.max(160, exteriorViewport.height * 0.28) },
-                  ]}
-                >
-                  <Image resizeMode="contain" source={houseImages.cuteHouse} style={styles.houseImage} />
-                  <TouchableOpacity accessibilityRole="button" onPress={() => setHouseView('inside')} style={styles.doorTileButton} />
-                </View>
-                <WalkingPetCat
-                  style={styles.exteriorCat}
-                    equippedCatItems={progress.equippedCatItems}
-                    equippedItemId={progress.equippedItemId}
-                    initialX={Math.max(0, exteriorContentWidth / 2 - 115)}
-                    initialY={exteriorGroundMinY}
-                    maxX={Math.max(0, exteriorContentWidth - WALKING_CAT_WIDTH)}
-                    maxY={exteriorGroundMaxY}
-                    minY={exteriorGroundMinY}
-                    ref={walkingCatRef}
-                    size="room"
-                  />
-              </ImageBackground>
-            </ScrollView>
-          </View>
-        )}
+  const sceneProps = { equippedCatItems: progress.equippedCatItems, equippedItemId: progress.equippedItemId, onFloorPress: handleFloorPress, walkingCatRef, sparkle };
+  return <View style={styles.screen}>
+    <AppTopMenu icon="home-heart" title="Casa" />
+    <View style={styles.contentRow}>
+      <View onLayout={(event) => setSceneViewportWidth(event.nativeEvent.layout.width)} style={styles.sceneArea}>
+        {houseView === 'inside' ? <HouseInterior {...sceneProps} drawingStrokes={progress.drawingStrokes} onOpenBathroom={() => setHouseView('bathroom')} onOpenDrawing={() => navigation.navigate('Drawing')} onOpenKitchen={() => setHouseView('kitchen')} onOpenOutside={() => setHouseView('outside')} onWalkTo={handleWalkTo} placedFurniture={placedFurniture} /> : null}
+        {houseView === 'kitchen' ? <HouseKitchen {...sceneProps} onOpenInside={() => setHouseView('inside')} /> : null}
+        {houseView === 'bathroom' ? <HouseBathroom {...sceneProps} contentWidth={bathroomContentWidth} maxX={Math.max(0, bathroomContentWidth - WALKING_CAT_WIDTH)} maxY={bathroomViewport.height > 0 ? Math.max(Math.max(0, bathroomFloorTop - WALKING_CAT_HEIGHT), bathroomViewport.height - WALKING_CAT_HEIGHT) : 390} minY={Math.max(0, bathroomFloorTop - WALKING_CAT_HEIGHT)} onLayout={(event) => setBathroomViewport(event.nativeEvent.layout)} onOpenInside={() => setHouseView('inside')} /> : null}
+        {houseView === 'outside' ? <HouseExterior {...sceneProps} contentWidth={Math.max(960, sceneViewportWidth)} onEnterHouse={() => setHouseView('inside')} placedAnimals={placedAnimals} /> : null}
       </View>
-
-      <View style={styles.inventorySection}>
-        {houseView === 'inside' || houseView === 'outside' ? (
-          <>
-            {houseView === 'outside' ? <Text style={styles.inventoryTitle}>MASCOTAS</Text> : null}
-            <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}>
-              <View style={styles.inventoryGrid}>
-              {houseView === 'inside' && ownedFurniture.length === 0 ? (
-                <View style={styles.emptyInventory}>
-                  <Text style={styles.emptyText}>Todavia no compraste muebles.</Text>
-                </View>
-              ) : null}
-              {houseView === 'outside' && ownedAnimals.length === 0 ? (
-              <View style={styles.emptyInventory}>
-                <Text style={styles.emptyText}>Compra animalitos en la tienda para agregarlos a los corrales.</Text>
-              </View>
-              ) : null}
-              {houseView === 'inside'
-                ? ownedFurniture.map((item) => {
-                    const placed = progress.placedFurnitureIds.includes(item.id);
-
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        onPress={() => toggleFurniture(item.id)}
-                        style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
-                      >
-                        <View style={[styles.inventoryPreview, { backgroundColor: item.color }]}>
-                          {furnitureImages[item.id] ? (
-                            <Image resizeMode="contain" source={furnitureImages[item.id]} style={styles.inventoryImage} />
-                          ) : (
-                            <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={26} />
-                          )}
-                        </View>
-                        <Text style={styles.inventoryName}>{item.name.toUpperCase()}</Text>
-                      </TouchableOpacity>
-                    );
-                  })
-                : ownedAnimals.map((item) => {
-                    const placed = progress.placedAnimalIds.includes(item.id);
-
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        onPress={() => toggleAnimal(item.id)}
-                        style={[styles.inventoryCard, placed && styles.placedInventoryCard]}
-                      >
-                        <View style={[styles.inventoryPreview, styles.inventoryAnimalPreview, { backgroundColor: item.color }]}>
-                          {farmAnimalImages[item.id] ? (
-                            <Image resizeMode="contain" source={farmAnimalImages[item.id]} style={styles.inventoryAnimalImage} />
-                          ) : (
-                            <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={34} />
-                          )}
-                        </View>
-                        <Text style={styles.inventoryName}>{item.name.toUpperCase()}</Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-              </View>
-            </ScrollView>
-          </>
-        ) : null}
-      </View>
-      </View>
-      <AppBottomMenu />
+      <Inventory houseView={houseView} ownedAnimals={ownedAnimals} ownedFurniture={ownedFurniture} progress={progress} toggleAnimal={toggleAnimal} toggleFurniture={toggleFurniture} />
     </View>
-  );
+    <AppBottomMenu />
+  </View>;
 }
 
-function drawingPointsToPath(points: { x: number; y: number }[], width: number, height: number) {
-  if (points.length === 0) {
-    return '';
-  }
-
-  const [firstPoint, ...rest] = points;
-  const safeFirstPoint = {
-    x: Math.max(0, Math.min(1, firstPoint.x)),
-    y: Math.max(0, Math.min(1, firstPoint.y)),
-  };
-  return [
-    `M ${safeFirstPoint.x * width} ${safeFirstPoint.y * height}`,
-    ...rest.map((point) => {
-      const safePoint = {
-        x: Math.max(0, Math.min(1, point.x)),
-        y: Math.max(0, Math.min(1, point.y)),
-      };
-      return `L ${safePoint.x * width} ${safePoint.y * height}`;
-    }),
-  ].join(' ');
+type InventoryProps = { houseView: HouseView; ownedAnimals: typeof shopItems; ownedFurniture: typeof shopItems; progress: ProgressState; toggleAnimal: (id: string) => void; toggleFurniture: (id: string) => void };
+function Inventory({ houseView, ownedAnimals, ownedFurniture, progress, toggleAnimal, toggleFurniture }: InventoryProps) {
+  return <View style={styles.inventorySection}>{houseView === 'inside' || houseView === 'outside' ? <>
+    {houseView === 'outside' ? <View style={styles.inventoryTitleRow}><MaterialCommunityIcons color="#7d4e28" name="paw-outline" size={22} /><Text style={styles.inventoryTitle}>MASCOTAS</Text></View> : null}
+    {houseView === 'inside' ? <View style={styles.inventoryTitleRow}><MaterialCommunityIcons color="#7d4e28" name="sofa-outline" size={22} /><Text style={styles.inventoryTitle}>MUEBLES</Text></View> : null}
+    <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}><View style={styles.inventoryGrid}>
+      {houseView === 'inside' ? ownedFurniture.map((item) => <TouchableOpacity key={item.id} onPress={() => toggleFurniture(item.id)} style={[styles.inventoryCard, progress.placedFurnitureIds.includes(item.id) && styles.placedInventoryCard]}><View style={[styles.inventoryPreview, styles.inventoryFurniturePreview, { backgroundColor: item.color }]}>{furnitureImages[item.id] ? <Image resizeMode="contain" source={furnitureImages[item.id]} style={styles.inventoryImage} /> : <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={38} />}</View><Text style={styles.inventoryName}>{item.name.toUpperCase()}</Text></TouchableOpacity>) : ownedAnimals.map((item) => <TouchableOpacity key={item.id} onPress={() => toggleAnimal(item.id)} style={[styles.inventoryCard, progress.placedAnimalIds.includes(item.id) && styles.placedInventoryCard]}><View style={[styles.inventoryPreview, styles.inventoryAnimalPreview, { backgroundColor: item.color }]}>{farmAnimalImages[item.id] ? <Image resizeMode="contain" source={farmAnimalImages[item.id]} style={styles.inventoryAnimalImage} /> : <MaterialCommunityIcons color="#ffffff" name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={34} />}</View><Text style={styles.inventoryName}>{item.name.toUpperCase()}</Text></TouchableOpacity>)}
+    </View></ScrollView>
+  </> : null}</View>;
 }
