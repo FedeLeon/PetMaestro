@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  retry: { backgroundColor: '#ff7a59', borderRadius: 18, paddingHorizontal: 24, paddingVertical: 10, marginTop: 8 },
+  retryText: { color: '#fff', fontWeight: '900', fontSize: 16 },
   screen: {
     backgroundColor: '#8edcf2',
     flex: 1,

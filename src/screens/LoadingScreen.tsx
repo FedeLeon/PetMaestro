@@ -1,45 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
-import { Animated, ImageBackground, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/screens/loadingScreen.styles';
+import { uiImages } from '../data/assetImages';
 
-const loadingImage = require('../../assets/generated/loading/petmaestro-loading.png');
+type Props = { progress: number; error: boolean; onRetry: () => void };
 
-export function LoadingScreen() {
+export function LoadingScreen({ progress: loaded, error, onRetry }: Props) {
   const progress = useRef(new Animated.Value(0)).current;
-  const [percentage, setPercentage] = useState(0);
-
+  const percentage = Math.floor(Math.max(0, Math.min(1, loaded)) * 100);
   useEffect(() => {
-    const animation = Animated.timing(progress, {
-      duration: 2200,
-      toValue: 1,
-      useNativeDriver: false,
-    });
+    const animation = Animated.timing(progress, { duration: 150, toValue: loaded, useNativeDriver: false });
     animation.start();
+    return () => animation.stop();
+  }, [loaded, progress]);
 
-    const interval = setInterval(() => {
-      setPercentage((current) => Math.min(100, current + 5));
-    }, 110);
-
-    return () => {
-      animation.stop();
-      clearInterval(interval);
-    };
-  }, [progress]);
-
-  return (
-    <View style={styles.screen}>
-      <ImageBackground imageStyle={styles.background} resizeMode="cover" source={loadingImage} style={styles.screen}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>PETMAESTRO</Text>
-          <Text style={styles.subtitle}>PREPARANDO TU AVENTURA...</Text>
-          <View style={styles.progressTrack}>
-            <Animated.View
-              style={[styles.progressFill, { width: progress.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] }) }]}
-            />
-          </View>
-          <Text style={styles.percentage}>{percentage}%</Text>
+  return <View testID="game-loading" style={styles.screen}>
+    <ImageBackground imageStyle={styles.background} resizeMode="cover" source={uiImages.loading} style={styles.screen}>
+      <View style={styles.overlay}>
+        <Text style={styles.title}>PETMAESTRO</Text>
+        <Text style={styles.subtitle}>{error ? 'No pudimos cargar todo. Intentá de nuevo.' : 'PREPARANDO TU AVENTURA...'}</Text>
+        <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: percentage }} style={styles.progressTrack}>
+          <Animated.View style={[styles.progressFill, { width: progress.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] }) }]} />
         </View>
-      </ImageBackground>
-    </View>
-  );
+        <Text style={styles.percentage}>{percentage}%</Text>
+        {error && <TouchableOpacity accessibilityRole="button" onPress={onRetry} style={styles.retry}><Text style={styles.retryText}>Reintentar</Text></TouchableOpacity>}
+      </View>
+    </ImageBackground>
+  </View>;
 }

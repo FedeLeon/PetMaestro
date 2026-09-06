@@ -1,4 +1,5 @@
 import { Level, Round, ShopCategory, ShopItem, WordCard } from '../types';
+import { gardenFlowers } from './gardenContent';
 
 export const words: WordCard[] = [
   { id: 'cat', spanish: 'gato', english: 'cat', drawing: 'CAT', color: '#f6b26b' },
@@ -246,6 +247,7 @@ function addReviewRounds(level: Level): Level {
 export const levels = levelDefinitions.map(addReviewRounds);
 
 export const shopItems: ShopItem[] = [
+  ...gardenFlowers,
   { id: 'party-hat', name: 'Gorrito fiesta', price: 25, category: 'hats', target: 'cat', slot: 'head', color: '#f6b26b', label: 'GORRO', icon: 'party-popper' },
   { id: 'star-hat', name: 'Sombrero estrella', price: 34, category: 'hats', target: 'cat', slot: 'head', color: '#f1c232', label: 'STAR', icon: 'wizard-hat' },
   { id: 'blue-cap', name: 'Gorra azul', price: 29, category: 'hats', target: 'cat', slot: 'head', color: '#6fa8dc', label: 'GORRA', icon: 'hat-fedora' },
@@ -363,6 +365,7 @@ export const shopCategories: ShopCategory[] = [
     icon: 'barn',
     color: '#7fc8f8',
   },
+  { id: 'flowers', label: 'Flores', description: 'Flores para plantar y regar en el jardín.', icon: 'flower', color: '#e99fc0' },
 ];
 
 export function getWord(id: string) {

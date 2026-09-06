@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Image, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
+import { ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
 import { styles } from '../styles/components/blinkingFarmAnimal.styles';
+import { SpriteFrames } from './SpriteFrames';
 
 type BlinkingFarmAnimalProps = {
   frames: ImageSourcePropType[];
@@ -57,5 +58,5 @@ export function BlinkingFarmAnimal({ actionFrames = [], frames, style }: Blinkin
     return () => clearTimeout(timeoutId);
   }, [actionFrame, actionFrames.length, isActing]);
 
-  return <Image resizeMode="contain" source={isActing ? actionFrames[actionFrame] : frames[blinkFrame]} style={[styles.image, style]} />;
+  return <SpriteFrames sources={[...frames, ...actionFrames]} active={isActing ? frames.length + actionFrame : blinkFrame} style={[styles.image, style]} />;
 }

@@ -6,6 +6,7 @@ import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
 import { useProgress } from '../context/ProgressContext';
 import { shopCategoryImages, shopImages } from '../data/assetImages';
+import { gardenImages } from '../data/gardenContent';
 import { shopCategories, shopItems } from '../data/gameContent';
 import { styles } from '../styles/screens/shopScreen.styles';
 import { RootStackParamList } from '../types';
@@ -13,7 +14,7 @@ import { RootStackParamList } from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'Shop'>;
 const categoryPositions = [
   { x: 0.43, y: 0.34 }, { x: 0.545, y: 0.34 }, { x: 0.66, y: 0.34 }, { x: 0.775, y: 0.34 },
-  { x: 0.43, y: 0.56 }, { x: 0.545, y: 0.56 }, { x: 0.66, y: 0.56 }, { x: 0.775, y: 0.56 },
+  { x: 0.43, y: 0.56 }, { x: 0.545, y: 0.56 }, { x: 0.66, y: 0.56 }, { x: 0.775, y: 0.56 }, { x: .90, y: .56 },
 ];
 
 export function ShopScreen({ navigation }: Props) {
@@ -37,7 +38,7 @@ export function ShopScreen({ navigation }: Props) {
           style={[styles.categoryButton, { borderColor: category.color, borderRadius: 10, height: buttonSize, left: sceneLayout.width * position.x - buttonSize / 2, top: sceneLayout.height * position.y - buttonSize / 2, width: buttonSize }]}
         >
           <View style={[styles.categoryIcon, { backgroundColor: category.color, borderRadius: 7 }]}>
-            {shopCategoryImages[category.id] ? <Image resizeMode="contain" source={shopCategoryImages[category.id]} style={styles.categoryAsset} /> : <MaterialCommunityIcons color="#ffffff" name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={32} />}
+            {(category.id === 'flowers' ? gardenImages['flower-daisies'] : shopCategoryImages[category.id]) ? <Image resizeMode="contain" source={category.id === 'flowers' ? gardenImages['flower-daisies'] : shopCategoryImages[category.id]} style={styles.categoryAsset} /> : <MaterialCommunityIcons color="#ffffff" name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={32} />}
           </View>
           <Text numberOfLines={1} style={styles.categoryTitle}>{category.label.toUpperCase()}</Text>
           <Text style={styles.categoryMeta}>{ownedCount}/{itemsCount}</Text>

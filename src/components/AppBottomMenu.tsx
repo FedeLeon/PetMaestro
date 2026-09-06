@@ -7,7 +7,7 @@ import { RootStackParamList } from '../types';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
-export function AppBottomMenu() {
+export function AppBottomMenu({ onOpenHouse }: { onOpenHouse?: () => void } = {}) {
   const navigation = useNavigation<Navigation>();
   const route = useRoute();
 
@@ -27,7 +27,7 @@ export function AppBottomMenu() {
           <TouchableOpacity
             accessibilityRole="button"
             key={item.routeName}
-            onPress={() => navigation.navigate(item.routeName)}
+            onPress={() => item.routeName === 'House' && onOpenHouse ? onOpenHouse() : navigation.navigate(item.routeName)}
             style={[styles.button, active && styles.activeButton]}
           >
             <Image accessibilityLabel={item.label} resizeMode="contain" source={item.image} style={styles.icon} />

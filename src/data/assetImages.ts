@@ -6,15 +6,16 @@ export const petImages = {
     require('../../assets/generated/cat/cat-blink-03.png'),
   ],
   catWalk: [
-    require('../../assets/generated/cat/cat-walk-01.png'),
-    require('../../assets/generated/cat/cat-walk-02.png'),
-    require('../../assets/generated/cat/cat-walk-03.png'),
-    require('../../assets/generated/cat/cat-walk-04.png'),
+    require('../../assets/generated/cat/cat-walk-01-v2.png'),
+    require('../../assets/generated/cat/cat-walk-02-v2.png'),
+    require('../../assets/generated/cat/cat-walk-03-v2.png'),
+    require('../../assets/generated/cat/cat-walk-04-v2.png'),
   ],
   dressingRoom: require('../../assets/generated/pet-dressing-room.png'),
 };
 
 export const uiImages = {
+  loading: require('../../assets/generated/loading/petmaestro-loading.png'),
   toothBrushingBack: require('../../assets/generated/ui/tooth-brushing-back-v1.png'),
   clickSparkles: [
     require('../../assets/generated/ui/click-sparkle-01.png'),
@@ -191,6 +192,9 @@ export const farmAnimalActionImages: Record<string, number[]> = {
 };
 
 export const houseImages = {
+  interiorPanorama: require('../../assets/generated/house/interior-panorama-full-v2.png'),
+  bedroom: require('../../assets/generated/house/cat-bedroom-v1.png'),
+  sleepingCat: require('../../assets/generated/house/cat-sleeping-v1.png'),
   toiletWashingPaw: require('../../assets/generated/house/toilet-washing-paw-v1.png'),
   toiletFlushChain: require('../../assets/generated/house/toilet-flush-chain-v1.png'),
   toiletFlushWater: require('../../assets/generated/house/toilet-flush-water-v1.png'),

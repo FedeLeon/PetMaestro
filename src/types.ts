@@ -58,8 +58,8 @@ export type ShopItem = {
   id: string;
   name: string;
   price: number;
-  category: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
-  target: 'cat' | 'house' | 'yard';
+  category: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets' | 'flowers';
+  target: 'cat' | 'house' | 'yard' | 'garden';
   slot: 'neck' | 'head' | 'eyes' | 'body' | 'bottom' | 'feet' | 'toy' | 'furniture' | 'animal';
   color: string;
   label: string;
@@ -67,7 +67,7 @@ export type ShopItem = {
 };
 
 export type ShopCategory = {
-  id: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets';
+  id: 'hats' | 'glasses' | 'shirts' | 'bottoms' | 'shoes' | 'cat-toys' | 'furniture' | 'pets' | 'flowers';
   label: string;
   description: string;
   icon: string;
@@ -78,10 +78,12 @@ export type ProgressState = {
   unlockedLevel: number;
   coins: number;
   ownedItems: string[];
+  unlockedFoodIds: string[];
   equippedItemId: string | null;
   equippedCatItems: Partial<Record<'neck' | 'head' | 'eyes' | 'body' | 'bottom' | 'feet' | 'toy', string | null>>;
   placedFurnitureIds: string[];
   placedAnimalIds: string[];
+  flowerWateredAt: Record<string, number>;
   completedLevels: number[];
   drawingStrokes: DrawingStroke[];
   needs: PetNeeds;

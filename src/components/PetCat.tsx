@@ -4,6 +4,7 @@ import { catItemImages, petImages, uiImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
 import { styles } from '../styles/components/petCat.styles';
 import { ProgressState } from '../types';
+import { SpriteFrames } from './SpriteFrames';
 
 type PetCatProps = {
   equippedItemId: string | null;
@@ -32,6 +33,7 @@ type WalkingPetCatProps = PetCatProps & {
   minY: number;
   maxX: number;
   maxY: number;
+  onPositionChange?: (x: number, y: number) => void;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -76,9 +78,9 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large', 
 
   return (
     <View style={[styles.wrap, { transform: [{ scale }] }]}>
-      <Image
-        resizeMode="contain"
-        source={walking ? petImages.catWalk[walkFrame] : petImages.catBlink[blinkFrame]}
+      <SpriteFrames
+        sources={[...petImages.catBlink, ...petImages.catWalk]}
+        active={walking ? petImages.catBlink.length + walkFrame : blinkFrame}
         style={[styles.catImage, isRoomSize && styles.roomCatImage]}
       />
       {hat ? (
@@ -153,11 +155,13 @@ export function SuccessCelebration({ height = 160, width = 240 }: SuccessCelebra
 }
 
 export const WalkingPetCat = forwardRef<WalkingPetCatHandle, WalkingPetCatProps>(function WalkingPetCat(
-  { initialX, initialY, maxX, maxY, minY, style, ...petCatProps },
+  { initialX, initialY, maxX, maxY, minY, style, onPositionChange, ...petCatProps },
   ref,
 ) {
   const [positionX, setPositionX] = useState(initialX);
   const [positionY, setPositionY] = useState(initialY);
+  const positionCallback = useRef(onPositionChange);
+  positionCallback.current = onPositionChange;
   const positionXRef = useRef(initialX);
   const positionYRef = useRef(initialY);
   const animationFrameRef = useRef<number | null>(null);
@@ -201,6 +205,7 @@ export const WalkingPetCat = forwardRef<WalkingPetCatHandle, WalkingPetCatProps>
         positionYRef.current = nextVerticalPosition;
         setPositionX(nextPosition);
         setPositionY(nextVerticalPosition);
+        positionCallback.current?.(nextPosition, nextVerticalPosition);
 
         if (progress < 1) {
           animationFrameRef.current = requestAnimationFrame(animatePosition);

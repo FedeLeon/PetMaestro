@@ -6,6 +6,7 @@ import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
 import { useProgress } from '../context/ProgressContext';
 import { catItemImages, farmAnimalImages, furnitureImages, shopImages, uiImages } from '../data/assetImages';
+import { gardenImages } from '../data/gardenContent';
 import { shopCategories, shopItems } from '../data/gameContent';
 import { styles } from '../styles/screens/shopCategoryScreen.styles';
 import { RootStackParamList } from '../types';
@@ -25,22 +26,22 @@ export function ShopCategoryScreen({ route }: Props) {
 
   return <View style={styles.screen}>
     <AppTopMenu icon={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={category.label} />
-    <ImageBackground imageStyle={styles.backgroundImage} onLayout={(event) => setDisplayLayout(event.nativeEvent.layout)} resizeMode="stretch" source={shopImages.displayCabinet} style={styles.displayScene}>
-      <ScrollView contentContainerStyle={[styles.content, { paddingHorizontal: displayLayout.width * 0.18, paddingTop: displayLayout.height * 0.16 }]} showsVerticalScrollIndicator={false}>
+    <ImageBackground imageStyle={styles.backgroundImage} onLayout={(event) => setDisplayLayout(event.nativeEvent.layout)} resizeMode="stretch" source={shopImages.displayCabinet} style={[styles.displayScene, category.id === 'flowers' && styles.flowerScene]}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingHorizontal: displayLayout.width * (category.id === 'flowers' ? .05 : .18), paddingTop: category.id === 'flowers' ? 8 : displayLayout.height * .16 }]} showsVerticalScrollIndicator={false}>
         {message ? <Text style={styles.message}>{message}</Text> : null}
-        <View style={styles.grid}>
+        <View style={[styles.grid, category.id === 'flowers' && styles.flowerGrid]}>
           {visibleItems.map((item) => {
             const owned = progress.ownedItems.includes(item.id);
             const canBuy = progress.coins >= item.price;
-            const itemImage = item.target === 'cat' ? catItemImages[item.id] : item.target === 'yard' ? farmAnimalImages[item.id] : furnitureImages[item.id];
-            return <View key={item.id} style={styles.card}>
+            const itemImage = item.target === 'garden' ? gardenImages[item.id] : item.target === 'cat' ? catItemImages[item.id] : item.target === 'yard' ? farmAnimalImages[item.id] : furnitureImages[item.id];
+            return <View key={item.id} style={[styles.card, category.id === 'flowers' && styles.flowerCard]}>
               <View style={styles.preview}>
                 {itemImage ? <Image resizeMode="contain" source={itemImage} style={styles.previewImage} /> : <MaterialCommunityIcons color={item.color} name={item.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={42} />}
               </View>
               <Text numberOfLines={1} style={styles.itemName}>{item.name.toUpperCase()}</Text>
               {owned ? <Image accessibilityLabel="Comprado" resizeMode="contain" source={uiImages.ownedCheck} style={styles.ownedCheck} /> : <>
                 <View style={styles.price}><Text style={styles.priceText}>{item.price}</Text><Image resizeMode="contain" source={uiImages.goldenPawCoin} style={styles.priceCoin} /></View>
-                <TouchableOpacity disabled={!canBuy} onPress={() => handleBuy(item.id)} style={[styles.buyButton, !canBuy && styles.disabledButton]}><Text style={styles.buyButtonText}>COMPRAR</Text></TouchableOpacity>
+                <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Comprar ${item.name}`} disabled={!canBuy} onPress={() => handleBuy(item.id)} style={[styles.buyButton, !canBuy && styles.disabledButton]}><Text style={styles.buyButtonText}>COMPRAR</Text></TouchableOpacity>
               </>}
             </View>;
           })}

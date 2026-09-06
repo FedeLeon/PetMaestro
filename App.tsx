@@ -13,12 +13,28 @@ import { ShopCategoryScreen } from './src/screens/ShopCategoryScreen';
 import { ShopScreen } from './src/screens/ShopScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { RootStackParamList } from './src/types';
+import { preloadGameAssets } from './src/data/preloadGameAssets';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigator() {
   const { isReady } = useProgress();
   const [showLoading, setShowLoading] = useState(true);
+  const [animationsReady, setAnimationsReady] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [loadError, setLoadError] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoadError(false);
+    preloadGameAssets((loaded, total) => { if (mounted) setLoadProgress(loaded / total); }).then(() => {
+      if (mounted) setAnimationsReady(true);
+    }).catch(() => {
+      if (mounted) setLoadError(true);
+    });
+    return () => { mounted = false; };
+  }, [loadAttempt]);
 
   useEffect(() => {
     if (!isReady) {
@@ -29,8 +45,8 @@ function AppNavigator() {
     return () => clearTimeout(timeoutId);
   }, [isReady]);
 
-  if (!isReady || showLoading) {
-    return <LoadingScreen />;
+  if (!isReady || showLoading || !animationsReady) {
+    return <LoadingScreen progress={loadProgress} error={loadError} onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
   }
 
   return (
