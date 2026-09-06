@@ -11,6 +11,10 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Dress-up cat character: generated with OpenAI image generation for this project.
 - Cute cat house exterior: generated with OpenAI image generation for this project.
 - Cat bathroom interior background: generated with OpenAI image generation for this project.
+- Interactive full-screen cat bathroom background with separate sink, shower and toilet zones: generated with OpenAI image generation for this project.
+- Close-up PetMaestro cat tooth-brushing minigame background: generated with OpenAI image generation using the in-game cat asset as identity reference.
+- Cat toothpaste tube, clean toothbrush, toothpaste-loaded toothbrush and removable tooth-plaque marker: generated with OpenAI image generation for the tooth-brushing minigame.
+- Turquoise back-arrow button for the tooth-brushing minigame: generated with OpenAI image generation for this project.
 - Cat kitchen interior background: generated with OpenAI image generation for this project.
 - Wide sunny exterior yard background with corrals: generated with OpenAI image generation for this project.
 - Five cat hat accessories (crown, rainbow beanie, flower sun hat, bear hood, explorer hat): generated with OpenAI image generation for this project.
@@ -46,3 +50,6 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Three three-frame ear/wing animation sprite sets for the pig, rabbit and duck: generated with OpenAI image generation using the existing animal assets as references, then cropped into individual transparent frames.
 
 Kenney and OpenGameArt credits are not required for these CC0 assets, but attribution is appreciated by the creators.
+- Bathroom shower and seated toilet kitten scenes (`shower-cat-v1.png`, `toilet-cat-v1.png`) and transparent soap/towel tools (`bath-soap-v1.png`, `bath-towel-v1.png`): generated with the built-in OpenAI image generation tool for this project on 2026-09-05. Prompts and usage: `docs/bathroom-assets.md`.
+- Transparent shared dirt (`tooth-plaque-v2.png`), bath foam (`bath-foam-v1.png`), reusable water drop (`bath-water-drop-v1.png`) and handheld shower (`bath-hand-shower-v1.png`): generated with the built-in OpenAI image generation tool for this project. Final prompts and usage: `docs/bathroom-hygiene-assets.md`.
+- Toilet flush chain and water swirl (`toilet-flush-chain-v1.png`, `toilet-flush-water-v1.png`) and washing paw (`toilet-washing-paw-v1.png`): generated with the built-in OpenAI image generation tool for this project. Prompts and interaction: `docs/toilet-paw-assets.md`.

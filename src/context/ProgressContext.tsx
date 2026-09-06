@@ -39,6 +39,8 @@ type ProgressContextValue = {
   equipItem: (itemId: string | null) => Promise<void>;
   toggleFurniture: (itemId: string) => Promise<void>;
   toggleAnimal: (itemId: string) => Promise<void>;
+  improveHygiene: (amount: number) => Promise<void>;
+  improveBathroom: (amount: number, hygieneAmount?: number) => Promise<void>;
   saveDrawing: (strokes: ProgressState['drawingStrokes']) => Promise<void>;
   resetProgress: () => Promise<void>;
 };
@@ -220,6 +222,22 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     });
   };
 
+  const improveHygiene = async (amount: number) => {
+    await updateProgress((current) => ({
+      ...current,
+      needs: { ...current.needs, hygiene: Math.min(100, current.needs.hygiene + Math.max(0, amount)) },
+      needsUpdatedAt: Date.now(),
+    }));
+  };
+
+  const improveBathroom = async (amount: number, hygieneAmount = 0) => {
+    await updateProgress((current) => ({
+      ...current,
+      needs: { ...current.needs, bathroom: Math.min(100, current.needs.bathroom + Math.max(0, amount)), hygiene: Math.min(100, current.needs.hygiene + Math.max(0, hygieneAmount)) },
+      needsUpdatedAt: Date.now(),
+    }));
+  };
+
   const saveDrawing = async (strokes: ProgressState['drawingStrokes']) => {
     await updateProgress((current) => ({ ...current, drawingStrokes: strokes }));
   };
@@ -237,6 +255,8 @@ export function ProgressProvider({ children }: PropsWithChildren) {
       equipItem,
       toggleFurniture,
       toggleAnimal,
+      improveHygiene,
+      improveBathroom,
       saveDrawing,
       resetProgress,
     }),

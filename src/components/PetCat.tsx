@@ -8,7 +8,7 @@ import { ProgressState } from '../types';
 type PetCatProps = {
   equippedItemId: string | null;
   equippedCatItems?: ProgressState['equippedCatItems'];
-  size?: 'small' | 'large' | 'room';
+  size?: 'small' | 'large' | 'room' | 'bathroom';
   walking?: boolean;
 };
 
@@ -50,7 +50,7 @@ export function PetCat({ equippedCatItems = {}, equippedItemId, size = 'large', 
   const neck = getEquippedItem('neck');
   const toy = getEquippedItem('toy');
   const isRoomSize = size === 'room';
-  const scale = size === 'large' ? 1 : isRoomSize ? 0.75 : 0.72;
+  const scale = size === 'bathroom' ? 1.5 : size === 'large' ? 1 : isRoomSize ? 0.75 : 0.72;
 
   useEffect(() => {
     const frameDuration = blinkFrame === 0 ? 3600 : blinkFrame === 1 ? 120 : 180;

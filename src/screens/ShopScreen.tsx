@@ -12,19 +12,18 @@ import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Shop'>;
 const categoryPositions = [
-  { x: 0.4, y: 0.27 }, { x: 0.56, y: 0.27 }, { x: 0.72, y: 0.27 }, { x: 0.87, y: 0.27 },
-  { x: 0.4, y: 0.66 }, { x: 0.56, y: 0.66 }, { x: 0.72, y: 0.66 }, { x: 0.87, y: 0.66 },
+  { x: 0.43, y: 0.34 }, { x: 0.545, y: 0.34 }, { x: 0.66, y: 0.34 }, { x: 0.775, y: 0.34 },
+  { x: 0.43, y: 0.56 }, { x: 0.545, y: 0.56 }, { x: 0.66, y: 0.56 }, { x: 0.775, y: 0.56 },
 ];
 
 export function ShopScreen({ navigation }: Props) {
   const { progress } = useProgress();
   const [sceneLayout, setSceneLayout] = useState({ height: 0, width: 0 });
-  const buttonSize = Math.max(84, Math.min(132, sceneLayout.width * 0.105));
+  const buttonSize = Math.max(98, Math.min(156, sceneLayout.width * 0.126));
 
   return <View style={styles.screen}>
     <AppTopMenu icon="storefront" title="Tienda" />
     <ImageBackground imageStyle={styles.backgroundImage} onLayout={(event) => setSceneLayout(event.nativeEvent.layout)} resizeMode="stretch" source={shopImages.interior} style={styles.scene}>
-      <View pointerEvents="none" style={styles.prompt}><Text style={styles.promptText}>ELIGE UNA CATEGORIA</Text></View>
       {shopCategories.map((category, index) => {
         const position = categoryPositions[index];
         const itemsCount = shopItems.filter((item) => item.category === category.id).length;
@@ -35,9 +34,9 @@ export function ShopScreen({ navigation }: Props) {
           accessibilityRole="button"
           key={category.id}
           onPress={() => navigation.navigate('ShopCategory', { categoryId: category.id })}
-          style={[styles.categoryButton, { borderColor: category.color, borderRadius: buttonSize / 2, height: buttonSize, left: sceneLayout.width * position.x - buttonSize / 2, top: sceneLayout.height * position.y - buttonSize / 2, width: buttonSize }]}
+          style={[styles.categoryButton, { borderColor: category.color, borderRadius: 10, height: buttonSize, left: sceneLayout.width * position.x - buttonSize / 2, top: sceneLayout.height * position.y - buttonSize / 2, width: buttonSize }]}
         >
-          <View style={[styles.categoryIcon, { backgroundColor: category.color, borderRadius: buttonSize / 2 }]}>
+          <View style={[styles.categoryIcon, { backgroundColor: category.color, borderRadius: 7 }]}>
             {shopCategoryImages[category.id] ? <Image resizeMode="contain" source={shopCategoryImages[category.id]} style={styles.categoryAsset} /> : <MaterialCommunityIcons color="#ffffff" name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={32} />}
           </View>
           <Text numberOfLines={1} style={styles.categoryTitle}>{category.label.toUpperCase()}</Text>

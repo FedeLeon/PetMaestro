@@ -15,6 +15,7 @@ export const petImages = {
 };
 
 export const uiImages = {
+  toothBrushingBack: require('../../assets/generated/ui/tooth-brushing-back-v1.png'),
   clickSparkles: [
     require('../../assets/generated/ui/click-sparkle-01.png'),
     require('../../assets/generated/ui/click-sparkle-02.png'),
@@ -190,7 +191,22 @@ export const farmAnimalActionImages: Record<string, number[]> = {
 };
 
 export const houseImages = {
-  bathroomInterior: require('../../assets/generated/house/bathroom-room.png'),
+  toiletWashingPaw: require('../../assets/generated/house/toilet-washing-paw-v1.png'),
+  toiletFlushChain: require('../../assets/generated/house/toilet-flush-chain-v1.png'),
+  toiletFlushWater: require('../../assets/generated/house/toilet-flush-water-v1.png'),
+  bathFoam: require('../../assets/generated/house/bath-foam-v1.png'),
+  bathWaterDrop: require('../../assets/generated/house/bath-water-drop-v1.png'),
+  bathHandShower: require('../../assets/generated/house/bath-hand-shower-v1.png'),
+  bathSoap: require('../../assets/generated/house/bath-soap-v1.png'),
+  bathTowel: require('../../assets/generated/house/bath-towel-v1.png'),
+  showerCat: require('../../assets/generated/house/shower-cat-v1.png'),
+  toiletCat: require('../../assets/generated/house/toilet-cat-v1.png'),
+  bathroomInterior: require('../../assets/generated/house/bathroom-interactive-v2.png'),
+  toothBrushClean: require('../../assets/generated/house/toothbrush-clean-v1.png'),
+  toothBrushWithToothpaste: require('../../assets/generated/house/toothbrush-with-toothpaste-v1.png'),
+  toothBrushingCat: require('../../assets/generated/house/tooth-brushing-cat-v2.png'),
+  toothPlaque: require('../../assets/generated/house/tooth-plaque-v2.png'),
+  toothpasteCat: require('../../assets/generated/house/toothpaste-cat-v1.png'),
   cuteHouse: require('../../assets/kenney/house-2d/cute-cat-house.png'),
   exteriorWide: require('../../assets/generated/house/exterior-yard-wide.png'),
   interiorWide: require('../../assets/generated/house/interior-room-landscape-v4.png'),

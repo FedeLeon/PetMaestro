@@ -3,6 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from '../styles/screens/gameScreen.styles';
 import { useMemo, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
 import { AudioButton, useWordAudio } from '../components/AudioButton';
 import { SuccessCelebration } from '../components/PetCat';
@@ -225,6 +226,7 @@ export function GameScreen({ navigation, route }: Props) {
             </View>
           </View>
         </View>
+        <AppBottomMenu />
       </View>
     );
   }
@@ -331,6 +333,7 @@ export function GameScreen({ navigation, route }: Props) {
           <SuccessCelebration height={280} width={420} />
         </View>
       ) : null}
+      <AppBottomMenu />
     </View>
   );
 }

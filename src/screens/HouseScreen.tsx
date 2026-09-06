@@ -13,29 +13,22 @@ import { WalkingPetCatHandle } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
 import { farmAnimalImages, furnitureImages } from '../data/assetImages';
 import { shopItems } from '../data/gameContent';
-import { BATHROOM_ROOM_WIDTH, styles } from '../styles/screens/houseScreen.styles';
+import { styles } from '../styles/screens/houseScreen.styles';
 import type { ProgressState, RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
 type HouseView = 'outside' | 'inside' | 'kitchen' | 'bathroom';
-const BATHROOM_FLOOR_START_RATIO = 0.67;
-const BATHROOM_ASPECT_RATIO = 1.5;
-const WALKING_CAT_HEIGHT = 284;
-const WALKING_CAT_WIDTH = 230;
 
 export function HouseScreen({ navigation }: Props) {
   const { progress, toggleAnimal, toggleFurniture } = useProgress();
   const [houseView, setHouseView] = useState<HouseView>('outside');
   const [sceneViewportWidth, setSceneViewportWidth] = useState(0);
-  const [bathroomViewport, setBathroomViewport] = useState({ height: 0, width: 0 });
   const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
   const walkingCatRef = useRef<WalkingPetCatHandle>(null);
   const ownedFurniture = useMemo(() => shopItems.filter((item) => item.target === 'house' && progress.ownedItems.includes(item.id)), [progress.ownedItems]);
   const ownedAnimals = useMemo(() => shopItems.filter((item) => item.target === 'yard' && progress.ownedItems.includes(item.id)), [progress.ownedItems]);
   const placedFurniture = ownedFurniture.filter((item) => progress.placedFurnitureIds.includes(item.id));
   const placedAnimals = ownedAnimals.filter((item) => progress.placedAnimalIds.includes(item.id));
-  const bathroomFloorTop = bathroomViewport.height > 0 ? bathroomViewport.height * BATHROOM_FLOOR_START_RATIO : 450;
-  const bathroomContentWidth = Math.max(bathroomViewport.height > 0 ? bathroomViewport.height * BATHROOM_ASPECT_RATIO : BATHROOM_ROOM_WIDTH, sceneViewportWidth);
   const handleWalkTo = (targetX: number, targetY: number) => {
     if (!Number.isFinite(targetX) || !Number.isFinite(targetY)) return;
     const key = Date.now();
@@ -55,11 +48,11 @@ export function HouseScreen({ navigation }: Props) {
     <View style={styles.contentRow}>
       <View onLayout={(event) => setSceneViewportWidth(event.nativeEvent.layout.width)} style={styles.sceneArea}>
         {houseView === 'inside' ? <HouseInterior {...sceneProps} drawingStrokes={progress.drawingStrokes} onOpenBathroom={() => setHouseView('bathroom')} onOpenDrawing={() => navigation.navigate('Drawing')} onOpenKitchen={() => setHouseView('kitchen')} onOpenOutside={() => setHouseView('outside')} onWalkTo={handleWalkTo} placedFurniture={placedFurniture} /> : null}
-        {houseView === 'kitchen' ? <HouseKitchen {...sceneProps} onOpenInside={() => setHouseView('inside')} /> : null}
-        {houseView === 'bathroom' ? <HouseBathroom {...sceneProps} contentWidth={bathroomContentWidth} maxX={Math.max(0, bathroomContentWidth - WALKING_CAT_WIDTH)} maxY={bathroomViewport.height > 0 ? Math.max(Math.max(0, bathroomFloorTop - WALKING_CAT_HEIGHT), bathroomViewport.height - WALKING_CAT_HEIGHT) : 390} minY={Math.max(0, bathroomFloorTop - WALKING_CAT_HEIGHT)} onLayout={(event) => setBathroomViewport(event.nativeEvent.layout)} onOpenInside={() => setHouseView('inside')} /> : null}
+        {houseView === 'kitchen' ? <HouseKitchen {...sceneProps} onOpenInside={() => setHouseView('inside')} onWalkTo={handleWalkTo} /> : null}
+        {houseView === 'bathroom' ? <HouseBathroom equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} onOpenInside={() => setHouseView('inside')} /> : null}
         {houseView === 'outside' ? <HouseExterior {...sceneProps} contentWidth={Math.max(960, sceneViewportWidth)} onEnterHouse={() => setHouseView('inside')} placedAnimals={placedAnimals} /> : null}
       </View>
-      <Inventory houseView={houseView} ownedAnimals={ownedAnimals} ownedFurniture={ownedFurniture} progress={progress} toggleAnimal={toggleAnimal} toggleFurniture={toggleFurniture} />
+      {houseView === 'inside' || houseView === 'outside' ? <Inventory houseView={houseView} ownedAnimals={ownedAnimals} ownedFurniture={ownedFurniture} progress={progress} toggleAnimal={toggleAnimal} toggleFurniture={toggleFurniture} /> : null}
     </View>
     <AppBottomMenu />
   </View>;
