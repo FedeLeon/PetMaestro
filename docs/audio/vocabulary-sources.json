@@ -1,0 +1,90 @@
+[
+  {
+    "word": "bread",
+    "path": "assets/audio/en/complete/bread.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-bread.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/d/dc/En-us-bread.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.557279,
+    "bytes": 10023
+  },
+  {
+    "word": "elephant",
+    "path": "assets/audio/en/complete/elephant.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-elephant.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/f/f2/En-us-elephant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "artistHtml": "Not identified in Commons metadata; public-domain dedication",
+    "duration": 0.963628,
+    "bytes": 14413
+  },
+  {
+    "word": "lamp",
+    "path": "assets/audio/en/complete/lamp.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-lamp.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/2/20/En-us-lamp.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 1.0,
+    "bytes": 13293
+  },
+  {
+    "word": "lion",
+    "path": "assets/audio/en/complete/lion.ogg",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-lion.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/a/aa/En-us-lion.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.777868,
+    "bytes": 11969
+  },
+  {
+    "word": "monkey",
+    "path": "assets/audio/en/complete/monkey.mp3",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-monkey.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/transcoded/7/74/En-us-monkey.ogg/En-us-monkey.ogg.mp3",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.626939,
+    "bytes": 11412
+  },
+  {
+    "word": "shirt",
+    "path": "assets/audio/en/complete/shirt.mp3",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-shirt.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c7/En-us-shirt.ogg/En-us-shirt.ogg.mp3",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.705306,
+    "bytes": 15804
+  },
+  {
+    "word": "table",
+    "path": "assets/audio/en/complete/table.mp3",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-table.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/0b/En-us-table.ogg/En-us-table.ogg.mp3",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.548571,
+    "bytes": 9534
+  },
+  {
+    "word": "wave",
+    "path": "assets/audio/en/complete/wave.mp3",
+    "source": "https://commons.wikimedia.org/wiki/File:En-us-wave.ogg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/0b/En-us-wave.ogg/En-us-wave.ogg.mp3",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "artistHtml": "<a href=\"//commons.wikimedia.org/wiki/User:Dvortygirl\" title=\"User:Dvortygirl\">Dvortygirl</a>",
+    "duration": 0.783673,
+    "bytes": 12921
+  }
+]

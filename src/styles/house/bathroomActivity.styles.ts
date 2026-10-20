@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-  root: { flex: 1, minHeight: 0, minWidth: 0, marginBottom: 94, backgroundColor: '#72cbd0', overflow: 'hidden' },
+  root: { flex: 1, minHeight: 0, minWidth: 0, marginBottom: 94, backgroundColor: '#72cbd0', overflow: 'hidden', userSelect: 'none' },
   sceneImage: { width: '100%', height: '100%' },
   canvas: { position: 'absolute', overflow: 'hidden' },
   fill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },
-  controls: { position: 'absolute', top: 8, bottom: 8, right: 8, width: '23%', backgroundColor: '#fffaf0', borderRadius: 18, padding: 10, alignItems: 'center', justifyContent: 'space-evenly', gap: 4 },
+  controls: { position: 'absolute', top: 8, bottom: 8, right: 8, width: '23%', backgroundColor: '#fffaf0', borderRadius: 18 },
+  controlsContent: { flexGrow: 1, padding: 10, alignItems: 'center', justifyContent: 'space-evenly', gap: 6 },
   back: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, minHeight: 44, alignSelf: 'stretch' },
   backText: { color: '#237d75', fontWeight: '800', fontSize: 16 },
   progressGroup: { alignSelf: 'stretch', gap: 8 },
@@ -27,5 +28,5 @@ export const styles = StyleSheet.create({
   handShowerWater: { position: 'absolute', left: '11%', top: '35%', width: '38%', height: '56%' },
   privacy: { position: 'absolute', left: '12%', right: '35%', top: '43%', bottom: '13%', backgroundColor: '#83cbbf', borderColor: '#ffe9ad', borderWidth: 4, borderRadius: 16, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' },
   curtainFold: { height: '100%', width: '3%', backgroundColor: '#60b1a9' },
-  sparkle: { position: 'absolute', color: '#fff7a4', fontSize: 32, fontWeight: '900' },
+  sparkle: { position: 'absolute', width: 32, height: 32 },
 });

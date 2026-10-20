@@ -25,6 +25,7 @@ export function HouseBathroom({ equippedCatItems, equippedItemId, onOpenInside }
   const catScale = sceneHeight / 300;
   const buttonSize = Math.max(44, Math.min(68, sceneHeight * .14));
   const closeActivity = () => setActivity(null);
+  useFocusEffect(useCallback(() => () => setActivity(null), []));
   useFocusEffect(useCallback(() => {
     const listener = BackHandler.addEventListener('hardwareBackPress', () => {
       if (activity) setActivity(null);

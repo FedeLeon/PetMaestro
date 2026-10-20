@@ -1,10 +1,13 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useCallback, useRef, useState } from 'react';
 import { useProgress } from '../../context/ProgressContext';
 import { houseImages } from '../../data/assetImages';
 import { styles } from '../../styles/house/toothBrushing.styles';
 import { styles as activityStyles } from '../../styles/house/bathroomActivity.styles';
-import { ActivityProgress, BathroomActivityScene } from './BathroomActivityScene';
+import { BathroomActivityScene } from './BathroomActivityScene';
+import { SceneFinish, SceneTool } from './CareActivityScene';
+import { styles as sceneStyles } from '../../styles/house/careScene.styles';
+import { useCareActivity } from './useCareActivity';
 import { BathroomParticles } from './BathroomParticles';
 import { useBathroomTouch } from './useBathroomTouch';
 
@@ -24,6 +27,7 @@ const TEETH = [
 
 export function ToothBrushingGame({ onClose }: { onClose: () => void }) {
   const { improveHygiene } = useProgress();
+  const care = useCareActivity();
   const [hasToothpaste, setHasToothpaste] = useState(false);
   const [active, setActive] = useState(false);
   const [cursor, setCursor] = useState<Point | null>(null);
@@ -35,12 +39,11 @@ export function ToothBrushingGame({ onClose }: { onClose: () => void }) {
   const completed = dirt.every((amount) => amount === 0);
 
   const cleanAt = useCallback((x: number, y: number) => {
-    if (!active || !hasToothpaste || completedRef.current || !layout.width) return;
+    if (!care.live.current || !active || !hasToothpaste || completedRef.current || !layout.width) return;
     setCursor({ x, y });
     const point = { x: x / layout.width, y: y / layout.height };
     const previous = lastPoint.current;
-    if (!previous) { lastPoint.current = point; return; }
-    if (Math.hypot((point.x - previous.x) * layout.width, (point.y - previous.y) * layout.height) < layout.width * .006) return;
+    if (previous && Math.hypot((point.x - previous.x) * layout.width, (point.y - previous.y) * layout.height) < layout.width * .006) return;
     lastPoint.current = point;
     const next = dirtRef.current.map((amount, index) => {
       const tooth = TEETH[index];
@@ -54,20 +57,10 @@ export function ToothBrushingGame({ onClose }: { onClose: () => void }) {
       setCursor(null);
       void improveHygiene(25);
     }
-  }, [active, hasToothpaste, improveHygiene, layout]);
-  const touch = useBathroomTouch(active, cleanAt, () => { lastPoint.current = null; setCursor(null); });
+  }, [active, care.live, hasToothpaste, improveHygiene, layout]);
+  const touch = useBathroomTouch(care.active && active, cleanAt, () => { lastPoint.current = null; setCursor(null); });
 
-  return <BathroomActivityScene aspectRatio={1672 / 941} source={houseImages.toothBrushingCat} onClose={onClose} controls={<>
-    <ActivityProgress value={1 - dirt.reduce((a, b) => a + b, 0) / TEETH.length} label={completed ? '¡Dientes brillantes!' : !hasToothpaste ? '1. Poné pasta en el cepillo' : !active ? '2. Elegí el cepillo' : '3. Frotá todos los dientes'} />
-    {!completed ? <View style={styles.tools}>
-      <TouchableOpacity accessibilityLabel="Poner pasta dental en el cepillo" accessibilityRole="button" onPress={() => setHasToothpaste(true)} style={[styles.toolAction, hasToothpaste && styles.selectedTool]}>
-        <Image resizeMode="contain" source={houseImages.toothpasteCat} style={styles.toothpasteAsset} />
-      </TouchableOpacity>
-      <TouchableOpacity accessibilityLabel="Activar cepillo de dientes" accessibilityRole="button" accessibilityState={{ disabled: !hasToothpaste, selected: active }} disabled={!hasToothpaste} onPress={() => setActive(true)} style={[styles.toolAction, active && styles.selectedTool, !hasToothpaste && activityStyles.disabled]}>
-        <Image resizeMode="contain" source={hasToothpaste ? houseImages.toothBrushWithToothpaste : houseImages.toothBrushClean} style={styles.toothbrushAsset} />
-      </TouchableOpacity>
-    </View> : <><Text style={activityStyles.success}>Higiene +25</Text><TouchableOpacity accessibilityRole="button" onPress={onClose} style={activityStyles.action}><Text style={activityStyles.actionText}>¡Listo!</Text></TouchableOpacity></>}
-  </>}>
+  return <BathroomActivityScene aspectRatio={1672 / 941} source={houseImages.toothBrushingCat} onClose={onClose} value={1 - dirt.reduce((a, b) => a + b, 0) / TEETH.length} label={completed ? '¡Dientes brillantes!' : !hasToothpaste ? 'Tocá la pasta o el cepillo para empezar' : 'Frotá los dientes o tocá las manchas para limpiarlos'}>
     <View ref={touch.stageRef} testID="tooth-stage" onLayout={(event) => setLayout(event.nativeEvent.layout)} style={activityStyles.fill} {...touch.panHandlers}>
       <View pointerEvents="none" style={activityStyles.fill}>
         {TEETH.map((tooth, index) => dirt[index] > 0 ? <View key={index} style={[styles.dirtClip, { left: `${(tooth.x - tooth.width * 1.18 / 2) * 100}%`, top: `${(tooth.y - tooth.height * 1.12 / 2) * 100}%`, width: `${tooth.width * 1.18 * 100}%`, height: `${tooth.height * 1.12 * 100}%`, opacity: dirt[index] }]}><Image source={houseImages.toothPlaque} resizeMode="stretch" style={styles.plaque} /></View> : null)}
@@ -78,5 +71,9 @@ export function ToothBrushingGame({ onClose }: { onClose: () => void }) {
         {completed ? <BathroomParticles kind="sparkles" /> : null}
       </View>
     </View>
+    {!completed ? <>
+      <SceneTool label="Poner pasta dental en el cepillo" caption={hasToothpaste ? '✓ Pasta lista' : 'Pasta'} source={houseImages.toothpasteCat} style={sceneStyles.paste} selected={hasToothpaste} onPress={() => { setHasToothpaste(true); setActive(true); }} />
+      <SceneTool label="Activar cepillo de dientes" caption="Cepillo" source={hasToothpaste ? houseImages.toothBrushWithToothpaste : houseImages.toothBrushClean} style={sceneStyles.brush} selected={active} onPress={() => { setHasToothpaste(true); setActive(true); }} />
+    </> : <SceneFinish onPress={onClose} />}
   </BathroomActivityScene>;
 }

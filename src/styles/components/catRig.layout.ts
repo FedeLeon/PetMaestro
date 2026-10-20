@@ -1,0 +1,12 @@
+// Anatomical masks on the original 174×260 reference. Source pixels are never
+// edited. Overlap at the shoulders/hips keeps joints closed during articulation.
+export const catParts = {
+  head: 'M0 0H174V107H0Z',
+  torso: 'M74 104H100L108 119L111 143L117 165L120 181L113 194H60L53 181L57 162L64 140L65 119Z',
+  leftArm: 'M74 109L64 109L52 122L40 139L20 150L20 171L38 174L64 146L77 119Z',
+  rightArm: 'M99 109L109 109L123 124L134 141L153 150V172L134 174L108 146L96 119Z',
+  leftLeg: 'M53 178H88V219L89 260H32V235L52 227Z',
+  rightLeg: 'M87 178H120L119 227L139 239V260H87Z',
+  tail: 'M120 162H163V228H119L117 215L120 200Z',
+  grip: 'M36 157Q42 156 44 160L43 165Q38 167 36 163Z',
+};

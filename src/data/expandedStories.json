@@ -1,0 +1,642 @@
+{
+  "cigarra-hormiga": {
+    "title": "La cigarra y la hormiga",
+    "description": "Preparar el futuro también puede ser una tarea compartida.",
+    "author": "Fábula de Esopo · Versión PetMaestro",
+    "color": "#68964c",
+    "scenes": [
+      "Una cigarra toca música mientras una hormiga reúne semillas.",
+      "La cigarra descubre cómo ayudar a preparar la despensa.",
+      "Las amigas comparten el invierno, el alimento y la música."
+    ],
+    "moral": "Prepararnos con tiempo nos ayuda a cuidarnos. Compartir nuestras habilidades y pedir ayuda también nos permite aprender.",
+    "paragraphs": [
+      "En un rincón del jardín vivía Cira, una cigarra que encontraba canciones en todas partes. El roce de las hojas le sugería una melodía y las gotas del riego parecían marcarle el compás. Durante las mañanas de verano se acomodaba sobre una piedra tibia y tocaba su pequeño violín. Los insectos se acercaban a escucharla antes de seguir su camino.",
+      "Por el mismo sendero pasaba Anita, una hormiga que llevaba semillas hacia su casa. A veces transportaba una sola; otras veces se reunía con sus compañeras para mover una cáscara grande. Cira la saludaba desde la piedra. —¿No te querés quedar un rato? —preguntó un día—. Hoy inventé una canción nueva.",
+      "Anita apoyó su carga y escuchó el comienzo. Después miró las nubes. —Me gusta mucho —dijo—, pero tenemos que preparar la despensa. Cuando llegue el frío va a ser más difícil encontrar comida. Cira observó las flores abiertas y el cielo azul. El invierno le pareció tan lejano que no supo imaginarlo.",
+      "Los días siguientes siguió tocando. No era que quisiera dejarles todo el trabajo a los demás: simplemente pensaba que siempre habría una tarde más para organizarse. Una semilla podía esperar hasta mañana. Buscar un refugio podía esperar hasta pasado mañana. Así, sin darse cuenta, fue juntando una montaña de pequeñas tareas pendientes.",
+      "Una tarde encontró una hoja amarilla junto a su piedra. Luego vio otra y otra más. El viento soplaba diferente y las flores empezaban a cerrarse. Cira quiso guardar alimento, pero no sabía qué semillas elegir ni cómo mantenerlas secas. Probó hacer una pila y una ráfaga la desarmó enseguida.",
+      "Anita la encontró mirando la pila desparramada. —Necesito ayuda —reconoció Cira—. Dejé todo para después y ahora no sé por dónde empezar. La hormiga no se burló. Le propuso mirar primero lo que tenían y dividir el trabajo en partes pequeñas. Todavía quedaban días de buen tiempo, pero convenía aprovecharlos.",
+      "Juntas buscaron semillas sanas, apartaron las húmedas y eligieron una caja protegida de la lluvia. Anita explicó que no hacía falta cargar todo de una vez. Era mejor hacer varios viajes y descansar cuando lo necesitaran. Cira descubrió que una tarea enorme parecía más sencilla cuando sabía cuál era el próximo paso.",
+      "Al segundo viaje, una semilla redonda rodó cuesta abajo. La cigarra intentó sostenerla y también terminó sentada en el pasto. Por un momento tuvo ganas de abandonar. Anita le acercó una ramita. Con aquella pequeña palanca levantaron la semilla y la apoyaron sobre una hoja que usaron como trineo.",
+      "Al día siguiente llegaron otras hormigas. Tenían que llevar una cáscara pesada hasta la entrada del refugio y no conseguían avanzar juntas. Cira empezó a marcar un ritmo suave con el violín. —Ahora, un paso. Ahora, otro —cantó. Las hormigas coordinaron sus patas y la carga se movió por fin.",
+      "Cira comprendió que su música también podía ayudar. Eso no reemplazaba los viajes que le tocaba hacer, pero volvía más agradable el trabajo compartido. Algunas tardes tocaba una canción corta durante el descanso. Después guardaba el violín y acompañaba a Anita a buscar las últimas semillas.",
+      "Prepararon además un refugio en una raíz hueca. Taparon una rendija por donde entraba agua y dejaron una abertura pequeña para ventilar. Cira revisó su caja cada mañana. Cuando algo se humedecía, lo apartaba a tiempo. Aprendió que prepararse no era solamente amontonar cosas, sino prestarles atención.",
+      "Una noche llegó el primer viento frío. Cira escuchó la lluvia desde su refugio y sintió alivio. Tenía alimento seco, una manta de hojas y amigas cerca. Al día siguiente invitó a Anita a descansar. Compartieron unas semillas y recordaron la vez en que habían bajado una cuesta detrás de aquella bolita rebelde.",
+      "Durante el invierno siguieron visitándose cuando el tiempo lo permitía. La cigarra enseñó canciones a las hormigas y ellas le mostraron nuevas formas de organizar su despensa. Ninguna sabía hacerlo todo, pero todas tenían algo para aprender y algo para ofrecer.",
+      "Cuando volvió el calor, Cira regresó a su piedra con el violín. Tocó una canción alegre y después fue a revisar su caja. Esta vez no iba a esperar al otoño para empezar. Había descubierto que disfrutar del presente y prepararse para el futuro podían formar parte del mismo día."
+    ],
+    "questions": [
+      [
+        "¿Qué le gustaba hacer a Cira?",
+        [
+          "Tocar el violín",
+          "Construir barcos",
+          "Pintar nubes"
+        ],
+        0,
+        "Cira encontraba canciones en el jardín y las tocaba con su pequeño violín."
+      ],
+      [
+        "¿Para qué juntaba semillas Anita?",
+        [
+          "Para decorar un árbol",
+          "Para preparar alimento para el frío",
+          "Para llenar el arroyo"
+        ],
+        1,
+        "Anita preparaba la despensa antes de que llegara el invierno."
+      ],
+      [
+        "¿Qué hizo Cira cuando no supo cómo organizarse?",
+        [
+          "Escondió las semillas",
+          "Se fue del jardín",
+          "Pidió ayuda"
+        ],
+        2,
+        "Cira reconoció que necesitaba ayuda y aprendió a dividir el trabajo."
+      ],
+      [
+        "¿Cómo ayudó la música a mover una carga pesada?",
+        [
+          "Marcó un ritmo para caminar juntas",
+          "La hizo desaparecer",
+          "La convirtió en una pluma"
+        ],
+        0,
+        "El ritmo permitió que las hormigas coordinaran sus pasos."
+      ],
+      [
+        "¿Qué aprendieron las amigas?",
+        [
+          "Que nadie debe descansar",
+          "Que pueden prepararse y compartir habilidades",
+          "Que la música siempre estorba"
+        ],
+        1,
+        "Prepararse con tiempo y compartir lo que sabemos ayuda a toda la comunidad."
+      ]
+    ]
+  },
+  "zorro-ciguena": {
+    "title": "El zorro y la cigüeña",
+    "description": "Una merienda para aprender a tener en cuenta a los demás.",
+    "author": "Fábula de Esopo · Versión PetMaestro",
+    "color": "#bf7943",
+    "scenes": [
+      "Un zorro invita a una cigüeña a comer sopa en platos bajos.",
+      "La cigüeña y el zorro observan unos recipientes altos y angostos.",
+      "Los amigos preparan una mesa donde ambos pueden comer cómodos."
+    ],
+    "moral": "Tratar bien a otra persona también significa escuchar lo que necesita. No todos usamos las mismas cosas de la misma manera.",
+    "paragraphs": [
+      "Bruno, el zorro, estaba orgulloso de su huerta. Tenía zanahorias, zapallitos y una planta de perejil que perfumaba todo el patio. Una mañana decidió preparar una sopa y compartirla con Celina, la cigüeña que vivía cerca de la laguna. Le mandó una invitación y puso dos platos sobre una mesa de madera.",
+      "Celina llegó caminando con sus patas largas. Traía un ramito de flores del campo para adornar la mesa. Bruno levantó la tapa de la olla y el vapor dibujó una nube que olía delicioso. —¡Sentate! —dijo—. Hice mi receta favorita. La cigüeña agradeció y se acomodó frente al plato.",
+      "Los platos eran muy anchos y casi planos. Para Bruno resultaban perfectos: podía acercar el hocico y beber la sopa sin dificultad. Celina, en cambio, tenía un pico largo y angosto. Cada vez que intentaba tomar un poco, apenas conseguía mojar la punta. Probó desde un costado y después desde el otro.",
+      "El zorro terminó su porción y miró el plato casi lleno de su invitada. —¿No te gusta? —preguntó. Celina contestó con cuidado: —Me encanta el aroma, pero en este plato me cuesta comer. Bruno se rió sin pensarlo. —¡Qué pico tan complicado! —dijo, y siguió hablando de las verduras.",
+      "Celina se quedó callada. No estaba enojada con la sopa ni con su pico. Le molestaba que su amigo no quisiera entender el problema. Cuando se despidieron, Bruno creyó que todo había salido muy bien. Había cocinado, había puesto flores y había contado varias historias divertidas.",
+      "Unos días después, Celina lo invitó a su casa. Preparó una comida parecida y la sirvió en dos jarras altas, de cuello estrecho. Su pico llegaba hasta el fondo con facilidad. Bruno acercó el hocico a la abertura, pero no pudo meterlo. Giró la jarra, olió la sopa y miró a su amiga.",
+      "Por un instante, Celina estuvo a punto de reírse. Quería que Bruno sintiera lo mismo que ella había sentido. Sin embargo, al verlo incómodo, comprendió que devolverle una burla no iba a mejorar la merienda. Dejó su jarra en la mesa y respiró antes de hablar.",
+      "—Ahora este recipiente te resulta difícil a vos —dijo—. El otro día me pasó algo parecido con el plato. Bruno bajó las orejas. Recordó el pico de Celina intentando alcanzar la sopa y su propia risa. Recién entonces entendió que la comida podía ser rica y, aun así, la mesa no estar preparada para ambos.",
+      "—Perdoname —respondió—. Pensé que si algo era cómodo para mí tenía que ser cómodo para todos. Celina fue a buscar un cuenco ancho para el zorro. No quería dejarlo con hambre para darle una lección. Quería que pudieran conversar y disfrutar juntos.",
+      "Mientras comían, empezaron a comparar sus maneras de hacer las cosas. Celina podía alcanzar las frutas altas, pero necesitaba espacio para abrir las alas. Bruno encontraba senderos estrechos entre los arbustos, aunque no llegaba a las ramas más altas. Ninguna de esas diferencias hacía mejor a uno que al otro.",
+      "Decidieron organizar una nueva comida para varios vecinos. Esta vez no eligieron la vajilla sin preguntar. El conejo pidió un cuenco liviano. La tortuga prefirió que dejaran espacio libre alrededor de su silla. El erizo explicó que necesitaba sentarse donde sus púas no pincharan los almohadones.",
+      "Bruno anotó los pedidos en una hoja. Celina lo ayudó a mover la mesa hasta una sombra amplia. Pusieron jarras, cuencos, platos bajos y cucharas de distintos tamaños. No hacía falta que todo fuera igual para que la mesa se viera hermosa. De hecho, los colores combinados la volvieron todavía más alegre.",
+      "Durante la comida, Bruno vio al conejo levantar su cuenco y a Celina beber de su jarra. Nadie estaba ocupado luchando contra un recipiente imposible. Todos podían escuchar las historias, pedir un poco más y compartir las verduras. El zorro sintió una alegría distinta de aquella que había sentido al mostrar su primera receta.",
+      "Al despedirse, Celina le regaló otra flor del campo. Bruno la puso junto a la olla y sonrió. Desde entonces, antes de preparar una invitación, hacía una pregunta sencilla: —¿Qué necesitás para estar cómodo? Había aprendido que recibir bien a alguien empieza mucho antes de servir la sopa."
+    ],
+    "questions": [
+      [
+        "¿Qué preparó Bruno para su amiga?",
+        [
+          "Una sopa de verduras",
+          "Un barrilete",
+          "Una torta de piedras"
+        ],
+        0,
+        "Bruno cocinó una sopa con verduras de su huerta."
+      ],
+      [
+        "¿Por qué Celina no podía comer bien al principio?",
+        [
+          "No tenía hambre",
+          "El plato era demasiado plano para su pico",
+          "La sopa estaba congelada"
+        ],
+        1,
+        "Con su pico largo y angosto, Celina apenas alcanzaba la sopa del plato bajo."
+      ],
+      [
+        "¿Qué le resultó difícil usar a Bruno?",
+        [
+          "Un cuenco ancho",
+          "Una cuchara de madera",
+          "Una jarra de cuello estrecho"
+        ],
+        2,
+        "El hocico de Bruno no entraba en la abertura angosta de la jarra."
+      ],
+      [
+        "¿Qué hicieron para la comida con los vecinos?",
+        [
+          "Preguntaron qué necesitaba cada uno",
+          "Usaron una sola jarra para todos",
+          "Escondieron los platos"
+        ],
+        0,
+        "Preguntaron y prepararon recipientes y lugares cómodos para cada invitado."
+      ],
+      [
+        "¿Qué enseña esta historia?",
+        [
+          "Todos tienen que comer igual",
+          "Hay que escuchar las necesidades de los demás",
+          "Invitar amigos siempre sale mal"
+        ],
+        1,
+        "Ser amable también es tener en cuenta las diferencias y necesidades de cada persona."
+      ]
+    ]
+  },
+  "raton-campo-ciudad": {
+    "title": "Los ratones del campo y la ciudad",
+    "description": "Dos primos descubren qué los hace sentirse en casa.",
+    "author": "Fábula de Esopo · Versión PetMaestro",
+    "color": "#96734b",
+    "scenes": [
+      "Dos ratones primos comparten semillas junto a una casita de campo.",
+      "Los primos recorren una cocina grande en la ciudad.",
+      "Los ratones conversan tranquilos de nuevo junto al jardín del campo."
+    ],
+    "moral": "No todos disfrutamos de lo mismo. Podemos conocer lugares nuevos y elegir lo que nos hace sentir tranquilos, sin despreciar las elecciones de los demás.",
+    "paragraphs": [
+      "Tomás vivía debajo de una vieja casita de campo. Su puerta quedaba entre dos raíces y su ventana daba a una hilera de margaritas. Guardaba semillas en pequeñas cajas y conocía el sonido de los pájaros que cantaban al amanecer. Le gustaba esa vida tranquila, aunque a veces sentía curiosidad por lo que habría más allá de las colinas.",
+      "Su prima Rita vivía en la ciudad, detrás de una biblioteca grande. Desde su escondite veía zapatos de todos los colores y escuchaba historias que los chicos leían en voz alta. Un día decidió visitar a Tomás. Llegó al campo al atardecer, con las patas polvorientas y muchas ganas de contar novedades.",
+      "Tomás preparó una mesa sobre una hoja limpia. Puso granos de maíz, semillas de girasol y unos pedacitos de manzana. Rita agradeció, pero al mirar alrededor frunció la nariz. —En la ciudad hay mesas enormes, con comidas que ni te imaginás —comentó—. Tenés que venir a conocerlas.",
+      "Al principio Tomás sintió que su merienda era demasiado sencilla. Después recordó cuánto le había gustado elegir aquella manzana madura. Decidió aceptar la invitación, no porque su casa fuera mala, sino porque conocer otra forma de vivir podía ser una aventura. A la mañana siguiente partieron juntos.",
+      "El viaje atravesó un prado, un sendero de tierra y una calle llena de ruedas. Rita le enseñó a esperar en un lugar protegido y a seguir un paso seguro. En la ciudad todo se movía mucho más rápido. Tomás miraba las ventanas altas y las luces que se encendían incluso antes de que fuera de noche.",
+      "Cuando llegaron, Rita lo llevó hasta una cocina. Había migas de pan, un trocito de queso y una pera sobre un plato. Para dos ratones pequeños, aquello parecía un banquete. Tomás probó una miga y reconoció que era deliciosa. También le gustó escuchar la lluvia golpear un techo sin que una gota entrara en la casa.",
+      "Pero antes de que terminara de comer, una puerta se abrió. Los primos corrieron detrás de un mueble mientras unas personas entraban a guardar platos. Esperaron quietos hasta que volvió el silencio. Rita explicó que a veces había que interrumpir la merienda. Tomás sintió su corazón golpearle muy rápido.",
+      "Salieron otra vez y alcanzaron la pera. En ese momento apareció el gato de la casa, curioso por un ruido que había escuchado. No llegó a acercarse: Rita y Tomás ya estaban dentro de una rendija. El gato olfateó un rato y se fue a dormir a otro cuarto. Los primos esperaron antes de moverse.",
+      "—¿Siempre pasa algo mientras comés? —preguntó Tomás. Rita pensó un momento. —No siempre, pero conozco los escondites y estoy acostumbrada a los sonidos —respondió—. A vos todo esto te resulta nuevo. No dijo que él fuera miedoso ni que tuviera que disfrutarlo a la fuerza.",
+      "Esa noche visitaron la biblioteca. Rita le mostró dibujos de montañas y barcos que nunca había visto. Allí, detrás de los libros, el ruido de la calle parecía lejano. Tomás descubrió que la ciudad también tenía rincones serenos. Su prima, por su parte, escuchó cuánto extrañaba él el olor del pasto después de la lluvia.",
+      "Al día siguiente dieron un paseo por un patio pequeño. Conversaron sin apuro. Tomás dijo que le había gustado conocer cosas nuevas, pero que prefería volver a su casa de campo. Le resultaba más agradable una comida sencilla y tranquila que un banquete que tenía que interrumpir tantas veces.",
+      "Rita no se ofendió. Ella quería a su biblioteca, conocía a los vecinos de la pared y disfrutaba de las historias que escuchaba. Comprendió que su lugar favorito no tenía por qué ser también el de Tomás. Se ofreció a acompañarlo una parte del camino y a visitarlo de nuevo cuando pudiera.",
+      "El regreso le pareció distinto a Tomás. Seguía viendo las mismas colinas, pero ahora sabía que había elegido aquel lugar después de conocer otro. Preparó su mesa de hojas y guardó algunas semillas para la próxima visita. No eran un premio pequeño: eran parte de una vida que le gustaba.",
+      "Cuando Rita volvió semanas después, trajo una historia escuchada en la biblioteca. Tomás la recibió con una manzana y una sombra fresca. Ninguno intentó convencer al otro de mudarse. Comieron, compartieron novedades y se alegraron de saber que podían ser buenos amigos sin vivir de la misma manera."
+    ],
+    "questions": [
+      [
+        "¿Dónde vivía Tomás?",
+        [
+          "En un barco",
+          "Debajo de una casita de campo",
+          "En una nube"
+        ],
+        1,
+        "La casa de Tomás estaba entre raíces, debajo de una casita de campo."
+      ],
+      [
+        "¿Qué lugar especial le mostró Rita en la ciudad?",
+        [
+          "Una biblioteca",
+          "Una colmena",
+          "Un castillo de arena"
+        ],
+        0,
+        "Rita vivía detrás de una biblioteca y le mostró las historias que había allí."
+      ],
+      [
+        "¿Qué tuvieron que hacer durante la comida de la ciudad?",
+        [
+          "Aprender a volar",
+          "Regar un árbol",
+          "Interrumpirla para esconderse"
+        ],
+        2,
+        "Los ruidos, las personas y el gato los llevaron a esconderse varias veces."
+      ],
+      [
+        "¿Qué eligió Tomás al final?",
+        [
+          "Volver al campo, donde se sentía tranquilo",
+          "Quedarse para siempre en la cocina",
+          "Dejar de visitar a su prima"
+        ],
+        0,
+        "A Tomás le gustó conocer la ciudad, pero prefirió la tranquilidad de su hogar."
+      ],
+      [
+        "¿Qué aprendieron los primos?",
+        [
+          "Todos deben vivir en la ciudad",
+          "Pueden disfrutar cosas distintas y seguir siendo amigos",
+          "El campo es el único lugar bueno"
+        ],
+        1,
+        "Respetaron sus preferencias sin intentar que el otro eligiera lo mismo."
+      ]
+    ]
+  },
+  "viento-sol": {
+    "title": "El viento y el sol",
+    "description": "Una apuesta que termina en una lección sobre la amabilidad.",
+    "author": "Fábula de Esopo · Versión PetMaestro",
+    "color": "#d29c39",
+    "scenes": [
+      "El viento y el sol observan a una viajera con un abrigo.",
+      "El viento sopla y la viajera se envuelve más en su abrigo.",
+      "La viajera se quita el abrigo con el calor amable del sol."
+    ],
+    "moral": "La amabilidad y la paciencia pueden conseguir lo que la fuerza no logra. Antes de insistir, conviene pensar cómo se siente la otra persona.",
+    "paragraphs": [
+      "Una mañana de primavera, el viento recorría los cerros haciendo bailar las hojas. Podía llevar una semilla muy lejos, empujar las nubes y mover las aspas de un molino. Estaba tan contento con su fuerza que comenzó a contarle al sol todo lo que había hecho desde que amaneció.",
+      "El sol lo escuchó mientras iluminaba un campo de flores. También tenía tareas importantes: calentaba la tierra, ayudaba a crecer a las plantas y secaba la ropa tendida. Pero no sentía necesidad de hablar por encima de su amigo. Esperó a que el viento terminara y le regaló un brillo suave sobre las nubes.",
+      "—Yo soy el más poderoso de los dos —afirmó el viento—. Puedo mover árboles enteros. El sol observó las ramas y respondió que la fuerza no servía para resolver todas las situaciones. A veces hacía falta ser suave; otras veces, esperar. El viento quiso demostrar que eso no era cierto.",
+      "En el sendero apareció una viajera llamada Emilia. Caminaba hacia un pueblo con una mochila pequeña y un abrigo de botones grandes. Había salido temprano y todavía conservaba el fresco de la mañana. Se detuvo a mirar un mapa y ajustó la mochila antes de seguir.",
+      "—Hagamos una prueba —propuso el viento—. El que consiga que se quite el abrigo gana. El sol miró a Emilia y aceptó con una condición: no debían lastimarla ni ponerla en peligro. Aquello sería una forma de aprender, no una razón para arruinarle el camino.",
+      "El viento empezó primero. Sopló desde atrás y el borde del abrigo se levantó como una banderita. Emilia se sorprendió y cerró un botón que tenía abierto. El viento volvió a soplar, esta vez desde un costado. La viajera juntó las dos solapas sobre el pecho.",
+      "Al ver que no conseguía lo que quería, el viento aumentó su esfuerzo. Las hojas giraron sobre el sendero y la mochila de Emilia se sacudió. Ella buscó un lugar protegido detrás de una roca. Se envolvió mejor en el abrigo y esperó a que la ráfaga pasara.",
+      "El viento se quedó sin aliento. Había usado más fuerza y había logrado exactamente lo contrario: la viajera estaba más abrigada que antes. El sol no se rió de él. Le pidió que observara un detalle. —Cuando siente frío, necesita protegerse —dijo—. Cuanto más soplás, más importante se vuelve su abrigo.",
+      "Después el viento se apartó. El sol no lanzó todo su calor de golpe. Primero iluminó el borde del camino y después las piedras cercanas. Emilia salió de su refugio al sentir que el aire estaba tranquilo. Abrió el mapa y volvió a caminar hacia el pueblo.",
+      "El calor creció poco a poco, de una manera agradable. Las flores levantaron sus corolas y una mariposa apareció junto a un charco. Emilia desabrochó el primer botón. Unos pasos después se aflojó el cuello del abrigo y respiró con comodidad.",
+      "Al llegar a la sombra de un árbol, decidió quitarse el abrigo. Lo dobló y lo guardó sobre la mochila. No lo hizo porque alguien se lo hubiera arrancado ni porque tuviera miedo. Lo hizo porque ya no lo necesitaba. El viento vio la escena y se quedó pensando.",
+      "—Creí que insistir más fuerte siempre ayudaba —reconoció—. Pero no miré lo que ella estaba sintiendo. El sol le respondió que ambos tenían habilidades valiosas. Una brisa podía refrescar una tarde demasiado calurosa, y una lluvia necesitaba nubes que el viento ayudaba a mover.",
+      "Decidieron acompañar a Emilia durante el resto del camino. El sol mantuvo una temperatura amable y el viento se convirtió en una brisa liviana. La viajera llegó al pueblo contenta, encontró una fuente para llenar su botella y se sentó a descansar sin imaginar la conversación que había ocurrido sobre su cabeza.",
+      "Desde entonces, cuando el viento tenía ganas de resolver todo con una gran ráfaga, recordaba aquel abrigo. Aprendió a preguntar qué hacía falta antes de usar su fuerza. Y el sol siguió mostrándole que una ayuda tranquila puede ser tan importante como la energía más poderosa."
+    ],
+    "questions": [
+      [
+        "¿Qué querían conseguir el viento y el sol?",
+        [
+          "Que una viajera se quitara el abrigo",
+          "Que desapareciera el sendero",
+          "Que creciera una montaña"
+        ],
+        0,
+        "La prueba consistía en lograr que Emilia se quitara el abrigo."
+      ],
+      [
+        "¿Qué hizo Emilia cuando sopló más fuerte el viento?",
+        [
+          "Se quitó los zapatos",
+          "Se envolvió más en el abrigo",
+          "Abrió una ventana"
+        ],
+        1,
+        "Al sentir frío y ráfagas, Emilia cerró los botones y se protegió."
+      ],
+      [
+        "¿Cómo actuó el sol?",
+        [
+          "Escondió la mochila",
+          "Sopló con fuerza",
+          "Dio calor de a poco"
+        ],
+        2,
+        "El sol calentó el camino de manera suave y gradual."
+      ],
+      [
+        "¿Por qué Emilia se quitó finalmente el abrigo?",
+        [
+          "Porque ya no lo necesitaba con el calor",
+          "Porque lo perdió",
+          "Porque se había roto"
+        ],
+        0,
+        "Cuando estuvo cómoda y sintió calor, decidió guardar el abrigo."
+      ],
+      [
+        "¿Qué comprendió el viento?",
+        [
+          "Que siempre debe gritar",
+          "Que conviene observar y actuar con amabilidad",
+          "Que nunca puede ayudar"
+        ],
+        1,
+        "Comprendió que la fuerza no resuelve todo y que debe pensar en cómo se siente el otro."
+      ]
+    ]
+  },
+  "semilla-impaciente": {
+    "title": "La semilla impaciente",
+    "description": "Un pequeño jardín enseña a esperar sin dejar de cuidar.",
+    "author": "Cuento original de PetMaestro",
+    "color": "#5f9654",
+    "scenes": [
+      "Un conejito planta una semilla en una maceta junto a una ventana.",
+      "El conejito cuida un brote pequeño mientras un pajarito lo acompaña.",
+      "El conejito y sus amigos disfrutan de un girasol florecido."
+    ],
+    "moral": "Crecer y aprender lleva tiempo. La paciencia no significa dejar de hacer cosas, sino cuidar cada paso sin exigir resultados inmediatos.",
+    "paragraphs": [
+      "A Nico, el conejo, le gustaba mirar el jardín de su abuela. Había hojas redondas, flores pequeñas y un girasol que parecía saludar al sol. Un día encontró una semilla junto al sendero. La sostuvo entre las patas y decidió que también quería tener una planta para cuidar en su ventana.",
+      "Su abuela le dio una maceta con agujeritos abajo, tierra suelta y una regadera pequeña. Le enseñó a hacer un hueco poco profundo y a cubrir la semilla sin apretarla demasiado. Nico regó con cuidado, acomodó la maceta donde llegaba la luz y se sentó enfrente, esperando que algo ocurriera.",
+      "Pasó un minuto. Después pasaron cinco. Nico acercó la nariz a la tierra, pero todo seguía igual. —Capaz que no me escuchó —pensó. Le contó a la semilla cómo quería que fuera su flor y hasta le cantó una canción. Antes de irse a dormir volvió a mirar. No había ni una hoja.",
+      "A la mañana siguiente quiso comprobar si la semilla estaba bien. Metió una pata en la tierra y empezó a buscarla. Su abuela llegó justo a tiempo para detenerlo con suavidad. —Debajo también están pasando cosas —le explicó—. Si la sacamos a cada rato, le cuesta encontrar un lugar para crecer.",
+      "Nico tapó otra vez el huequito. Le costaba creer que algo pudiera cambiar sin que él lo viera. Decidió poner una marca en un papel por cada día de cuidado. Así, aunque la maceta pareciera igual, tendría una forma de recordar todo lo que estaba haciendo.",
+      "El segundo día encontró la tierra todavía húmeda y no agregó más agua. El tercero estaba un poco seca en la superficie, así que regó despacio. Antes pensaba que cuanto más agua echara, más rápido crecería la planta. Ahora observaba primero, porque hasta una ayuda puede ser demasiada si no prestamos atención.",
+      "Una mañana vino Pipo, un pajarito del jardín. Nico le mostró la maceta con cierta vergüenza. —Todavía no hay una flor —dijo. Pipo miró las marcas del papel. —Pero ya aprendiste a cuidarla —respondió—. Eso tampoco estaba el primer día. El conejo sonrió y agregó una marca nueva.",
+      "Después de varios días apareció una puntita verde. Era tan pequeña que Nico pensó que se trataba de un pedacito de pasto. Se agachó para mirarla sin tocarla. Al día siguiente la puntita estaba más alta y empezaba a abrirse. El conejo corrió a buscar a su abuela, feliz de poder compartir el descubrimiento.",
+      "Entonces tuvo una nueva idea: si tiraba un poquito del brote, tal vez crecería más rápido. Estiró una pata, pero se detuvo al recordar la semilla. En lugar de tocarlo, hizo un dibujo. Pintó dos hojitas y una rayita verde. Al guardar el lápiz se dio cuenta de que esperar también podía tener actividades divertidas.",
+      "El viento de una tarde dobló el tallo. Nico se asustó y quiso esconder la planta dentro de un armario. Su abuela le mostró cómo acercar la maceta a un lugar protegido que siguiera recibiendo luz. Una ramita firme sirvió de apoyo. No había que quitarle todo lo que necesitaba para evitar una sola dificultad.",
+      "Pasaron más días. El conejo dibujó hojas nuevas, midió el tallo con una cinta y aprendió a girar la maceta para que recibiera luz de ambos lados. Algunas mañanas el cambio era evidente. Otras mañanas casi no lo notaba. Mirar los dibujos anteriores le ayudaba a reconocer el camino recorrido.",
+      "Por fin apareció un pimpollo cerrado. Nico tuvo ganas de abrirlo con las patas, como si fuera un regalo envuelto. Pero esta vez no necesitó que nadie lo frenara. Lo observó, revisó la tierra y salió a jugar al jardín. La flor no tenía que estar lista para que él pudiera disfrutar de su día.",
+      "Cuando el pimpollo se abrió, unos pétalos amarillos llenaron la ventana. Pipo se posó cerca y la abuela llamó a los vecinos. Nico puso sus dibujos uno al lado del otro. En el primero solo había una maceta. En el último, un girasol. Entre los dos había muchos días que también formaban parte de la historia.",
+      "El conejo guardó algunas semillas cuando la flor terminó su ciclo. Ya sabía que las próximas plantas no aparecerían de un día para otro. Preparó nuevas macetas con sus amigos y les explicó lo que había aprendido: cuidar con atención, esperar con paciencia y celebrar los cambios pequeños también era una forma de hacer crecer la alegría."
+    ],
+    "questions": [
+      [
+        "¿Qué decidió plantar Nico?",
+        [
+          "Una piedra",
+          "Una semilla",
+          "Un botón"
+        ],
+        1,
+        "Nico encontró una semilla y quiso tener una planta para cuidar."
+      ],
+      [
+        "¿Por qué no convenía sacar la semilla todos los días?",
+        [
+          "Porque podía interrumpir su crecimiento",
+          "Porque se convertiría en una nube",
+          "Porque perdía su color"
+        ],
+        0,
+        "La semilla necesitaba quedarse en la tierra para empezar a crecer."
+      ],
+      [
+        "¿Cómo registró Nico los cambios?",
+        [
+          "Con una carrera",
+          "Con una caja de zapatos",
+          "Con marcas y dibujos"
+        ],
+        2,
+        "Nico hizo marcas por los días de cuidado y dibujos de las hojas y el tallo."
+      ],
+      [
+        "¿Qué hizo cuando el viento dobló el tallo?",
+        [
+          "Buscó un lugar protegido con luz y una ramita de apoyo",
+          "Abandonó la maceta",
+          "La guardó para siempre en un armario"
+        ],
+        0,
+        "Aprendió a proteger la planta sin quitarle la luz que necesitaba."
+      ],
+      [
+        "¿Qué aprendió Nico?",
+        [
+          "Que una planta crece si la estiramos",
+          "Que crecer necesita tiempo y cuidados",
+          "Que esperar significa no hacer nada"
+        ],
+        1,
+        "La paciencia fue acompañada de cuidados, observación y pequeños pasos."
+      ]
+    ]
+  },
+  "puente-amigos": {
+    "title": "El puente de los amigos",
+    "description": "Cuatro vecinos descubren que una buena idea puede crecer entre todos.",
+    "author": "Cuento original de PetMaestro",
+    "color": "#528f88",
+    "scenes": [
+      "Una tortuga y una ardilla miran un pequeño puente roto sobre un arroyo.",
+      "Una ardilla, una tortuga, un castor y un erizo construyen juntos un puente.",
+      "Los cuatro amigos cruzan el puente reparado con una canasta de manzanas."
+    ],
+    "moral": "Cooperar es escuchar, repartir las tareas y valorar habilidades diferentes. No hace falta que todos hagan lo mismo para construir algo juntos.",
+    "paragraphs": [
+      "En medio del bosque corría un arroyo angosto. Un puentecito de madera unía sus orillas y permitía llegar al manzanar sin dar una vuelta larguísima. Por allí pasaban la tortuga Mora, la ardilla Tina, el castor Beto y el erizo Simón. Cada uno lo usaba a su hora y casi nunca se detenían a pensar en él.",
+      "Una noche llovió mucho. Al amanecer, una rama pesada había caído sobre el puente y había roto varias tablas. Tina llegó con una canasta vacía, lista para buscar manzanas, pero tuvo que frenar. Del otro lado apareció Mora. Las dos se saludaron levantando una pata, separadas por el agua.",
+      "Tina pensó que podía saltar. Se subió a una piedra y calculó la distancia. Tal vez ella lograra cruzar, pero Mora no podía hacer lo mismo, y llevar una canasta llena sería complicado. Bajó de la piedra y miró las tablas rotas. Necesitaban una solución que sirviera para todos.",
+      "Mora propuso caminar hasta el paso de piedras que quedaba lejos. Era una buena alternativa para llegar ese día, aunque no arreglaba el problema. Decidieron pedir ayuda antes de mover nada. Colocaron unas ramas delante de la entrada para avisar que el puente no se podía usar.",
+      "Beto llegó con herramientas y Simón con una cuerda. El castor sabía unir maderas, pero enseguida explicó que no podía hacer todo solo. Había que revisar los apoyos, buscar tablas secas y medir la distancia entre las orillas. Tina ya quería empezar a clavar, pero Mora sugirió conversar primero.",
+      "Se sentaron sobre un tronco y dibujaron el arroyo en la tierra. Cada uno contó lo que necesitaba. Mora pedía una superficie pareja para no trabarse. Simón quería bordes donde nadie pudiera resbalar. Tina recordó que las canastas de manzanas eran más anchas que un caminante sin carga.",
+      "Con esas ideas hicieron un plan. Beto revisaría las uniones. Tina reuniría las maderas livianas que habían quedado fuera del agua. Simón sujetaría la cuerda y ordenaría las herramientas. Mora comprobaría las medidas y avisaría si estaban dejando algún espacio peligroso. Todos tendrían trabajo y todos podrían opinar.",
+      "La primera dificultad apareció al mover una tabla larga. Tina tiró hacia adelante mientras Simón la levantaba desde otro lado. La madera quedó atravesada entre dos raíces. Se detuvieron antes de forzarla. Beto propuso contar hasta tres para moverse al mismo tiempo, y así lograron liberarla.",
+      "Después Tina encontró una tabla brillante que parecía hermosa. Quiso usarla en el centro, pero Mora notó que estaba resbalosa por la humedad. La dejaron secar y eligieron otra para continuar. Aprendieron que una cosa puede verse bien y, sin embargo, necesitar una revisión antes de servir para una tarea.",
+      "Al mediodía estaban cansados. Simón sacó agua y unas frutas para compartir. Tina sintió que descansar iba a retrasarlos, pero Beto le mostró un clavo torcido que había puesto por apurarse. Con las patas descansadas y la cabeza atenta trabajarían mejor. Hicieron una pausa bajo la sombra.",
+      "Por la tarde armaron la superficie. Quedó una tabla un poco más alta que las otras. Mora pasó despacio por un tramo seguro y señaló el desnivel. Nadie se molestó por tener que corregirlo. Aquella observación era justo la razón por la que habían querido escuchar a todos desde el principio.",
+      "Cuando terminaron, revisaron las uniones y los bordes. Probaron primero una parte con una carga pequeña y después el puente completo con cuidado. Beto explicó que seguirían mirándolo después de cada lluvia. Construir algo útil también significaba comprometerse a mantenerlo en buenas condiciones.",
+      "El primer cruce lo hicieron juntos. Tina llevaba la canasta, Mora avanzaba por la superficie pareja, Simón observaba los bordes y Beto caminaba detrás. Llegaron al manzanar sin saltos ni tropiezos. Llenaron la canasta y dejaron algunas manzanas para los vecinos que pasarían más tarde.",
+      "De regreso, se sentaron cerca del puente y miraron su trabajo. No había sido solamente una obra del castor ni una idea de la ardilla. Tenía la paciencia de Mora, el orden de Simón, la habilidad de Beto y la energía de Tina. El arroyo seguía separando las orillas, pero ahora había una manera compartida de unirlas."
+    ],
+    "questions": [
+      [
+        "¿Qué había dañado el puente?",
+        [
+          "Una rama caída durante la lluvia",
+          "Un dibujo en la tierra",
+          "Una canasta de manzanas"
+        ],
+        0,
+        "Una rama pesada cayó durante una noche de mucha lluvia y rompió tablas."
+      ],
+      [
+        "¿Por qué Tina no resolvió todo con un salto?",
+        [
+          "Porque no quería ver a sus amigos",
+          "Porque necesitaban una solución útil para todos",
+          "Porque el arroyo había desaparecido"
+        ],
+        1,
+        "Saltar no ayudaba a Mora ni permitía cruzar cómodos con canastas."
+      ],
+      [
+        "¿Qué hicieron antes de construir?",
+        [
+          "Tiraron todas las herramientas",
+          "Corrieron sin mirar",
+          "Conversaron y dibujaron un plan"
+        ],
+        2,
+        "Escucharon las necesidades de cada uno y acordaron las tareas."
+      ],
+      [
+        "¿Qué señaló Mora en el puente nuevo?",
+        [
+          "Una tabla que sobresalía",
+          "Una flor amarilla",
+          "Una nube baja"
+        ],
+        0,
+        "Mora detectó un desnivel y pudieron corregirlo antes de usar el puente."
+      ],
+      [
+        "¿Qué permitió terminar un buen puente?",
+        [
+          "Que todos hicieran exactamente lo mismo",
+          "Combinar distintas habilidades y escucharse",
+          "Trabajar sin descansar nunca"
+        ],
+        1,
+        "La cooperación reunió ideas y habilidades diferentes para una solución compartida."
+      ]
+    ]
+  },
+  "farol-luciernaga": {
+    "title": "El farol de la luciérnaga",
+    "description": "Una luz pequeña puede ser justo la ayuda que alguien necesita.",
+    "author": "Cuento original de PetMaestro",
+    "color": "#6577a0",
+    "scenes": [
+      "Una pequeña luciérnaga observa otras luces en un claro del bosque.",
+      "La luciérnaga ilumina un sendero para acompañar a un erizo.",
+      "El erizo llega a su casa mientras las luciérnagas iluminan el claro."
+    ],
+    "moral": "Nuestro valor no depende de ser los más grandes o los más brillantes. Una ayuda pequeña, ofrecida con atención, puede hacer una gran diferencia.",
+    "paragraphs": [
+      "Luma era una luciérnaga con una luz pequeñita en la punta del cuerpo. Al anochecer la encendía y miraba cómo brillaban las gotas sobre el pasto. Le gustaba su farol, hasta que una noche llegó al claro donde se reunían otras luciérnagas. Algunas parecían dibujar estrellas enormes entre los árboles.",
+      "Luma intentó brillar como ellas. Se quedó quieta, tomó aire y apretó las patitas, pero su luz siguió siendo la misma. Una vecina se acercó a saludarla. Luma escondió la punta del cuerpo detrás de una hoja. Sentía vergüenza de tener un farol tan pequeño en medio de tantos destellos.",
+      "Durante varios días evitó las reuniones. Observaba desde lejos a sus compañeras y pensaba en todo lo que su luz no podía hacer. No iluminaba un árbol entero ni parecía una estrella grande. Se olvidó de mirar las gotas, las semillas y los pequeños caminos que antes le gustaba descubrir.",
+      "Una tarde, la mariposa Alba la encontró junto a una raíz. Le preguntó por qué estaba tan callada. Luma explicó que quería servir para algo importante. Alba le respondió que no siempre sabemos de antemano cuándo va a necesitarse lo que podemos ofrecer. A veces conviene mirar alrededor antes de compararnos.",
+      "Luma no entendió del todo, pero decidió salir a pasear. Esperó a que bajara el sol y siguió un sendero que conocía bien. Había pasado por allí muchas veces buscando gotitas de rocío. Sabía dónde sobresalían las raíces y dónde una piedra plana permitía cruzar un charquito.",
+      "Escuchó entonces un ruido suave entre las hojas. Era un erizo joven llamado Rulo. Había ido a visitar a un vecino y, al regresar, había tomado un sendero equivocado. Ahora reconocía el arroyo, pero no encontraba el camino de su casa. Se había detenido para no seguir alejándose.",
+      "—¿Querés que te acompañe? —preguntó Luma. Rulo miró su farol con alivio. No necesitaba ver todo el bosque de una vez: le alcanzaba con distinguir dónde apoyar la próxima pata. La luciérnaga encendió su luz y voló bajito, a una distancia que el erizo pudiera seguir.",
+      "Avanzaron sin apuro. Cuando había una raíz, Luma se detenía encima para mostrarla. Cuando el sendero se dividía, miraba las marcas que recordaba antes de elegir. Rulo le contó que su casa estaba cerca de un árbol con una rama doblada y que en la entrada crecían tres flores blancas.",
+      "Al llegar al charquito, la luciérnaga quiso cruzarlo volando. Entonces recordó que Rulo no tenía alas. Volvió y le mostró la piedra plana que quedaba a un costado. Esperó a que él pasara y recién después continuaron. Ayudar no era solamente mostrar su propio camino: también tenía que pensar en las patas de su compañero.",
+      "Un soplo de viento movió las hojas y tapó por un momento el sendero. Luma sintió que su luz era insuficiente otra vez. Rulo la escuchó suspirar. —Hasta acá pude caminar gracias a vos —le dijo—. Podemos detenernos y mirar con calma. No hace falta que lo resuelvas todo en un segundo.",
+      "Esperaron a que el viento bajara. Rulo olfateó el aire y reconoció el perfume de unas flores. Luma acercó el farol al suelo y encontró pequeñas huellas. Entre el olfato del erizo, la memoria de la luciérnaga y aquella luz suave, descubrieron por dónde seguir.",
+      "Por fin apareció el árbol de la rama doblada. Cerca de la entrada brillaban tres flores blancas. La familia de Rulo salió a recibirlo y agradeció a Luma por acompañarlo. El erizo contó cómo ella había señalado las raíces y esperado junto a la piedra del charco.",
+      "Cuando Luma volvió al claro, ya no escondió su farol. Su luz seguía siendo pequeña, pero ahora conocía una historia que solo había sido posible gracias a ella. Se reunió con las otras luciérnagas y les mostró el sendero de las gotas, donde cada destello se reflejaba de una forma distinta.",
+      "Desde entonces, Luma siguió disfrutando de las luces grandes sin pensar que la suya valía menos. Algunas noches ayudaba a iluminar un camino; otras veces simplemente bailaba sobre el pasto. Había aprendido que no necesitaba convertirse en otra luciérnaga para tener un lugar propio en el bosque."
+    ],
+    "questions": [
+      [
+        "¿Qué le preocupaba a Luma al principio?",
+        [
+          "Que no hubiera árboles",
+          "Que su luz fuera más pequeña que otras",
+          "Que el sol no saliera"
+        ],
+        1,
+        "Luma comparaba su farol con los de otras luciérnagas y se sentía menos valiosa."
+      ],
+      [
+        "¿Quién necesitó ayuda para volver a casa?",
+        [
+          "Un erizo llamado Rulo",
+          "Un pez del arroyo",
+          "Un zorro llamado Bruno"
+        ],
+        0,
+        "Rulo había tomado un sendero equivocado y no encontraba su casa."
+      ],
+      [
+        "¿Cómo ayudó Luma al erizo?",
+        [
+          "Lo llevó volando",
+          "Le regaló zapatos",
+          "Iluminó los próximos pasos y lo acompañó"
+        ],
+        2,
+        "Su luz permitía ver raíces, piedras y partes del sendero."
+      ],
+      [
+        "¿Qué hicieron junto al charco?",
+        [
+          "Buscaron una piedra para que Rulo pudiera cruzar",
+          "Corrieron sin mirar",
+          "Se separaron para siempre"
+        ],
+        0,
+        "Luma recordó que Rulo no tenía alas y le mostró una forma segura de pasar."
+      ],
+      [
+        "¿Qué descubrió Luma sobre su luz?",
+        [
+          "Que no servía para nada",
+          "Que podía ser valiosa aunque fuera pequeña",
+          "Que debía esconderla siempre"
+        ],
+        1,
+        "Su pequeño farol fue justo la ayuda que Rulo necesitaba para volver a casa."
+      ]
+    ]
+  },
+  "barrilete-colores": {
+    "title": "El barrilete de los colores",
+    "description": "Dos amigos aprenden a probar, escuchar y volver a empezar.",
+    "author": "Cuento original de PetMaestro",
+    "color": "#ae6579",
+    "scenes": [
+      "Un gatito naranja y una perrita gris construyen un barrilete de colores.",
+      "Los amigos desenredan con cuidado el barrilete de un arbusto bajo.",
+      "El barrilete vuela sobre un parque y los dos amigos sostienen juntos el hilo."
+    ],
+    "moral": "Equivocarse es parte de aprender. Escuchar, pedir ayuda y probar un cambio por vez nos permite seguir disfrutando del intento.",
+    "paragraphs": [
+      "Una mañana de sábado, Milo, el gatito naranja, encontró papeles de colores en una caja. Había rojo como una frutilla, azul como el cielo y amarillo como el sol de la ventana. Su amiga Uma, una perrita gris, llevó dos varillas livianas y un rollo de hilo. Decidieron construir un barrilete para llevar al parque.",
+      "Milo quería pegar todos los papeles enseguida. Uma prefería acomodar primero las varillas y ver qué forma podían hacer. Durante unos minutos hablaron los dos al mismo tiempo. Después se detuvieron y pusieron los materiales sobre una manta. Si querían trabajar juntos, necesitaban escucharse además de tener ganas.",
+      "Uma dibujó un rombo y Milo eligió cómo combinar los colores. Cruzaron las varillas, ataron la unión y recortaron un papel que cubriera la estructura. Les quedó una punta más grande que la otra. La corrigieron despacio en lugar de arrancar todo para empezar desde cero.",
+      "Cuando terminaron, el barrilete parecía una ventana pequeña llena de luz. Milo propuso ponerle una cola larguísima con todos los recortes que habían sobrado. Uma dudó, pero no estaba segura de cuánto debía medir. Prepararon una cola de tiras y dejaron algunos materiales en la caja por si después necesitaban hacer cambios.",
+      "En el parque buscaron un lugar abierto, lejos de los árboles altos y de los cables. Una persona adulta los acompañó para elegir un espacio seguro. El viento movía suavemente el pasto. Milo sostuvo el hilo y Uma levantó el barrilete. Contaron hasta tres y corrieron unos pasos.",
+      "El barrilete subió un poquito y cayó sobre el césped. Milo tiró más fuerte del hilo y volvió a correr. Esta vez dio una vuelta en el aire antes de bajar. El gatito miró los colores con decepción. Habían trabajado toda la mañana y todavía no conseguían verlo volar.",
+      "—Capaz que no somos buenos para esto —murmuró. Uma se sentó a su lado. —Todavía estamos aprendiendo —respondió—. Podemos mirar qué hace antes de decidir. Dejaron el barrilete quieto sobre la manta y observaron la cola, las varillas y el lugar donde habían atado el hilo.",
+      "En el siguiente intento, una ráfaga llevó el barrilete hacia un arbusto bajo. Se enredó entre unas ramas y quedó allí, bastante cerca del suelo. Milo quiso tirar del hilo para recuperarlo, pero Uma le pidió que esperara. Si tiraban sin mirar podían romper el papel.",
+      "Se acercaron con la persona adulta y soltaron las ramas una por una. Una tira de la cola tenía un agujero, pero el resto estaba bien. Milo sostuvo la estructura mientras Uma desenredaba el hilo. Trabajaron con paciencia, igual que habían hecho al acomodar las varillas en la casa.",
+      "De vuelta sobre la manta, un vecino que conocía de barriletes les preguntó si querían una idea. Les mostró cómo revisar el equilibrio y cambiar de a una cosa por vez. Si modificaban todo junto, después no sabrían qué había ayudado. Los amigos acortaron un poco la cola y ajustaron el punto del hilo.",
+      "Uma sostuvo el rollo esta vez y Milo levantó el barrilete. Esperaron una brisa pareja en lugar de salir corriendo de inmediato. El papel tembló, se elevó y se quedó unos segundos en el aire. Los dos se miraron con una sonrisa enorme, pero mantuvieron las patas tranquilas para no sacudir el hilo.",
+      "La brisa aflojó y el barrilete empezó a bajar. En vez de pensar que todo había salido mal otra vez, reconocieron lo que sí había funcionado. Lo apoyaron en el pasto y esperaron. Habían conseguido un vuelo corto; ahora sabían qué sensación buscar para el siguiente.",
+      "Cuando volvió el viento suave, el barrilete subió más alto. Sus cuatro colores brillaron sobre el parque y la cola dibujó una curva. Uma le ofreció el rollo a Milo. Lo sostuvieron juntos un momento y después se turnaron, atentos a la distancia y a las indicaciones de la persona que los acompañaba.",
+      "Al volver a casa guardaron el barrilete con cuidado. También guardaron la tira que se había roto, como recuerdo de todo lo que habían descubierto. No había sido un día perfecto sin tropiezos. Había sido algo mejor para ellos: un día de amistad, preguntas, intentos y un pedacito de cielo ganado con paciencia."
+    ],
+    "questions": [
+      [
+        "¿Qué construyeron Milo y Uma?",
+        [
+          "Un puente",
+          "Una casa",
+          "Un barrilete"
+        ],
+        2,
+        "Los amigos usaron papeles de colores, varillas e hilo para hacer un barrilete."
+      ],
+      [
+        "¿Qué necesitaron hacer para trabajar juntos?",
+        [
+          "Escucharse y organizar los materiales",
+          "Hablar cada vez más fuerte",
+          "Esconder las varillas"
+        ],
+        0,
+        "Al escucharse pudieron combinar las ideas de los dos."
+      ],
+      [
+        "¿Dónde probaron el barrilete?",
+        [
+          "Entre cables altos",
+          "En un espacio abierto y seguro del parque",
+          "Dentro de un armario"
+        ],
+        1,
+        "Una persona adulta los ayudó a elegir un lugar abierto, lejos de cables y árboles altos."
+      ],
+      [
+        "¿Cómo recuperaron el barrilete del arbusto?",
+        [
+          "Tiraron del hilo sin mirar",
+          "Lo dejaron allí",
+          "Desenredaron las ramas con paciencia y ayuda"
+        ],
+        2,
+        "Lo soltaron con cuidado para evitar romper el papel."
+      ],
+      [
+        "¿Qué les ayudó a aprender a volarlo?",
+        [
+          "Probar un cambio por vez y volver a intentar",
+          "Cambiar todo al mismo tiempo",
+          "Abandonar después de la primera caída"
+        ],
+        0,
+        "Observaron lo que pasaba, ajustaron una cosa por vez y esperaron una brisa adecuada."
+      ]
+    ]
+  }
+}

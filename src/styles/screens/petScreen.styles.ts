@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  wearingBadge: { position: 'absolute', right: 2, top: 2, width: 24, height: 24, borderRadius: 12, backgroundColor: '#26796e', alignItems: 'center', justifyContent: 'center' },
+  playToysButton: { minHeight: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: '#26796e', borderRadius: 12, padding: 8, margin: 6 },
+  playToysText: { fontWeight: '900', color: '#ffffff', fontSize: 14, textAlign: 'center' },
   emptyBox: {
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
@@ -18,11 +21,13 @@ export const styles = StyleSheet.create({
   },
   equippedCard: {
     borderColor: '#ff7a59',
+    backgroundColor: '#fff0df',
   },
   categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    rowGap: 8,
+    justifyContent: 'space-between',
   },
   categorySection: {
     width: '100%',
@@ -58,27 +63,31 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     aspectRatio: 1,
-    flexBasis: '47%',
-    justifyContent: 'center',
-    padding: 12,
+    width: '48%',
+    flexGrow: 0,
+    flexShrink: 0,
+    padding: 5,
   },
   itemName: {
     color: '#372413',
-    fontSize: 13,
+    fontSize: 11,
+    lineHeight: 13,
     fontWeight: '900',
-    marginTop: 6,
+    marginTop: 3,
+    minHeight: 26,
+    width: '100%',
     textAlign: 'center',
   },
   itemPreview: {
     alignItems: 'center',
     borderRadius: 8,
-    height: 52,
+    flex: 1,
+    minHeight: 0,
     justifyContent: 'center',
-    paddingHorizontal: 8,
     width: '100%',
   },
   itemPreviewImage: {
-    height: 68,
+    height: '100%',
     width: '100%',
   },
   itemsGrid: {
@@ -87,15 +96,17 @@ export const styles = StyleSheet.create({
     gap: 12,
   },
   itemsScroll: {
-    paddingBottom: 128,
+    paddingBottom: 16,
   },
   itemsSection: {
     flex: 1,
+    minWidth: 200,
     paddingHorizontal: 8,
   },
   petCatDisplay: {
-    marginBottom: 260,
-    transform: [{ scale: 2.4 }],
+    position: 'absolute',
+    width: 230,
+    height: 284,
   },
   screen: {
     backgroundColor: '#fff7e8',
@@ -103,6 +114,7 @@ export const styles = StyleSheet.create({
   },
   mainArea: {
     flex: 1,
+    marginBottom: 94,
     flexDirection: 'row',
     minHeight: 0,
   },

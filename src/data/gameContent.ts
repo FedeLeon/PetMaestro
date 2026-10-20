@@ -1,5 +1,6 @@
 import { Level, Round, ShopCategory, ShopItem, WordCard } from '../types';
 import { gardenFlowers } from './gardenContent';
+import { additionalWardrobeItems } from './additionalWardrobeItems';
 
 export const words: WordCard[] = [
   { id: 'cat', spanish: 'gato', english: 'cat', drawing: 'CAT', color: '#f6b26b' },
@@ -13,9 +14,9 @@ export const words: WordCard[] = [
   { id: 'book', spanish: 'libro', english: 'book', drawing: 'BOOK', color: '#c27ba0' },
   { id: 'star', spanish: 'estrella', english: 'star', drawing: 'STAR', color: '#f1c232' },
   { id: 'fish', spanish: 'pez', english: 'fish', drawing: 'FISH', color: '#6d9eeb' },
-  { id: 'tree', spanish: 'arbol', english: 'tree', drawing: 'TREE', color: '#6aa84f' },
+  { id: 'tree', spanish: 'árbol', english: 'tree', drawing: 'TREE', color: '#6aa84f' },
   { id: 'flower', spanish: 'flor', english: 'flower', drawing: 'FLOWER', color: '#e691b5' },
-  { id: 'bird', spanish: 'pajaro', english: 'bird', drawing: 'BIRD', color: '#8e7cc3' },
+  { id: 'bird', spanish: 'pájaro', english: 'bird', drawing: 'BIRD', color: '#8e7cc3' },
   { id: 'water', spanish: 'agua', english: 'water', drawing: 'WATER', color: '#6d9eeb' },
   { id: 'shoe', spanish: 'zapato', english: 'shoe', drawing: 'SHOE', color: '#3d85c6' },
   { id: 'hat', spanish: 'sombrero', english: 'hat', drawing: 'HAT', color: '#f6b26b' },
@@ -36,7 +37,7 @@ export const words: WordCard[] = [
   { id: 'socks', spanish: 'medias', english: 'socks', drawing: 'SOCKS', color: '#e691b5' },
   { id: 'table', spanish: 'mesa', english: 'table', drawing: 'TABLE', color: '#8d552c' },
   { id: 'lamp', spanish: 'lampara', english: 'lamp', drawing: 'LAMP', color: '#d6bf77' },
-  { id: 'lion', spanish: 'leon', english: 'lion', drawing: 'LION', color: '#f6b26b' },
+  { id: 'lion', spanish: 'león', english: 'lion', drawing: 'LION', color: '#f6b26b' },
   { id: 'elephant', spanish: 'elefante', english: 'elephant', drawing: 'ELEPHANT', color: '#9fc5e8' },
   { id: 'monkey', spanish: 'mono', english: 'monkey', drawing: 'MONKEY', color: '#b45f06' },
   { id: 'bear', spanish: 'oso', english: 'bear', drawing: 'BEAR', color: '#8d552c' },
@@ -197,7 +198,7 @@ const levelDefinitions: Level[] = [
     id: 11,
     title: 'Gran evaluacion',
     theme: 'Todo lo aprendido',
-    description: 'Mezcla palabras de todos los niveles para abrir la ciudad gatuna.',
+    description: 'Repasá lo aprendido y conocé un adelanto de Ciudad Gatuna.',
     icon: 'trophy',
     reward: 60,
     rounds: [
@@ -247,6 +248,7 @@ function addReviewRounds(level: Level): Level {
 export const levels = levelDefinitions.map(addReviewRounds);
 
 export const shopItems: ShopItem[] = [
+  ...additionalWardrobeItems,
   ...gardenFlowers,
   { id: 'party-hat', name: 'Gorrito fiesta', price: 25, category: 'hats', target: 'cat', slot: 'head', color: '#f6b26b', label: 'GORRO', icon: 'party-popper' },
   { id: 'star-hat', name: 'Sombrero estrella', price: 34, category: 'hats', target: 'cat', slot: 'head', color: '#f1c232', label: 'STAR', icon: 'wizard-hat' },
@@ -259,6 +261,7 @@ export const shopItems: ShopItem[] = [
   { id: 'flower-sunhat', name: 'Sombrero flor', price: 52, category: 'hats', target: 'cat', slot: 'head', color: '#f6b26b', label: 'FLOR', icon: 'flower' },
   { id: 'bear-hood', name: 'Capucha osito', price: 49, category: 'hats', target: 'cat', slot: 'head', color: '#76a5af', label: 'OSITO', icon: 'teddy-bear' },
   { id: 'explorer-hat', name: 'Sombrero explorador', price: 46, category: 'hats', target: 'cat', slot: 'head', color: '#45818e', label: 'EXPLORADOR', icon: 'hat-fedora' },
+  { id: 'brown-flower-hat', name: 'Sombrero marrón con flor', price: 52, category: 'hats', target: 'cat', slot: 'head', color: '#9b6037', label: 'FLOR MARRÓN', icon: 'flower' },
   { id: 'round-glasses', name: 'Anteojos redondos', price: 28, category: 'glasses', target: 'cat', slot: 'eyes', color: '#6fa8dc', label: 'LENTES', icon: 'glasses' },
   { id: 'heart-glasses', name: 'Anteojos corazon', price: 36, category: 'glasses', target: 'cat', slot: 'eyes', color: '#e06666', label: 'LOVE', icon: 'heart' },
   { id: 'star-glasses', name: 'Anteojos estrella', price: 38, category: 'glasses', target: 'cat', slot: 'eyes', color: '#ffd966', label: 'STAR', icon: 'star' },

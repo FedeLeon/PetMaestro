@@ -1,0 +1,39 @@
+import { StyleSheet } from 'react-native';
+export function careSceneFrame(width: number, height: number, aspect: number) {
+  const sceneWidth = Math.min(width, height * aspect);
+  return { width: sceneWidth, height: sceneWidth / aspect, left: (width - sceneWidth) / 2, top: (height - sceneWidth / aspect) / 2 };
+}
+export const styles = StyleSheet.create({
+  root: { flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#a8d9d4', overflow: 'hidden', userSelect: 'none' },
+  canvas: { position: 'absolute', overflow: 'hidden' },
+  image: { width: '100%', height: '100%' },
+  fill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },
+  hud: { position: 'absolute', top: 6, left: 8, right: 8, flexDirection: 'row', alignItems: 'flex-start', gap: 8, zIndex: 20 },
+  back: { width: 44, height: 44, borderRadius: 14, backgroundColor: '#fff9e9f5', alignItems: 'center', justifyContent: 'center' },
+  progressGroup: { flex: 1, backgroundColor: '#fff9e9ed', borderRadius: 14, paddingHorizontal: 12, paddingVertical: 5, gap: 4 },
+  instruction: { fontSize: 14, fontWeight: '800', textAlign: 'center', color: '#32685e' },
+  track: { height: 5, borderRadius: 6, backgroundColor: '#dbe9de', overflow: 'hidden' },
+  progress: { height: '100%', borderRadius: 6, backgroundColor: '#43b89a' },
+  tool: { position: 'absolute', minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', zIndex: 10, borderRadius: 14, borderWidth: 2, borderColor: 'transparent', padding: 3 },
+  toolSelected: { borderColor: '#efb747', backgroundColor: '#fff5d862' },
+  toolDisabled: { opacity: .6 },
+  toolImage: { flex: 1, minHeight: 24, width: '100%' },
+  toolLabel: { color: '#285f56', fontSize: 11, fontWeight: '900', textAlign: 'center', backgroundColor: '#fff7e7ed', borderRadius: 8, paddingHorizontal: 2, paddingVertical: 2 },
+  finish: { position: 'absolute', left: '74%', bottom: '11%', width: '20%', aspectRatio: 1, minWidth: 48, minHeight: 48, zIndex: 15 },
+  finishLabel: { position: 'absolute', top: '100%', left: -18, right: -18, marginTop: 2, borderRadius: 6, backgroundColor: '#fff7e7ed', paddingVertical: 2 },
+  finishText: { color: '#285f56', fontSize: 11, fontWeight: '900', textAlign: 'center' },
+  soap: { left: '56%', top: '68%', width: '14%', height: '29%' },
+  shower: { left: '71%', top: '58%', width: '14%', height: '35%' },
+  towel: { left: '85%', top: '68%', width: '14%', height: '29%' },
+  paste: { left: '64%', top: '59%', width: '16%', height: '35%' },
+  brush: { left: '81%', top: '59%', width: '18%', height: '35%' },
+  toiletStart: { left: '28%', top: '54%', width: '26%', height: '32%' },
+  pawShower: { left: '72%', top: '65%', width: '24%', height: '30%' },
+  fridgeCook: { left: '85%', top: '65%', width: '15%', height: '29%' },
+  cookingAction: { left: '74%', top: '40%', width: '24%', height: '40%' },
+  spoonHit: { position: 'absolute', left: '37%', top: '36%', width: '23%', height: '33%', minWidth: 44, minHeight: 44, zIndex: 10 },
+  ingredientTray: { position: 'absolute', left: '1%', top: '72%', width: '87%', height: '28%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, zIndex: 10 },
+  feedingSpoonHit: { position: 'absolute', left: '53%', top: '72%', width: '17%', height: '27%', minWidth: 44, minHeight: 44, zIndex: 10 },
+  feedingBowlHit: { position: 'absolute', left: '27%', top: '72%', width: '26%', height: '27%', minWidth: 44, minHeight: 44, zIndex: 10 },
+  feedingCount: { position: 'absolute', left: '70%', top: '53%', width: '28%' },
+});

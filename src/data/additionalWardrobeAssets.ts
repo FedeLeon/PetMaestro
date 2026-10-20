@@ -1,0 +1,33 @@
+export const additionalWardrobeImages: Record<string, number> = {
+  'oval-pink-glasses': require('../../assets/generated/cat-items/oval-pink-glasses-v1.png'),
+  'mint-round-glasses': require('../../assets/generated/cat-items/mint-round-glasses-v1.png'),
+  'flower-glasses': require('../../assets/generated/cat-items/flower-glasses-v1.png'),
+  'orange-sport-glasses': require('../../assets/generated/cat-items/orange-sport-glasses-v1.png'),
+  'navy-square-glasses': require('../../assets/generated/cat-items/navy-square-glasses-v1.png'),
+  'moon-glasses': require('../../assets/generated/cat-items/moon-glasses-v1.png'),
+  'orange-paw-shirt': require('../../assets/generated/cat-items/orange-paw-shirt-v1.png'),
+  'teal-leaf-shirt': require('../../assets/generated/cat-items/teal-leaf-shirt-v1.png'),
+  'purple-moon-shirt': require('../../assets/generated/cat-items/purple-moon-shirt-v1.png'),
+  'cream-flower-shirt': require('../../assets/generated/cat-items/cream-flower-shirt-v1.png'),
+  'teal-dot-skirt': require('../../assets/generated/cat-items/teal-dot-skirt-v1.png'),
+  'lavender-skirt': require('../../assets/generated/cat-items/lavender-skirt-v1.png'),
+  'lemon-star-skirt': require('../../assets/generated/cat-items/lemon-star-skirt-v1.png'),
+  'yellow-shorts': require('../../assets/generated/cat-items/yellow-shorts-v1.png'),
+  'red-shorts': require('../../assets/generated/cat-items/red-shorts-v1.png'),
+  'denim-shorts': require('../../assets/generated/cat-items/denim-shorts-v1.png'),
+  'yellow-sneakers': require('../../assets/generated/cat-items/yellow-sneakers-v1.png'),
+  'pink-trainers': require('../../assets/generated/cat-items/pink-trainers-v1.png'),
+  'turquoise-boots': require('../../assets/generated/cat-items/turquoise-boots-v1.png'),
+  'red-rain-boots': require('../../assets/generated/cat-items/red-rain-boots-v1.png'),
+  'lilac-slippers': require('../../assets/generated/cat-items/lilac-slippers-v1.png'),
+  'brown-shoes': require('../../assets/generated/cat-items/brown-shoes-v1.png'),
+};
+
+export const additionalShoeImages: Record<string, { left: number; right: number }> = {
+  'yellow-sneakers': { left: additionalWardrobeImages['yellow-sneakers'], right: additionalWardrobeImages['yellow-sneakers'] },
+  'pink-trainers': { left: additionalWardrobeImages['pink-trainers'], right: additionalWardrobeImages['pink-trainers'] },
+  'turquoise-boots': { left: additionalWardrobeImages['turquoise-boots'], right: additionalWardrobeImages['turquoise-boots'] },
+  'red-rain-boots': { left: additionalWardrobeImages['red-rain-boots'], right: additionalWardrobeImages['red-rain-boots'] },
+  'lilac-slippers': { left: additionalWardrobeImages['lilac-slippers'], right: additionalWardrobeImages['lilac-slippers'] },
+  'brown-shoes': { left: additionalWardrobeImages['brown-shoes'], right: additionalWardrobeImages['brown-shoes'] },
+};

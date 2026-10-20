@@ -1,50 +1,38 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import { Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
-import { useProgress } from '../context/ProgressContext';
-import { shopCategoryImages, shopImages } from '../data/assetImages';
-import { gardenImages } from '../data/gardenContent';
-import { shopCategories, shopItems } from '../data/gameContent';
+import { shopImages } from '../data/assetImages';
+import { shopCategories } from '../data/gameContent';
+import { useGameAudio } from '../context/AudioContext';
+import { SHOP_ASPECT, shopPortals } from '../styles/screens/shop.layout';
 import { styles } from '../styles/screens/shopScreen.styles';
 import { RootStackParamList } from '../types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Shop'>;
-const categoryPositions = [
-  { x: 0.43, y: 0.34 }, { x: 0.545, y: 0.34 }, { x: 0.66, y: 0.34 }, { x: 0.775, y: 0.34 },
-  { x: 0.43, y: 0.56 }, { x: 0.545, y: 0.56 }, { x: 0.66, y: 0.56 }, { x: 0.775, y: 0.56 }, { x: .90, y: .56 },
-];
-
-export function ShopScreen({ navigation }: Props) {
-  const { progress } = useProgress();
-  const [sceneLayout, setSceneLayout] = useState({ height: 0, width: 0 });
-  const buttonSize = Math.max(98, Math.min(156, sceneLayout.width * 0.126));
-
+export function ShopScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Shop'>) {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  const { playSound } = useGameAudio();
+  const width = Math.min(size.width, size.height * SHOP_ASPECT);
+  const height = width / SHOP_ASPECT;
   return <View style={styles.screen}>
-    <AppTopMenu icon="storefront" title="Tienda" />
-    <ImageBackground imageStyle={styles.backgroundImage} onLayout={(event) => setSceneLayout(event.nativeEvent.layout)} resizeMode="stretch" source={shopImages.interior} style={styles.scene}>
-      {shopCategories.map((category, index) => {
-        const position = categoryPositions[index];
-        const itemsCount = shopItems.filter((item) => item.category === category.id).length;
-        const ownedCount = shopItems.filter((item) => item.category === category.id && progress.ownedItems.includes(item.id)).length;
-        if (!position) return null;
-        return <TouchableOpacity
-          accessibilityLabel={`Abrir ${category.label}`}
-          accessibilityRole="button"
-          key={category.id}
-          onPress={() => navigation.navigate('ShopCategory', { categoryId: category.id })}
-          style={[styles.categoryButton, { borderColor: category.color, borderRadius: 10, height: buttonSize, left: sceneLayout.width * position.x - buttonSize / 2, top: sceneLayout.height * position.y - buttonSize / 2, width: buttonSize }]}
-        >
-          <View style={[styles.categoryIcon, { backgroundColor: category.color, borderRadius: 7 }]}>
-            {(category.id === 'flowers' ? gardenImages['flower-daisies'] : shopCategoryImages[category.id]) ? <Image resizeMode="contain" source={category.id === 'flowers' ? gardenImages['flower-daisies'] : shopCategoryImages[category.id]} style={styles.categoryAsset} /> : <MaterialCommunityIcons color="#ffffff" name={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} size={32} />}
-          </View>
-          <Text numberOfLines={1} style={styles.categoryTitle}>{category.label.toUpperCase()}</Text>
-          <Text style={styles.categoryMeta}>{ownedCount}/{itemsCount}</Text>
-        </TouchableOpacity>;
-      })}
-    </ImageBackground>
+    <AppTopMenu compact icon="storefront" title="La tienda de nuestros amigos" />
+    <View testID="shop-explore-scene" style={styles.scene} onLayout={event => setSize(event.nativeEvent.layout)}>
+      <ImageBackground testID="shop-explore-art" source={shopImages.interior} resizeMode="contain" imageStyle={styles.backgroundImage}
+        style={[styles.art, { width, height, left: (size.width - width) / 2, top: (size.height - height) / 2 }]}>
+        <View pointerEvents="none" style={styles.welcome}><MaterialCommunityIcons name="hand-pointing-up" size={24} color="#26796e" /><Text style={styles.welcomeText}>¡Tocá un objeto!</Text></View>
+        {width > 0 && shopCategories.map(category => {
+          const portal = shopPortals[category.id];
+          return <TouchableOpacity key={category.id} testID={`shop-portal-${category.id}`} accessibilityRole="button"
+            accessibilityLabel={`Abrir ${category.label}`} accessibilityHint={category.description} activeOpacity={.65}
+            onPress={() => { playSound('tap'); navigation.navigate('ShopCategory', { categoryId: category.id }); }}
+            style={[styles.portal, { left: width * (portal.x - portal.width / 2), top: height * portal.y, width: width * portal.width, height: height * portal.height }]}>
+            <View style={styles.tag}><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={.8} style={[styles.categoryTitle, { fontSize: Math.max(11, Math.min(17, width * .016)) }]}>{category.label}</Text></View>
+          </TouchableOpacity>;
+        })}
+      </ImageBackground>
+    </View>
     <AppBottomMenu />
   </View>;
 }

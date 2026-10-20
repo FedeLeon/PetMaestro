@@ -1,0 +1,95 @@
+{
+  "textLicense": "CC0-1.0",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "audioPolicy": "Los ocho cuentos nuevos son para leer; no se incorporaron audios con variantes regionales sin verificar.",
+  "stories": [
+    {
+      "id": "cigarra-hormiga",
+      "title": "La cigarra y la hormiga",
+      "author": "Fábula de Esopo · Versión PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 703,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "zorro-ciguena",
+      "title": "El zorro y la cigüeña",
+      "author": "Fábula de Esopo · Versión PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 694,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "raton-campo-ciudad",
+      "title": "Los ratones del campo y la ciudad",
+      "author": "Fábula de Esopo · Versión PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 721,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "viento-sol",
+      "title": "El viento y el sol",
+      "author": "Fábula de Esopo · Versión PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 668,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "semilla-impaciente",
+      "title": "La semilla impaciente",
+      "author": "Cuento original de PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 733,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "puente-amigos",
+      "title": "El puente de los amigos",
+      "author": "Cuento original de PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 686,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "farol-luciernaga",
+      "title": "El farol de la luciérnaga",
+      "author": "Cuento original de PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 689,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    },
+    {
+      "id": "barrilete-colores",
+      "title": "El barrilete de los colores",
+      "author": "Cuento original de PetMaestro",
+      "text": "src/data/expandedStories.json",
+      "words": 698,
+      "hasAudio": false,
+      "questions": 5,
+      "scenes": 3,
+      "rights": "Texto escrito para PetMaestro y ofrecido bajo CC0 1.0; en las versiones de fábulas se utilizó el argumento tradicional, sin copiar traducciones modernas."
+    }
+  ]
+}

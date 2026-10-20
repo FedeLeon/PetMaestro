@@ -6,6 +6,7 @@ import { useProgress } from '../../context/ProgressContext';
 import { flowerWait, gardenFlowers, gardenImages, thirstyGardenImages } from '../../data/gardenContent';
 import { houseImages } from '../../data/assetImages';
 import { styles } from '../../styles/house/garden.styles';
+import { gardenFlowerSize, gardenFlowerX } from '../../styles/house/garden.layout';
 import { PetCat } from '../PetCat';
 import { SpriteFrames } from '../SpriteFrames';
 
@@ -51,9 +52,9 @@ export function GardenFlowers({ width, height, onWateringChange }: { width: numb
     });
   };
   if (!hasFlowers) return null;
-  const flowerSize = Math.max(80, Math.min(142, height * .36));
+  const flowerSize = gardenFlowerSize(height);
   const catScale = height / 600;
-  const xFor = (index: number) => width * (.14 + index * .24);
+  const xFor = (index: number) => gardenFlowerX(index, width);
   const activeX = xFor(gardenFlowers.findIndex(flower => flower.id === active));
   return <View testID="garden-flowers" pointerEvents="box-none" style={[styles.bed, { height: flowerSize }]}>
     {gardenFlowers.map((flower, index) => {

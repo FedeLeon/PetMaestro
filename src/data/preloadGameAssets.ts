@@ -4,6 +4,7 @@ import * as images from './assetImages';
 import { gardenImages, thirstyGardenImages } from './gardenContent';
 import { kitchenFoods, kitchenImages } from './kitchenContent';
 import { wordAudio } from './audioAssets';
+import { gameSounds, musicTracks } from './gameAudio';
 import { cacheGameAsset } from '../services/cacheGameAsset';
 
 type Task = { source: number; image: boolean; assign: (value: unknown) => void };
@@ -20,6 +21,8 @@ collect(thirstyGardenImages);
 collect(kitchenImages);
 kitchenFoods.forEach(food => tasks.push({ source: food.image, image: true, assign: next => { (food as unknown as Record<string, unknown>).image = next; } }));
 collect(wordAudio, false);
+collect(gameSounds, false);
+collect(musicTracks, false);
 
 const completed = new Set<Task>();
 let fontsReady = false;

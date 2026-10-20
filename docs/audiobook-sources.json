@@ -1,0 +1,62 @@
+[
+  {
+    "id": "abeja-haragana",
+    "title": "La abeja haragana",
+    "author": "Horacio Quiroga (1878–1937)",
+    "hasAudio": true,
+    "narrator": "AnabelleC",
+    "locale": "es",
+    "localeNote": "El catálogo no informa el país ni garantiza un acento argentino.",
+    "file": "assets/audio/stories/abeja-haragana.mp3",
+    "source": "https://archive.org/download/cuentosdelaselva_1603_librivox/cuentosdelaselva_01_quiroga_64kb.mp3",
+    "catalog": "https://librivox.org/cuentos-de-la-selva-para-los-ninos-by-horacio-quiroga/",
+    "textSource": "https://es.wikisource.org/wiki/La_abeja_haragana",
+    "rights": "Grabación original LibriVox declarada de dominio público en Estados Unidos; texto original de 1918. Transcripción acreditada a Wikisource y conservada bajo CC BY-SA 4.0 cuando corresponda.",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "durationSeconds": 846.863673,
+    "bytes": 6776320,
+    "sha256": "936a9e74c7b9ef906cc822b1f00d1c044bf471c22bdf6ba7e9690b56285f9924"
+  },
+  {
+    "id": "medias-flamencos",
+    "title": "Las medias de los flamencos",
+    "author": "Horacio Quiroga (1878–1937)",
+    "hasAudio": true,
+    "narrator": "Charbelí Ramos Chávez",
+    "locale": "es-MX",
+    "localeNote": "Narradora con perfil público ubicado en México y voluntariado LibriVox; español latino, sin afirmar acento argentino.",
+    "file": "assets/audio/stories/medias-flamencos.mp3",
+    "source": "https://archive.org/download/cuentosdelaselva_1603_librivox/cuentosdelaselva_03_quiroga_64kb.mp3",
+    "catalog": "https://librivox.org/cuentos-de-la-selva-para-los-ninos-by-horacio-quiroga/",
+    "textSource": "https://es.wikisource.org/wiki/Las_medias_de_los_flamencos",
+    "rights": "Grabación original LibriVox declarada de dominio público en Estados Unidos; texto original de 1918. Transcripción acreditada a Wikisource y conservada bajo CC BY-SA 4.0 cuando corresponda.",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "durationSeconds": 647.105306,
+    "bytes": 5177856,
+    "sha256": "d1e1b4c8ae043a04d222a76cf71c69c50e729c20ebd23bb87e00ac281f43dbf0"
+  },
+  {
+    "id": "liebre-tortuga",
+    "title": "La liebre y la tortuga",
+    "author": "Fábula tradicional atribuida a Esopo; adaptación original PetMaestro",
+    "hasAudio": false,
+    "narrator": null,
+    "file": null,
+    "source": null,
+    "textSource": "src/data/longStoryTexts.json",
+    "rights": "Texto de la adaptación original para PetMaestro ofrecido bajo CC0 1.0; argumento tradicional de dominio público. No se copió ninguna traducción moderna.",
+    "rightsSource": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+    "id": "leon-raton",
+    "title": "El león y el ratón",
+    "author": "Fábula tradicional atribuida a Esopo; adaptación original PetMaestro",
+    "hasAudio": false,
+    "narrator": null,
+    "file": null,
+    "source": null,
+    "textSource": "src/data/longStoryTexts.json",
+    "rights": "Texto de la adaptación original para PetMaestro ofrecido bajo CC0 1.0; argumento tradicional de dominio público. No se copió ninguna traducción moderna.",
+    "rightsSource": "https://creativecommons.org/publicdomain/zero/1.0/"
+  }
+]

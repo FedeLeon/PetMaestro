@@ -1,8 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from '../styles/screens/gameScreen.styles';
-import { useMemo, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
 import { AudioButton, useWordAudio } from '../components/AudioButton';
@@ -12,6 +13,9 @@ import { useProgress } from '../context/ProgressContext';
 import { getWord, levels, words } from '../data/gameContent';
 import { uiImages } from '../data/assetImages';
 import { RootStackParamList } from '../types';
+import { wordAudio } from '../data/audioAssets';
+import { useGameAudio } from '../context/AudioContext';
+import { reviewLevelFor } from '../data/adventureContent';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -28,6 +32,8 @@ function MatchWordOption({ disabled, onPress, styles, word }: MatchWordOptionPro
   return (
     <TouchableOpacity
       disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={`Elegir palabra ${word.english}`}
       onPress={() => {
         playAudio();
         onPress();
@@ -51,8 +57,11 @@ function shuffle<T>(items: T[]) {
 }
 
 export function GameScreen({ navigation, route }: Props) {
-  const { completeLevel } = useProgress();
-  const level = levels.find((item) => item.id === route.params.levelId) ?? levels[0];
+  const { completeLevel, completeReview, progress, recordAnswer } = useProgress();
+  const { playSound } = useGameAudio();
+  const review = route.params.mode === 'review';
+  const [reviewLevel] = useState(() => reviewLevelFor(progress));
+  const level = review ? reviewLevel : levels.find((item) => item.id === route.params.levelId) ?? levels[0];
   const [roundIndex, setRoundIndex] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [feedback, setFeedback] = useState('');
@@ -62,6 +71,23 @@ export function GameScreen({ navigation, route }: Props) {
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
   const [selectedPictureId, setSelectedPictureId] = useState<string | null>(null);
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const locked = useRef(false);
+  const madeMistake = useRef(false);
+  const session = useRef(0);
+  const [transitioning, setTransitioning] = useState(false);
+  const entrance = useRef(new Animated.Value(1)).current;
+  useFocusEffect(useCallback(() => {
+    locked.current = false;
+    setTransitioning(false);
+    setIsCelebrating(false);
+    setFeedback('');
+    return () => {
+      session.current += 1;
+      if (timer.current) clearTimeout(timer.current);
+      entrance.stopAnimation();
+    };
+  }, [entrance]));
   const round = level.rounds[roundIndex];
   const isFinished = earnedCoins !== null;
   const displayIds = useMemo(() => {
@@ -88,16 +114,22 @@ export function GameScreen({ navigation, route }: Props) {
     const answer = getWord(round.answerId);
 
     return round.type === 'picture-choice'
-      ? 'Escucha el sonido y elige la tarjeta correcta'
-      : `Que significa: ${answer.english.toUpperCase()}?`;
+      ? round.promptLanguage === 'spanish' ? `Buscá: ${answer.spanish.toUpperCase()}` : 'Escuchá y elegí el dibujo'
+      : `¿Qué significa ${round.promptLanguage === 'english' ? answer.english.toUpperCase() : answer.spanish.toUpperCase()}?`;
   }, [round]);
 
   const finishRound = async (wasCorrect: boolean) => {
-    const nextCorrectAnswers = correctAnswers + (wasCorrect ? 1 : 0);
+    if (locked.current) return;
+    locked.current = true;
+    setTransitioning(true);
+    const currentSession = session.current;
+    const nextCorrectAnswers = correctAnswers + (wasCorrect && !madeMistake.current ? 1 : 0);
     setFeedback(wasCorrect ? '' : 'Intentalo de nuevo');
     setIsCelebrating(wasCorrect);
+    playSound('correct');
 
-    setTimeout(async () => {
+    timer.current = setTimeout(async () => {
+      if (session.current !== currentSession) return;
       setFeedback('');
       setIsCelebrating(false);
       setDisabledChoiceIds([]);
@@ -106,27 +138,36 @@ export function GameScreen({ navigation, route }: Props) {
       setMatchedIds([]);
 
       if (roundIndex + 1 >= level.rounds.length) {
-        const coins = await completeLevel(level.id, nextCorrectAnswers, level.rounds.length);
+        const coins = review ? await completeReview() : await completeLevel(level.id, nextCorrectAnswers, level.rounds.length);
+        if (session.current !== currentSession) return;
         setCorrectAnswers(nextCorrectAnswers);
         setEarnedCoins(coins);
         return;
       }
 
       setCorrectAnswers(nextCorrectAnswers);
+      madeMistake.current = false;
+      locked.current = false;
+      setTransitioning(false);
+      entrance.setValue(0);
       setRoundIndex(roundIndex + 1);
+      Animated.timing(entrance, { toValue: 1, duration: 220, useNativeDriver: true }).start();
     }, wasCorrect ? 900 : 650);
   };
 
   const handleChoice = (wordId: string) => {
-    if (isCelebrating || isFinished || round.type === 'match-pair' || disabledChoiceIds.includes(wordId)) {
+    if (locked.current || isFinished || round.type === 'match-pair' || disabledChoiceIds.includes(wordId)) {
       return;
     }
 
     const wasCorrect = wordId === round.answerId;
+    void recordAnswer(round.answerId, wasCorrect);
 
-    if (!wasCorrect && (round.type === 'picture-choice' || round.type === 'audio-choice')) {
+    if (!wasCorrect) {
+      madeMistake.current = true;
+      playSound('retry');
       setDisabledChoiceIds((currentIds) => [...currentIds, wordId]);
-      setFeedback('Intentalo de nuevo');
+      setFeedback('Probá otra tarjeta. ¡Vos podés!');
       return;
     }
 
@@ -134,8 +175,14 @@ export function GameScreen({ navigation, route }: Props) {
   };
 
   const rejectMatch = () => {
+    locked.current = true;
+    madeMistake.current = true;
+    const practicedId = selectedWordId || selectedPictureId;
+    if (practicedId) void recordAnswer(practicedId, false);
+    playSound('retry');
     setFeedback('Busca su pareja');
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
+      locked.current = false;
       setFeedback('');
       setSelectedWordId(null);
       setSelectedPictureId(null);
@@ -143,6 +190,7 @@ export function GameScreen({ navigation, route }: Props) {
   };
 
   const completeMatch = (wordId: string) => {
+    void recordAnswer(wordId, true);
     const nextMatchedIds = [...matchedIds, wordId];
     setMatchedIds(nextMatchedIds);
     setSelectedWordId(null);
@@ -150,11 +198,11 @@ export function GameScreen({ navigation, route }: Props) {
 
     if (nextMatchedIds.length === displayIds.length) {
       void finishRound(true);
-    }
+    } else playSound('correct');
   };
 
   const handleMatchWord = (wordId: string) => {
-    if (feedback || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
+    if (locked.current || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
       return;
     }
 
@@ -172,7 +220,7 @@ export function GameScreen({ navigation, route }: Props) {
   };
 
   const handleMatchPicture = (wordId: string) => {
-    if (feedback || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
+    if (locked.current || round.type !== 'match-pair' || matchedIds.includes(wordId)) {
       return;
     }
 
@@ -205,24 +253,26 @@ export function GameScreen({ navigation, route }: Props) {
   if (isFinished) {
     return (
       <View style={styles.screen}>
-        <AppTopMenu icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
+        <AppTopMenu compact icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
         <View style={styles.resultArea}>
           <View style={styles.resultCard}>
             <View style={styles.resultCardInner}>
-              <View style={styles.resultDecorations}>
-                <MaterialCommunityIcons color="#f6c445" name="paw" size={24} />
-                <MaterialCommunityIcons color="#ff7a59" name="star-four-points" size={22} />
-                <MaterialCommunityIcons color="#f6c445" name="paw" size={24} />
-              </View>
-              <Text style={styles.resultKicker}>Nivel completo</Text>
+              <View style={styles.resultSummary}>
+              <Text style={styles.resultKicker}>{review ? 'Repaso completo' : 'Nivel completo'}</Text>
               <Text style={styles.resultTitle}>{level.title}</Text>
+              <Text style={styles.progressText}>{correctAnswers} de {level.rounds.length} rondas sin ayuda</Text>
               <View style={styles.resultCoinsRow}>
                 <Text style={styles.resultCoins}>Ganaste {earnedCoins}</Text>
                 <Image resizeMode="contain" source={uiImages.goldenPawCoin} style={styles.resultCoinImage} />
               </View>
-              <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('Map')}>
+              </View>
+              <View style={styles.resultActions}>
+              <TouchableOpacity accessibilityRole="button" style={styles.primaryButton} onPress={() => navigation.navigate('Map')}>
                 <Text style={styles.primaryButtonText}>Volver al mapa</Text>
               </TouchableOpacity>
+              {!review && level.id < levels.length ? <TouchableOpacity accessibilityRole="button" style={styles.nextButton} onPress={() => navigation.replace('Game', { levelId: level.id + 1 })}><Text style={styles.nextButtonText}>Siguiente nivel →</Text></TouchableOpacity> : null}
+              {review && <TouchableOpacity accessibilityRole="button" style={styles.nextButton} onPress={() => navigation.navigate('Album')}><Text style={styles.nextButtonText}>Ver mis pegatinas ★</Text></TouchableOpacity>}
+              </View>
             </View>
           </View>
         </View>
@@ -233,19 +283,21 @@ export function GameScreen({ navigation, route }: Props) {
 
   return (
     <View style={styles.screen}>
-      <AppTopMenu icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
+      <AppTopMenu compact icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
 
-      <View style={styles.card}>
+      <Animated.View style={[styles.card, { opacity: entrance, transform: [{ translateX: entrance.interpolate({ inputRange: [0, 1], outputRange: [18, 0] }) }] }]}>
+        <View style={styles.roundHeader}><Text style={styles.progressText}>Ronda {roundIndex + 1} de {level.rounds.length}</Text><Text style={styles.progressText}>{round.type === 'match-pair' ? `${matchedIds.length}/${displayIds.length} parejas` : 'Podés volver a intentar'}</Text></View>
+        <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: level.rounds.length, now: roundIndex }} style={styles.progressTrack}><View style={[styles.progressFill, { width: `${roundIndex / level.rounds.length * 100}%` }]} /></View>
         <View style={styles.promptRow}>
-          <Text style={styles.prompt}>{prompt}</Text>
+          <Text style={styles.prompt}>{round.type === 'picture-choice' && round.promptLanguage === 'english' && !wordAudio[round.answerId] ? `Buscá: ${getWord(round.answerId).english.toUpperCase()}` : prompt}</Text>
           {playRoundPrompt()}
         </View>
         {round.type === 'audio-choice' ? (
           <View style={styles.audioPromptDrawing}>
-            <WordDrawing word={getWord(round.answerId)} />
+            <WordDrawing word={getWord(round.answerId)} fit />
           </View>
         ) : null}
-        {feedback ? <Text style={styles.feedback}>{feedback}</Text> : null}
+        <Text accessibilityLiveRegion="polite" style={styles.feedback}>{feedback || ' '}</Text>
 
         {round.type === 'match-pair' ? (
           <View style={styles.matchBoard}>
@@ -263,7 +315,7 @@ export function GameScreen({ navigation, route }: Props) {
                       matched && styles.matched,
                     ]}
                   >
-                    <MatchWordOption disabled={matched} onPress={() => handleMatchWord(wordId)} styles={styles} word={word} />
+                    <MatchWordOption disabled={matched || transitioning} onPress={() => handleMatchWord(wordId)} styles={styles} word={word} />
                     <View style={styles.matchAudioButton}>
                       <AudioButton word={word} />
                     </View>
@@ -281,9 +333,9 @@ export function GameScreen({ navigation, route }: Props) {
                     key={wordId}
                     style={[styles.matchPicture, selectedPictureId === wordId && styles.selectedMatch, matched && styles.matched]}
                   >
-                    <TouchableOpacity disabled={matched} onPress={() => handleMatchPicture(wordId)} style={styles.matchPictureMain}>
+                    <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Elegir dibujo ${word.spanish}`} disabled={matched || transitioning} onPress={() => handleMatchPicture(wordId)} style={styles.matchPictureMain}>
                       <View style={styles.matchPictureDrawing}>
-                        <WordDrawing word={word} small />
+                        <WordDrawing word={word} bare />
                       </View>
                       <Text style={styles.pictureCaption}>{word.spanish.toUpperCase()}</Text>
                     </TouchableOpacity>
@@ -303,7 +355,7 @@ export function GameScreen({ navigation, route }: Props) {
                   : round.type === 'audio-choice'
                     ? word.english.toUpperCase()
                   : round.type === 'translation-choice'
-                      ? word.spanish.toUpperCase()
+                      ? (round.promptLanguage === 'english' ? word.spanish : word.english).toUpperCase()
                       : word.spanish.toUpperCase();
 
               return (
@@ -312,14 +364,16 @@ export function GameScreen({ navigation, route }: Props) {
                   style={[styles.option, round.type === 'audio-choice' && styles.audioOption, round.type === 'translation-choice' && styles.translationOption, disabled && styles.disabledOption]}
                 >
                   <TouchableOpacity
-                    disabled={disabled || isCelebrating}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Elegir ${label}`}
+                    disabled={disabled || transitioning}
                     onPress={() => handleChoice(wordId)}
                     style={styles.optionMain}
                   >
                     {round.type === 'picture-choice' || round.type === 'translation-choice' ? (
-                      <WordDrawing word={word} small={round.type === 'translation-choice'} />
+                      <View style={styles.optionDrawing}><WordDrawing word={word} small={round.type === 'translation-choice'} fit /></View>
                     ) : null}
-                    <Text style={styles.optionText}>{label}</Text>
+                    <Text style={[styles.optionText, round.type === 'audio-choice' && styles.audioOptionText]}>{label}</Text>
                   </TouchableOpacity>
                   {round.type === 'audio-choice' ? <AudioButton word={word} language="english" /> : null}
                 </View>
@@ -327,13 +381,12 @@ export function GameScreen({ navigation, route }: Props) {
             })}
           </View>
         )}
-      </View>
+      </Animated.View>
       {isCelebrating ? (
         <View pointerEvents="none" style={styles.celebrationOverlay}>
           <SuccessCelebration height={280} width={420} />
         </View>
       ) : null}
-      <AppBottomMenu />
     </View>
   );
 }

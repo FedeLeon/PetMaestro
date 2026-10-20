@@ -19,7 +19,7 @@ export function ToiletFlushAnimation({ flushing, onFlush }: { flushing: boolean;
     return () => animation.stop();
   }, [flushing, pull, water]);
   return <>
-    <TouchableOpacity testID="flush-chain" accessibilityRole="button" accessibilityLabel="Accionar tirador de la cadena" accessibilityState={{ disabled: flushing }} disabled={flushing} onPress={onFlush} style={styles.chainHit}>
+    <TouchableOpacity testID="flush-chain" accessibilityRole="button" accessibilityLabel="Tirar de la cadena" accessibilityState={{ disabled: flushing }} disabled={flushing} onPress={onFlush} style={styles.chainHit}>
       <Animated.Image source={houseImages.toiletFlushChain} resizeMode="contain" style={[styles.asset, { transform: [{ translateY: pull.interpolate({ inputRange: [0, 1], outputRange: [0, 18] }) }] }]} />
     </TouchableOpacity>
     {flushing ? <View testID="flush-water" pointerEvents="none" style={styles.flushWindow}>

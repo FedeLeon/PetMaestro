@@ -1,0 +1,6 @@
+{
+  "tool": "built-in imagegen",
+  "asset": "assets/generated/ui/feeding-finish-happy-cat-v1.png",
+  "reference": "assets/generated/ui/toy-card-frame-v1.png",
+  "prompt": "Use case: stylized-concept. Asset type: production square illustrated button for a children's cat-care game. Create ONE square button, front view, with generously rounded corners and a thick honey-gold wooden frame, shiny beveled edges, thin turquoise inner trim and creamy ivory center. Center a large adorable HAPPY ORANGE TABBY CAT FACE, eyes joyfully closed in crescent smiles, pink nose, cream muzzle, open smiling mouth, tiny pink tongue, striped forehead and pointed ears. Head only, no body. The face fills the center and is very legible when scaled down to 80 pixels. Cheerful softly shaded polished storybook game art, matching reference warm golden wood / turquoise / cream game UI. Small subtle paw detail on frame. Symmetric square silhouette. No letters, no text, no checkmark, no surrounding scene, no extra objects. Genuine transparent background only outside rounded square. Button nearly fills image with only a tiny transparent margin. Reference image is style only; create a new button rather than leaving the middle empty."
+}

@@ -1,5 +1,34 @@
 # Asset Credits
 
+- Ampliación de biblioteca a doce cuentos: ocho trípticos nuevos en `assets/generated/library/{cigarra-hormiga,zorro-ciguena,raton-campo-ciudad,viento-sol,semilla-impaciente,puente-amigos,farol-luciernaga,barrilete-colores}-sequence-v1.png`. Creados con imagegen integrado, tomando la biblioteca existente como referencia de estilo; cada PNG original opaco contiene tres escenas y se muestra mediante ventanas de recorte, sin edición externa de píxeles. El tríptico del viento y el sol se refinó para representar a Emilia, la viajera humana del texto. Prompts, refinamiento y rutas individuales: `docs/art/expanded-library-prompts.json`. Las flechas reutilizan `ui/shop-page-arrow-v1.png`; las tarjetas bloqueadas y candados se construyen con los componentes existentes.
+
+- Biblioteca de cuentos largos: cuatro trípticos nuevos `assets/generated/library/{abeja-haragana,medias-flamencos,liebre-tortuga,leon-raton}-sequence-v1.png`, creados con imagegen integrado usando la biblioteca existente como referencia de estilo. Cada PNG opaco original contiene tres escenas y se muestra mediante recorte de vista, sin edición externa de píxeles. Se conservan las ilustraciones anteriores. Prompts y rutas individuales: `docs/art/long-stories-prompts.json`. Fuentes de texto y audio: `AUDIO_CREDITS.md`.
+
+- Tercera página de la heladera: seis ingredientes originales (tomate, fideos, espinaca, zapallito, champiñones y lentejas), generados con imagegen integrado el 2026-10-19. PNG individuales con transparencia en `assets/generated/kitchen/food-{tomato,pasta,spinach,zucchini,mushrooms,lentils}-v1.png`, sin edición externa de píxeles. Brócoli existente como referencia de estilo. Rutas individuales, precios, nutrición y prompts exactos: `docs/art/fridge-third-page-prompts.json`.
+
+- Carrera del cascabel: parque (`assets/generated/toys/bell-runner/park-v1.png`) y sprites del gatito (`cat-stride-v2.png`, con `cat-v1.png` conservado como primera versión), generados con imagegen integrado el 2026-10-19. Gatito existente como referencia de identidad, transparencia original preservada. Prompts exactos: `docs/art/bell-runner-prompts.json`. Cascabel y moneda reutilizan assets existentes.
+- Carrera del cascabel, mejora de animación: `assets/generated/toys/bell-runner/cat-run-cycle-v3.png` (ocho poses en atlas 4×2) y `obstacle-{log,rock,bush}-v1.png`, creados con imagegen integrado. Transparencia original preservada y versiones anteriores conservadas; no hay edición externa de píxeles. El atlas anterior se usó como referencia de identidad. Los obstáculos ilustrados reemplazan el tronco SVG de la interfaz. Prompts y rutas exactos: `docs/art/bell-runner-upgrade-prompts.json`.
+
+- Biblioteca infantil: cuatro secuencias originales (`assets/generated/library/*-sequence-v1.png`) creadas con imagegen integrado el 2026-10-19. Cada PNG contiene tres ilustraciones cuadradas; se muestran por ventanas de recorte sin alterar el archivo original. Prompts: `docs/art/library-prompts.json`. Las portadas combinan estas ilustraciones con tapas y lomos dibujados por la interfaz. El botón del menú reutiliza el asset existente `assets/generated/furniture/cropped/bookcase-open.png`.
+
+- Botón «Terminar comida» (`assets/generated/ui/feeding-finish-happy-cat-v1.png`): generado con imagegen integrado el 2026-10-19. Carita de gato feliz en marco cuadrado de madera dorada y turquesa, usando el marco de juguetes como referencia. Transparencia original conservada. Prompt exacto: `docs/art/feeding-finish-prompt.json`.
+
+- Fish memory card back (`assets/generated/ui/fish-memory-card-back-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17 using the shop arrow as a visual style reference. Original alpha preserved. Exact prompt and gameplay: `docs/art/fish-memory-cards.md`.
+
+- Rolling yarn playroom (`assets/generated/toys/yarn-play-room-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17, using the mouse hide-and-seek room as a style reference. Existing yarn sprite reused. Exact prompt and gameplay: `docs/art/yarn-play-room.md`.
+
+- Toys navigation icon (`assets/generated/navigation/toys-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17 using the Adventures icon as a style reference. Original alpha preserved. Exact prompt and integration: `docs/art/toys-menu.md`.
+
+- Shop paging arrow (`assets/generated/ui/shop-page-arrow-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17 using the top menu frame as a style reference. Original alpha preserved; left arrow mirrored in code. Prompt and integration: `docs/art/shop-page-arrow.md`.
+
+- Brown flower hat (`assets/generated/cat-items/brown-flower-hat-v1.png`): generated and cleaned up with the built-in OpenAI image generation tool on 2026-10-17, using the existing flower and explorer hats as style references. Original alpha preserved. Prompts and fit: `docs/art/brown-flower-hat.md`.
+
+- Mouse hide-and-seek room (`assets/generated/toys/mouse-hide-room-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17. Original opaque illustration; existing mouse sprite reused. Exact prompt and mechanics: `docs/art/mouse-hide-room.md`.
+
+- Top and bottom menu frames (`assets/generated/ui/menus/*-menu-frame-v1.png`) and Adventures illustration (`assets/generated/navigation/adventures-v1.png`): generated with the built-in OpenAI image generation tool on 2026-10-17. Original alpha preserved; nine-slice display in code. Prompts and usage: `docs/art/menu-assets.md`.
+
+- Shop exploration scene (`assets/generated/shop/pet-shop-explore-v3.png`) and three product plinths (`assets/generated/shop/item-display-plinths-v3.png`): generated with the built-in OpenAI image generation tool on 2026-10-17, using the original shop backgrounds as references. Original assets retained. Final prompts: `docs/art/shop-imagegen.md`.
+
 Imported visual assets are licensed as Creative Commons CC0.
 
 - Foliage Pack: https://kenney.nl/assets/foliage-pack
@@ -17,6 +46,7 @@ Imported visual assets are licensed as Creative Commons CC0.
 - Turquoise back-arrow button for the tooth-brushing minigame: generated with OpenAI image generation for this project.
 - Cat kitchen interior background: generated with OpenAI image generation for this project.
 - Wide sunny exterior yard background with corrals: generated with OpenAI image generation for this project.
+- `assets/generated/house/exterior-yard-barn-v2.png`: edited with the built-in OpenAI ImageGen tool from `exterior-yard-wide.png`, using `shop/farm-barn.png` as the barn reference. The red barn is painted behind the right corral fence. Both original input assets are retained unchanged; prompt and provenance: `docs/art/exterior-barn-imagegen.md`.
 - Five cat hat accessories (crown, rainbow beanie, flower sun hat, bear hood, explorer hat): generated with OpenAI image generation for this project.
 - Six replacement cat hat accessories (party, star, blue cap, pink beanie, wizard and red bow): generated with OpenAI image generation for this project.
 - Golden cat-paw coin icon: generated with OpenAI image generation for this project.
@@ -63,3 +93,40 @@ Kenney and OpenGameArt credits are not required for these CC0 assets, but attrib
 - Garden flower clumps and watering can (`assets/generated/garden/`): generated with the built-in OpenAI image generation tool; watering can edited to remove halo and prepared with transparent background. Existing bathroom water drop reused. Prompts: `docs/garden-flowers.md`.
 - Walking kitten frames (`assets/generated/cat/cat-walk-01-v2.png` through `cat-walk-04-v2.png`): edited with the built-in OpenAI image generation tool on 2026-09-06 to remove the baked-in checkerboard background. Transparent RGBA PNGs preserve the four walking poses and 1024×1536 canvas; checked over contrasting backgrounds and loaded in the house walking animation.
 - Thirsty garden flowers (`assets/generated/garden/*-thirsty-v1.png`): generated and edited with the built-in OpenAI image generation tool on 2026-09-06, using the healthy flowers as references. Drooping stems, flowers and leaves on transparent backgrounds. Used until watering completes; details in `docs/garden-flowers.md`.
+- Individual cat footwear (`assets/generated/cat-items/feet/*-left-v1.png` and `*-right-v1.png`): twelve transparent PNGs generated/edited with the built-in OpenAI image generation tool on 2026-09-11. Each existing pair was used as the visual reference to create a single front-facing shoe for each screen-side paw. Models: blue shoes, sunny shoes, red sneakers, green boots, purple shoes and orange slippers. Positioning and validation: `docs/cat-wardrobe-fit.md`.
+
+## Indicador de mezcla · 19 de octubre de 2026
+
+Panel compacto para revolver la olla:
+`assets/generated/ui/cooking-stir-panel-v1.png`, generado con imagegen integrado
+el 19 de octubre de 2026, usando el marco superior como referencia de estilo.
+PNG original con transparencia exterior y centro crema, madera dorada,
+turquesa y huellitas. Prompt: `docs/art/cooking-stir-panel-prompt.json`.
+La barra interior se dibuja en SVG con borde dorado y relleno turquesa para
+reflejar el progreso real, sin incrustar texto ni porcentajes en el PNG.
+
+## Tarjetas de juguetes · 17 de octubre de 2026
+
+Marco cuadrado para tarjetas de juguetes:
+`assets/generated/ui/toy-card-frame-v1.png`, generado con imagegen integrado
+usando el marco superior como referencia de estilo. PNG original transparente
+por fuera, con centro crema y borde de madera dorada, turquesa y huellitas.
+Prompt exacto: `docs/art/toy-card-frame-prompt.json`.
+
+## Televisión interactiva · 17 de octubre de 2026
+
+Televisión interactiva: `assets/generated/cat/cat-watch-tv-v1.png`, pose sentada
+de espaldas con control remoto, generada con imagegen integrado usando el
+gatito existente como referencia. PNG original con transparencia, sin edición
+externa de píxeles. Prompt: `docs/art/television-cat-prompt.json`.
+
+## Ampliación de heladera y vestuario · 17 de octubre de 2026
+
+Se agregaron 28 PNG originales con transparencia generados mediante imagegen
+integrado: seis ingredientes y 22 prendas. Las rutas finales y los prompts
+exactos de cada archivo están en
+[`docs/art/expanded-wardrobe-fridge-prompts.json`](docs/art/expanded-wardrobe-fridge-prompts.json).
+Se conservaron los PNG originales generados, sin edición externa de píxeles.
+Los límites alpha se midieron en modo de lectura para ubicar las prendas y
+separar cada par de zapatos durante el renderizado. Los assets anteriores se
+conservan para mantener compatibilidad.

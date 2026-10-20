@@ -1,0 +1,21 @@
+# Ajuste del vestidor
+
+> La geometría vigente se describe en la
+> [revisión anatómica del 19 de octubre](wardrobe-anatomical-refit.md).
+> Este documento conserva los antecedentes del rig y de la caminata.
+
+Las prendas se colocan sobre un lienzo de gato de 174×260, centrado en el contenedor habitual de 230×284. `CatRig` reserva un margen adicional para sombreros y juguetes. El vestidor y los ambientes comparten la misma referencia: el tamaño `room` escala el conjunto completo y conserva las proporciones entre gato y accesorios.
+
+`src/styles/components/catWardrobe.layout.ts` contiene las medidas y posiciones individuales de los 12 sombreros, 6 anteojos, 8 remeras, 6 prendas inferiores y 6 juguetes. El nuevo [sombrero marrón con flor](art/brown-flower-hat.md) completa seis filas de dos sombreros. `src/data/wardrobeBounds.ts` registra los límites visibles del canal alfa de los PNG. El renderizador SVG compensa los márgenes transparentes con un viewport por pieza. Las remeras cubren desde el cuello hasta la cintura; pantalones y polleras se superponen en la cintura. Se ensancharon remeras y pantalones para cubrir hombros y caderas. El calzado tiene alturas distintas para botas, zapatillas y pantuflas.
+
+Los 12 PNG en `assets/generated/cat-items/feet/` representan izquierda y derecha de los seis modelos. Los lados indican izquierda y derecha de la pantalla mirando al gato de frente. El personaje completo se refleja cuando cambia de dirección, incluyendo ropa y calzado. `catShoeImages` registra las piezas dentro del catálogo que ya recorre la precarga global. Las imágenes de los pares originales siguen siendo las miniaturas de tienda e inventario.
+
+`src/styles/components/catRig.layout.ts` define máscaras anatómicas del gato original para cabeza, torso, brazos, piernas y cola. `CatRig` articula estas partes sin cambiar los píxeles del personaje: mangas y juguetes comparten la articulación del brazo; pantalones y zapatos comparten la de cada pierna. La cintura se superpone a las piernas para cerrar la unión. Las capas del torso se dibujan antes de las prendas para evitar cuñas naranjas sobre los hombros. Los juguetes se apoyan en la mano izquierda de la imagen y una ventana de la patita original se dibuja por delante para mostrar el agarre. La cabeza conserva los tres cuadros originales de parpadeo.
+
+`src/data/catMotion.ts` calcula un ciclo continuo según la distancia real recorrida (76 unidades por ciclo), con pasos alternados, levantamiento de una pata, brazos opuestos, balanceo de cola y pollera y un rebote leve. `WalkingPetCat` acelera y frena suavemente, permite cambiar el destino y cancela el movimiento al perder foco o pasar la aplicación a segundo plano. Se eliminó la dependencia de cuatro sprites de caminata con proporciones variables y brillo alrededor del cuerpo; esos archivos se conservan pero ya no se registran para precarga. No fue necesario regenerar las ilustraciones: la revisión corrigió su colocación y la forma de animarlas.
+
+El vestidor calcula la escala según su área horizontal disponible y reserva el espacio del menú inferior. De esta manera se ven sombreros y zapatos completos. Los botones para vestir tienen nombre accesible y estado de selección.
+
+Validación de esta revisión: `npm run test:wardrobe` equipa las 43 piezas por separado, captura ocho conjuntos que cubren todas las remeras, prendas inferiores, juguetes y zapatos, verifica que no se gasten monedas al vestir, comprueba persistencia al recargar, controla que el personaje completo entre en 844×390 y registra pasos reales en ambas direcciones a 1280×720. También comprueba que cada zapato dependa de su pierna y que navegar fuera de Casa detenga el movimiento. Las capturas individuales y combinadas se inspeccionaron visualmente; se guardan en `/tmp/petmaestro-wardrobe/after`, configurable con `REVIEW_OUTPUT`. La geometría de las máscaras y la apariencia siguen requiriendo revisión visual: las aserciones automáticas no evalúan calidad artística.
+
+Además pasaron `npm run typecheck`, `npm run test:content`, `npm run test:layout`, `git diff --check` y la exportación de recursos y bundle Android con Expo 57. La exportación no equivale a ejecutar en Android: falta validar apariencia, fluidez y comportamiento al suspender en un dispositivo físico.

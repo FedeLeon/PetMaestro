@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { GARDEN_BED_BOTTOM } from './garden.layout';
 export const styles = StyleSheet.create({
-  bed: { position: 'absolute', left: 0, right: 0, bottom: 8, zIndex: 15 },
+  bed: { position: 'absolute', left: 0, right: 0, bottom: GARDEN_BED_BOTTOM, zIndex: 15 },
   flower: { position: 'absolute', bottom: 0, alignItems: 'center', justifyContent: 'flex-end' },
   image: { width: '100%', flex: 1 },
   badge: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3, borderRadius: 12, paddingHorizontal: 7, height: 24, backgroundColor: '#fff8d8', borderWidth: 1, borderColor: '#eacb6a' },

@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, View } from 'react-native';
 import { kitchenFoods } from '../../data/kitchenContent';
 import { styles } from '../../styles/house/kitchen.styles';
+import { cookingIngredientSize } from '../../styles/house/cooking.layout';
 
 type Rect = { x: number; y: number; width: number; height: number };
-// Keep the floating food above both the scene and the right-hand ScrollView.
-// Window coordinates are shared across the two, regardless of the touch target.
+// Keep the floating food above the scene and its tools. Window coordinates
+// remain stable regardless of which illustration receives the touch.
 export function useIngredientDrag(onAdded: (id: string) => void) {
   const rootRef = useRef<View>(null);
   const stageRef = useRef<View>(null);
@@ -26,13 +27,14 @@ export function useIngredientDrag(onAdded: (id: string) => void) {
     position.setValue({ x: x - geometry.current.root.x, y: y - geometry.current.root.y });
   };
   const start = (id: string, x: number, y: number) => {
-    if (active.current) return;
+    if (active.current && !settling.current) return;
+    if (settling.current) cancel();
     active.current = id; geometry.current = null; setDragId(id); lastPoint.current = { x, y };
     rootRef.current?.measureInWindow((rx, ry, rw, rh) => {
       stageRef.current?.measureInWindow((sx, sy, sw, sh) => {
         if (active.current !== id || !sw || !sh) return;
         geometry.current = { root: { x: rx, y: ry, width: rw, height: rh }, stage: { x: sx, y: sy, width: sw, height: sh } };
-        setIconSize(Math.max(58, Math.min(110, sh * .25)));
+        setIconSize(cookingIngredientSize(sw, sh));
         move(lastPoint.current.x, lastPoint.current.y); setVisible(true);
       });
     });
@@ -42,10 +44,13 @@ export function useIngredientDrag(onAdded: (id: string) => void) {
     const id = active.current, rects = geometry.current;
     if (!rects) { cancel(); return; }
     const nx = (x - rects.stage.x) / rects.stage.width, ny = (y - rects.stage.y) / rects.stage.height;
-    if (((nx - .445) / .19) ** 2 + ((ny - .48) / .16) ** 2 > 1) { cancel(); return; }
+    if (((nx - .445) / .25) ** 2 + ((ny - .48) / .23) ** 2 > 1) { cancel(); return; }
     settling.current = true;
+    // The drop is already valid. A quick next touch may cancel the decorative
+    // flight, but must never remove the food that was just accepted.
+    notify.current(id);
     Animated.spring(position, { toValue: { x: rects.stage.x + rects.stage.width * .445 - rects.root.x, y: rects.stage.y + rects.stage.height * .48 - rects.root.y }, speed: 22, bounciness: 2, useNativeDriver: true }).start(({ finished }) => {
-      if (finished && active.current === id) { cancel(); notify.current(id); }
+      if (finished && active.current === id) cancel();
     });
   };
   const food = kitchenFoods.find(item => item.id === dragId);

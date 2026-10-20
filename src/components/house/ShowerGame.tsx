@@ -1,12 +1,16 @@
 import { useCallback, useRef, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useProgress } from '../../context/ProgressContext';
 import { houseImages } from '../../data/assetImages';
 import { styles } from '../../styles/house/bathroomActivity.styles';
-import { ActivityProgress, BathroomActivityScene } from './BathroomActivityScene';
+import { BathroomActivityScene } from './BathroomActivityScene';
+import { SceneFinish, SceneTool } from './CareActivityScene';
+import { styles as sceneStyles } from '../../styles/house/careScene.styles';
+import { useCareActivity } from './useCareActivity';
 import { BathroomParticles } from './BathroomParticles';
 import { BathroomWater } from './BathroomWater';
 import { useBathroomTouch } from './useBathroomTouch';
+import { useActivitySound } from './useActivitySound';
 
 type Phase = 'soap' | 'rinse' | 'dry' | 'done';
 const ZONES = [{ x: .28, y: .49 }, { x: .44, y: .49 }, { x: .32, y: .64 }, { x: .4, y: .68 }, { x: .31, y: .84 }, { x: .42, y: .85 }];
@@ -20,7 +24,8 @@ export function ShowerGame({ onClose }: { onClose: () => void }) {
   const { improveHygiene } = useProgress();
   const [phase, setPhase] = useState<Phase>('soap');
   const phaseRef = useRef<Phase>('soap');
-  const [active, setActive] = useState(false);
+  const { active, live } = useCareActivity();
+  useActivitySound(active && phase === 'rinse', 'water');
   const [zones, setZones] = useState<number[]>([]);
   const zonesRef = useRef<number[]>([]);
   const [layout, setLayout] = useState({ width: 0, height: 0 });
@@ -28,7 +33,7 @@ export function ShowerGame({ onClose }: { onClose: () => void }) {
   const completedRef = useRef(false);
 
   const rubAt = useCallback((x: number, y: number) => {
-    if (!active || phaseRef.current !== phase || phase === 'done' || !layout.width) return;
+    if (!live.current || phaseRef.current !== phase || phase === 'done' || !layout.width) return;
     setCursor({ x, y });
     const next = [...zonesRef.current];
     ZONES.forEach((zone, index) => {
@@ -40,7 +45,6 @@ export function ShowerGame({ onClose }: { onClose: () => void }) {
       const nextPhase = phase === 'soap' ? 'rinse' : phase === 'rinse' ? 'dry' : 'done';
       phaseRef.current = nextPhase;
       setPhase(nextPhase);
-      setActive(false);
       setCursor(null);
       zonesRef.current = [];
       setZones([]);
@@ -49,18 +53,15 @@ export function ShowerGame({ onClose }: { onClose: () => void }) {
         void improveHygiene(50);
       }
     }
-  }, [active, improveHygiene, layout, phase]);
-  const touch = useBathroomTouch(active, rubAt, () => setCursor(null));
+  }, [improveHygiene, layout, live, phase]);
+  const touch = useBathroomTouch(active && phase !== 'done', rubAt, () => setCursor(null));
   const step = phase === 'soap' ? 0 : phase === 'rinse' ? 1 : phase === 'dry' ? 2 : 3;
   const tool = phase === 'done' ? null : PHASES[phase];
   const toolImage = phase === 'soap' ? houseImages.bathSoap : phase === 'dry' ? houseImages.bathTowel : houseImages.bathHandShower;
 
   const toolSize = phase === 'rinse' ? Math.max(118, Math.min(180, layout.height * .32)) : phase === 'dry' ? Math.max(112, Math.min(168, layout.height * .28)) : Math.max(96, Math.min(150, layout.height * .24));
 
-  return <BathroomActivityScene source={houseImages.showerCat} onClose={onClose} controls={<>
-    <ActivityProgress value={(step + zones.length / ZONES.length) / 3} label={tool ? active ? tool.label : `Elegí: ${tool.tool}` : '¡Limpito y seco!'} />
-    {tool ? <TouchableOpacity accessibilityRole="button" accessibilityLabel={tool.tool} accessibilityState={{ selected: active }} onPress={() => setActive(true)} style={styles.action}><Image source={toolImage} resizeMode="contain" style={styles.toolImage} /><Text style={styles.actionText}>{tool.tool}</Text></TouchableOpacity> : <><Text style={styles.success}>Higiene +50</Text><TouchableOpacity accessibilityRole="button" onPress={onClose} style={styles.action}><Text style={styles.actionText}>¡Listo!</Text></TouchableOpacity></>}
-  </>}>
+  return <BathroomActivityScene source={houseImages.showerCat} onClose={onClose} value={(step + zones.length / ZONES.length) / 3} label={tool ? `${step + 1}/3 · ${tool.label}. Podés tocar las manchitas.` : '¡Limpito y seco!'}>
     <View ref={touch.stageRef} testID="shower-stage" style={styles.fill} onLayout={(event) => setLayout(event.nativeEvent.layout)} {...touch.panHandlers}>
       <View pointerEvents="none" style={styles.fill}>
         {ZONES.map((zone, index) => {
@@ -90,5 +91,10 @@ export function ShowerGame({ onClose }: { onClose: () => void }) {
         {phase === 'done' ? <BathroomParticles kind="sparkles" /> : null}
       </View>
     </View>
+    {phase !== 'done' ? <>
+      <SceneTool label="Jabón" source={houseImages.bathSoap} style={sceneStyles.soap} selected={phase === 'soap'} disabled={phase !== 'soap'} onPress={() => setCursor({ x: layout.width * .66, y: layout.height * .68 })} />
+      <SceneTool label="Ducha" caption="Agua" source={houseImages.bathHandShower} style={sceneStyles.shower} selected={phase === 'rinse'} disabled={phase !== 'rinse'} onPress={() => setCursor({ x: layout.width * .76, y: layout.height * .65 })} />
+      <SceneTool label="Toalla" caption="Secar" source={houseImages.bathTowel} style={sceneStyles.towel} selected={phase === 'dry'} disabled={phase !== 'dry'} onPress={() => setCursor({ x: layout.width * .90, y: layout.height * .68 })} />
+    </> : <SceneFinish onPress={onClose} />}
   </BathroomActivityScene>;
 }

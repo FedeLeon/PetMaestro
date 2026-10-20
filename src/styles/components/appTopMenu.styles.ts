@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  saveError: { color: '#9c3c23', fontSize: 14, fontWeight: '700', textAlign: 'center', padding: 6 },
   header: {
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#f0dcc0',
-    borderBottomWidth: 2,
-    paddingHorizontal: 18,
-    paddingVertical: 5,
+    backgroundColor: 'transparent',
+    minHeight: 72,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
   },
   row: {
     alignItems: 'center',

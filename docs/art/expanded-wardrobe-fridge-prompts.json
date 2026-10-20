@@ -1,0 +1,254 @@
+[
+  {
+    "id": "broccoli",
+    "group": "food",
+    "name": "Brócoli",
+    "price": 18,
+    "nutrition": 12,
+    "path": "assets/generated/kitchen/food-broccoli-v1.png",
+    "prompt": "Use case: stylized-concept. Single transparent PNG ingredient sprite for PetMaestro children's cooking game: one bright green broccoli floret with short thick pale green stem. Friendly rounded polished 3D cartoon with glossy highlights and painted texture. Centered, entire object visible, 8 percent padding on every side, square canvas, easily recognizable at small sizes. Actual transparent alpha background. No plate, bowl, face, letters, packaging, scenery, ground shadow or checkerboard."
+  },
+  {
+    "id": "pumpkin",
+    "group": "food",
+    "name": "Calabaza",
+    "price": 16,
+    "nutrition": 12,
+    "path": "assets/generated/kitchen/food-pumpkin-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG cooking ingredient sprite for PetMaestro children's orange kitten game. Subject: one plump orange pumpkin wedge with green rind and bright orange flesh. One single ingredient centered with a complete silhouette, three-quarter view. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "corn",
+    "group": "food",
+    "name": "Maíz",
+    "price": 14,
+    "nutrition": 12,
+    "path": "assets/generated/kitchen/food-corn-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG cooking ingredient sprite for PetMaestro children's orange kitten game. Subject: one short golden yellow sweetcorn cob with two small green husk leaves. One single ingredient centered with a complete silhouette, three-quarter view. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "sweet-potato",
+    "group": "food",
+    "name": "Batata",
+    "price": 14,
+    "nutrition": 14,
+    "path": "assets/generated/kitchen/food-sweet-potato-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG cooking ingredient sprite for PetMaestro children's orange kitten game. Subject: one small whole reddish purple sweet potato and one cut half showing orange flesh. One single ingredient centered with a complete silhouette, three-quarter view. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "egg",
+    "group": "food",
+    "name": "Huevo",
+    "price": 20,
+    "nutrition": 16,
+    "path": "assets/generated/kitchen/food-egg-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG cooking ingredient sprite for PetMaestro children's orange kitten game. Subject: one peeled hard-boiled egg and one half showing a round golden yolk. One single ingredient centered with a complete silhouette, three-quarter view. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "cheese",
+    "group": "food",
+    "name": "Queso",
+    "price": 22,
+    "nutrition": 16,
+    "path": "assets/generated/kitchen/food-cheese-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG cooking ingredient sprite for PetMaestro children's orange kitten game. Subject: one golden yellow triangular cheese wedge with a few rounded holes. One single ingredient centered with a complete silhouette, three-quarter view. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "oval-pink-glasses",
+    "group": "glasses",
+    "name": "Anteojos ovalados rosas",
+    "price": 35,
+    "color": "#ed8eb8",
+    "path": "assets/generated/cat-items/oval-pink-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: pink oval eyeglasses with lightly tinted lenses. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "mint-round-glasses",
+    "group": "glasses",
+    "name": "Anteojos menta",
+    "price": 36,
+    "color": "#71c5a1",
+    "path": "assets/generated/cat-items/mint-round-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: mint green round eyeglasses with clear lenses. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "flower-glasses",
+    "group": "glasses",
+    "name": "Anteojos flor",
+    "price": 42,
+    "color": "#b489d9",
+    "path": "assets/generated/cat-items/flower-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: purple eyeglasses with rounded flower-shaped lens rims. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "orange-sport-glasses",
+    "group": "glasses",
+    "name": "Lentes deportivos naranja",
+    "price": 40,
+    "color": "#f49a42",
+    "path": "assets/generated/cat-items/orange-sport-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: orange sporty wraparound sunglasses with pale blue lenses. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "navy-square-glasses",
+    "group": "glasses",
+    "name": "Anteojos azul marino",
+    "price": 38,
+    "color": "#3c6598",
+    "path": "assets/generated/cat-items/navy-square-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: navy blue square eyeglasses with rounded corners and clear lenses. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "moon-glasses",
+    "group": "glasses",
+    "name": "Anteojos luna",
+    "price": 44,
+    "color": "#c7a1e8",
+    "path": "assets/generated/cat-items/moon-glasses-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: lavender round eyeglasses with tiny golden crescent moons on outer corners. One pair, exact frontal symmetric view, both lenses same size, level bridge, no temples extending backwards. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "orange-paw-shirt",
+    "group": "shirts",
+    "name": "Remera naranja con huella",
+    "price": 36,
+    "color": "#ed9953",
+    "path": "assets/generated/cat-items/orange-paw-shirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: orange short-sleeve T-shirt with cream cuffs and one cream paw emblem. One empty garment, frontal symmetrical orthographic view, round narrow neckline, pear-shaped short torso, two short sleeves angled diagonally downward 45 degrees for a kitten with lowered arms. No arms or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "teal-leaf-shirt",
+    "group": "shirts",
+    "name": "Remera turquesa con hojas",
+    "price": 39,
+    "color": "#51b7ad",
+    "path": "assets/generated/cat-items/teal-leaf-shirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: turquoise short-sleeve T-shirt with pale mint cuffs and small leaf motifs. One empty garment, frontal symmetrical orthographic view, round narrow neckline, pear-shaped short torso, two short sleeves angled diagonally downward 45 degrees for a kitten with lowered arms. No arms or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "purple-moon-shirt",
+    "group": "shirts",
+    "name": "Remera violeta con luna",
+    "price": 44,
+    "color": "#9e83d2",
+    "path": "assets/generated/cat-items/purple-moon-shirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: purple short-sleeve T-shirt with golden cuffs, a moon and small stars. One empty garment, frontal symmetrical orthographic view, round narrow neckline, pear-shaped short torso, two short sleeves angled diagonally downward 45 degrees for a kitten with lowered arms. No arms or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "cream-flower-shirt",
+    "group": "shirts",
+    "name": "Remera crema con flores",
+    "price": 42,
+    "color": "#f2dbaf",
+    "path": "assets/generated/cat-items/cream-flower-shirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: cream short-sleeve T-shirt with coral cuffs and three tiny colorful flowers. One empty garment, frontal symmetrical orthographic view, round narrow neckline, pear-shaped short torso, two short sleeves angled diagonally downward 45 degrees for a kitten with lowered arms. No arms or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "teal-dot-skirt",
+    "group": "bottoms",
+    "name": "Pollera turquesa con lunares",
+    "price": 44,
+    "color": "#58bbae",
+    "path": "assets/generated/cat-items/teal-dot-skirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: turquoise flared skirt with cream polka dots and an elastic waistband. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "lavender-skirt",
+    "group": "bottoms",
+    "name": "Pollera lavanda",
+    "price": 43,
+    "color": "#b59ed8",
+    "path": "assets/generated/cat-items/lavender-skirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: lavender pleated skirt with a small purple bow on waistband. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "lemon-star-skirt",
+    "group": "bottoms",
+    "name": "Pollera amarilla con estrellas",
+    "price": 46,
+    "color": "#edcf58",
+    "path": "assets/generated/cat-items/lemon-star-skirt-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: soft yellow flared skirt with little white stars and an elastic waistband. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "yellow-shorts",
+    "group": "bottoms",
+    "name": "Short amarillo",
+    "price": 38,
+    "color": "#e9bf50",
+    "path": "assets/generated/cat-items/yellow-shorts-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: golden yellow shorts with two legs, front pockets, elastic waistband and rolled hems. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "red-shorts",
+    "group": "bottoms",
+    "name": "Short rojo",
+    "price": 39,
+    "color": "#dd6d62",
+    "path": "assets/generated/cat-items/red-shorts-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: coral red shorts with two legs, rounded front pockets and rolled hems. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "denim-shorts",
+    "group": "bottoms",
+    "name": "Short de jean",
+    "price": 42,
+    "color": "#6c9acc",
+    "path": "assets/generated/cat-items/denim-shorts-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: blue denim shorts with two legs, golden seams and small paw button. One empty garment, exact frontal symmetrical view, horizontal waistband, suitable for a short pear-shaped standing kitten. No legs or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "yellow-sneakers",
+    "group": "shoes",
+    "name": "Zapatillas amarillas",
+    "price": 38,
+    "color": "#eac34e",
+    "path": "assets/generated/cat-items/yellow-sneakers-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: golden yellow low-top sneakers with white laces and white rounded soles. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "pink-trainers",
+    "group": "shoes",
+    "name": "Zapatillas rosas",
+    "price": 39,
+    "color": "#e99cbf",
+    "path": "assets/generated/cat-items/pink-trainers-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: pink low-top trainers with white laces and white rounded soles. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "turquoise-boots",
+    "group": "shoes",
+    "name": "Botitas turquesa",
+    "price": 42,
+    "color": "#51b9b1",
+    "path": "assets/generated/cat-items/turquoise-boots-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: turquoise ankle boots with cream soles and a small paw emblem. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "red-rain-boots",
+    "group": "shoes",
+    "name": "Botas de lluvia rojas",
+    "price": 42,
+    "color": "#df7565",
+    "path": "assets/generated/cat-items/red-rain-boots-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: coral red rain boots with golden trim and rounded toes. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "lilac-slippers",
+    "group": "shoes",
+    "name": "Pantuflas lilas",
+    "price": 39,
+    "color": "#b79cda",
+    "path": "assets/generated/cat-items/lilac-slippers-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: soft lilac plush slippers with tiny embroidered paw prints. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  },
+  {
+    "id": "brown-shoes",
+    "group": "shoes",
+    "name": "Zapatos marrones",
+    "price": 40,
+    "color": "#ac7952",
+    "path": "assets/generated/cat-items/brown-shoes-v1.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent PNG dress-up clothing sprite for PetMaestro children's orange kitten game. Subject: warm brown rounded leather shoes with cream soles and a small buckle. Exactly TWO individual shoes as ONE matched pair, exact frontal view, symmetrical left and right shoes at equal scale, same horizontal sole baseline. Separated by a wide clear gap. No feet or mannequin. Style: polished friendly rounded 3D cartoon, soft painted textures, warm glossy highlights, cheerful saturated colors, detailed fabric seams where appropriate. Center the complete object within a square canvas with 8 percent clear padding, large and readable at small sizes. True transparent alpha background. No cat, person, face, hands, floor, cast shadow, text, numbers, logos, labels, extra unrelated objects or checkerboard."
+  }
+]

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styles } from '../styles/screens/petScreen.styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -7,8 +8,12 @@ import { PetCat } from '../components/PetCat';
 import { useProgress } from '../context/ProgressContext';
 import { catItemImages, petImages } from '../data/assetImages';
 import { shopCategories, shopItems } from '../data/gameContent';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types';
 
-export function PetScreen() {
+export function PetScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Pet'>) {
+  const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
+  const displayScale = Math.max(0, Math.min(2.4, stageSize.width / 250, stageSize.height / 335));
   const { equipItem, progress } = useProgress();
   const ownedCatItems = progress.ownedItems.filter((itemId) => {
     const item = shopItems.find((entry) => entry.id === itemId);
@@ -24,28 +29,30 @@ export function PetScreen() {
 
   return (
     <View style={styles.screen}>
-      <AppTopMenu icon="cat" title="Mi gatito" />
+      <AppTopMenu compact icon="cat" title="Mi gatito" />
 
       <View style={styles.mainArea}>
-        <View style={styles.stage}>
+        <View testID="wardrobe-stage" style={styles.stage} onLayout={event => setStageSize(event.nativeEvent.layout)}>
         <ImageBackground
           imageStyle={styles.stageBackgroundImage}
           resizeMode="cover"
           source={petImages.dressingRoom}
           style={styles.stageBackground}
         >
-            <View style={styles.petCatDisplay}>
+            <View style={[styles.petCatDisplay, { transform: [{ scale: displayScale }], top: (stageSize.height - 284) / 2 + 15 * displayScale }]}>
               <PetCat equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} />
             </View>
         </ImageBackground>
       </View>
 
       <View style={styles.itemsSection}>
+        {ownedCatItems.some(id => shopItems.find(item => item.id === id)?.slot === 'toy') && <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('Toys')} style={styles.playToysButton}><Text style={styles.playToysText}>Jugar con mis juguetes</Text></TouchableOpacity>}
         <ScrollView contentContainerStyle={styles.itemsScroll} showsVerticalScrollIndicator={false}>
           <View style={styles.itemsGrid}>
             {ownedCatItems.length === 0 ? (
               <View style={styles.emptyBox}>
                 <Text style={styles.emptyText}>Aun no hay accesorios. Gana moneditas y visita la tienda.</Text>
+                <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('Shop')} style={styles.playToysButton}><Text style={styles.playToysText}>Elegir accesorios en la tienda</Text></TouchableOpacity>
               </View>
             ) : (
               ownedCatItemsByCategory.map(({ category, itemIds }) => (
@@ -67,13 +74,18 @@ export function PetScreen() {
                       return (
                         <TouchableOpacity
                           key={item.id}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Usar ${item.name}`}
+                          accessibilityState={{ selected: equipped }}
+                          aria-pressed={equipped}
                           onPress={() => equipItem(item.id)}
                           style={[styles.itemCard, equipped && styles.equippedCard]}
                         >
                           <View style={[styles.itemPreview, { backgroundColor: item.color }]}>
                             <Image resizeMode="contain" source={catItemImages[item.id]} style={styles.itemPreviewImage} />
+                            {equipped && <View style={styles.wearingBadge}><MaterialCommunityIcons name="check" size={18} color="#fff" /></View>}
                           </View>
-                          <Text style={styles.itemName}>{item.name.toUpperCase()}</Text>
+                          <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={.85} style={styles.itemName}>{item.name.toUpperCase()}</Text>
                         </TouchableOpacity>
                       );
                     })}

@@ -9,6 +9,7 @@ import { mapImages, uiImages } from '../data/assetImages';
 import { levels } from '../data/gameContent';
 import { styles } from '../styles/screens/mapScreen.styles';
 import { Level, RootStackParamList } from '../types';
+import { useGameAudio } from '../context/AudioContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Map'>;
 const levelPointPositions = [
@@ -19,6 +20,7 @@ const levelPointPositions = [
 
 export function MapScreen({ navigation }: Props) {
   const { progress } = useProgress();
+  const { playSound } = useGameAudio();
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const [mapLayout, setMapLayout] = useState({ height: 0, width: 0 });
   const modalScale = useRef(new Animated.Value(0.84)).current;
@@ -42,6 +44,7 @@ export function MapScreen({ navigation }: Props) {
   const cityUnlocked = progress.completedLevels.includes(11);
   return <View style={styles.screen}>
     <AppTopMenu icon="map" title="Mapa de Niveles" />
+    <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('Activities')} style={styles.adventuresButton}><Text style={styles.playButtonText}>Aventuras: repaso, misiones y álbum →</Text></TouchableOpacity>
     <ImageBackground imageStyle={styles.mapImage} onLayout={(event) => setMapLayout(event.nativeEvent.layout)} resizeMode="stretch" source={mapImages.sunnyPath} style={styles.mapScene}>
       {levels.map((level, index) => {
         const locked = level.id > progress.unlockedLevel;
@@ -54,15 +57,16 @@ export function MapScreen({ navigation }: Props) {
           </View>
         </TouchableOpacity>;
       })}
-      <TouchableOpacity accessibilityLabel={cityUnlocked ? 'Ir al mundo Ciudad Gatuna' : 'Completa la evaluacion final para abrir Ciudad Gatuna'} accessibilityRole="button" disabled={!cityUnlocked} onPress={() => navigation.navigate('CityMap')} style={[styles.nextWorldButton, { height: levelSize * 1.45, left: mapLayout.width * levelPointPositions[11].x - levelSize * 0.725, top: mapLayout.height * levelPointPositions[11].y - levelSize * 0.725, width: levelSize * 1.45 }, !cityUnlocked && styles.lockedNextWorldButton]}>
+      <TouchableOpacity accessibilityLabel={cityUnlocked ? 'Entrar a Ciudad Gatuna' : 'Completá la evaluación final para entrar a Ciudad Gatuna'} accessibilityRole="button" disabled={!cityUnlocked} onPress={() => navigation.navigate('CityMap')} style={[styles.nextWorldButton, { height: levelSize * 1.45, left: mapLayout.width * levelPointPositions[11].x - levelSize * 0.725, top: mapLayout.height * levelPointPositions[11].y - levelSize * 0.725, width: levelSize * 1.45 }, !cityUnlocked && styles.lockedNextWorldButton]}>
         <Image resizeMode="contain" source={uiImages.nextWorldArrow} style={styles.nextWorldImage} />
       </TouchableOpacity>
     </ImageBackground>
     <AppBottomMenu />
-    <Modal animationType="fade" onRequestClose={closeModal} transparent visible={selectedLevel !== null}>
+    <Modal animationType="fade" onRequestClose={closeModal} transparent visible={selectedLevel !== null} supportedOrientations={['landscape']}>
       <Pressable style={styles.modalBackdrop} onPress={closeModal}>
         <Pressable>
           <Animated.View style={[styles.modalCard, { opacity: modalOpacity, transform: [{ scale: modalScale }] }]}>
+            <TouchableOpacity accessibilityRole="button" accessibilityLabel="Cerrar nivel" onPress={closeModal} style={styles.modalClose}><MaterialCommunityIcons name="close" color="#6c5a42" size={26} /></TouchableOpacity>
             {selectedLevel ? <>
               <View style={styles.modalIconWrap}><MaterialCommunityIcons color="#ffffff" name={(selectedLevelLocked ? 'lock' : selectedLevel.icon) as keyof typeof MaterialCommunityIcons.glyphMap} size={42} /></View>
               <Text style={styles.modalKicker}>Nivel {selectedLevel.id}</Text>
@@ -70,7 +74,7 @@ export function MapScreen({ navigation }: Props) {
               <Text style={styles.modalTheme}>{selectedLevel.theme}</Text>
               <Text style={styles.modalDescription}>{selectedLevelLocked ? 'Completa el nivel anterior para desbloquear este punto.' : selectedLevel.description}</Text>
               <View style={styles.rewardRow}><MaterialCommunityIcons color="#b77900" name="cash-multiple" size={24} /><Text style={styles.rewardText}>Recompensa: {selectedLevel.reward} moneditas</Text></View>
-              <TouchableOpacity disabled={selectedLevelLocked} onPress={() => { const levelId = selectedLevel.id; closeModal(); navigation.navigate('Game', { levelId }); }} style={[styles.playButton, selectedLevelLocked && styles.disabledPlayButton]}><Text style={styles.playButtonText}>{selectedLevelLocked ? 'Bloqueado' : 'Jugar'}</Text></TouchableOpacity>
+              <TouchableOpacity accessibilityRole="button" disabled={selectedLevelLocked} onPress={() => { playSound('tap'); const levelId = selectedLevel.id; closeModal(); navigation.navigate('Game', { levelId }); }} style={[styles.playButton, selectedLevelLocked && styles.disabledPlayButton]}><Text style={styles.playButtonText}>{selectedLevelLocked ? 'Bloqueado' : 'Jugar'}</Text></TouchableOpacity>
             </> : null}
           </Animated.View>
         </Pressable>

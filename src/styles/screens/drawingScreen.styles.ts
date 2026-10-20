@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  paletteScroll: { flex: 1, minHeight: 0 },
+  brushRow: { flexDirection: 'row', alignItems: 'center', gap: 10, height: 44 },
+  toolRow: { flexDirection: 'row', gap: 8, height: 44 },
+  canvasArea: { flex: 1, minHeight: 0, minWidth: 0, alignItems: 'center', justifyContent: 'center' },
+  controlsContent: { padding: 12, paddingBottom: 20 },
+  disabledButton: { opacity: .4 },
   brushHeader: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -8,22 +14,24 @@ export const styles = StyleSheet.create({
     marginTop: 18,
   },
   canvas: {
+    userSelect: 'none',
     backgroundColor: '#ffffff',
     borderColor: '#f0dcc0',
     borderRadius: 8,
     borderWidth: 3,
     aspectRatio: 1,
     overflow: 'hidden',
-    flex: 1,
     maxHeight: 460,
     maxWidth: 460,
   },
   colorButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
     borderColor: '#ffffff',
     borderRadius: 999,
     borderWidth: 3,
-    height: 34,
-    width: 34,
+    height: 44,
+    width: 44,
   },
   content: {
     flexDirection: 'row',
@@ -32,7 +40,7 @@ export const styles = StyleSheet.create({
     minHeight: 0,
     overflow: 'hidden',
     padding: 14,
-    paddingBottom: 132,
+    paddingBottom: 106,
   },
   controlLabel: {
     color: '#372413',
@@ -40,6 +48,8 @@ export const styles = StyleSheet.create({
     fontWeight: '900',
   },
   controls: {
+    padding: 8,
+    gap: 4,
     backgroundColor: '#fffaf0',
     borderColor: '#f0dcc0',
     borderRadius: 8,
@@ -47,19 +57,21 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginTop: 0,
     maxWidth: 360,
-    padding: 14,
+    minHeight: 0,
   },
   eraserButton: {
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    alignSelf: 'stretch',
+    flex: 1,
+    justifyContent: 'center',
     borderColor: '#57b8a9',
     borderRadius: 8,
     borderWidth: 2,
     flexDirection: 'row',
     gap: 8,
-    marginTop: 16,
+    marginTop: 0,
     minHeight: 44,
-    paddingHorizontal: 14,
+    paddingHorizontal: 6,
   },
   activeEraserButton: {
     backgroundColor: '#dff4ff',
@@ -83,8 +95,8 @@ export const styles = StyleSheet.create({
   palette: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
-    marginTop: 10,
+    gap: 4,
+    padding: 0,
   },
   screen: {
     backgroundColor: '#fff7e8',
@@ -93,12 +105,12 @@ export const styles = StyleSheet.create({
   },
   selectedColor: {
     borderColor: '#372413',
-    transform: [{ scale: 1.15 }],
   },
   slider: {
-    height: 34,
+    flex: 1,
+    height: 44,
     justifyContent: 'center',
-    marginTop: 6,
+    marginTop: 0,
   },
   sliderThumb: {
     backgroundColor: '#ff7a59',

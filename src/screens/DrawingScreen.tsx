@@ -1,9 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../styles/screens/drawingScreen.styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useRef, useState } from 'react';
-import { PanResponder, Text, TouchableOpacity, View } from 'react-native';
+import { PanResponder, ScrollView, Text, TouchableOpacity, View, type GestureResponderEvent } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
@@ -30,7 +29,6 @@ const palette = [
 ];
 
 const CANVAS_SIZE = 360;
-const DRAWING_RESET_KEY = 'petmaestro.drawing.reset.v2';
 
 function pointsToPath(points: DrawingPoint[], width: number, height: number) {
   if (points.length === 0) {
@@ -73,7 +71,16 @@ function eraseTouchedStrokes(strokes: DrawingStroke[], eraser: DrawingStroke, ca
     const segments: DrawingPoint[][] = [];
     let segment: DrawingPoint[] = [];
 
-    stroke.points.forEach((point) => {
+    // Older drawings can contain long segments with very few sample points.
+    // Sample their interiors too so the eraser cuts the visible line itself.
+    const sampled = stroke.points.flatMap((point, index) => {
+      if (!index) return [point];
+      const previous = stroke.points[index - 1];
+      const distance = Math.hypot((point.x - previous.x) * canvasWidth, (point.y - previous.y) * canvasHeight);
+      const count = Math.max(1, Math.ceil(distance / 3));
+      return Array.from({ length: count }, (_, i) => ({ x: previous.x + (point.x - previous.x) * (i + 1) / count, y: previous.y + (point.y - previous.y) * (i + 1) / count }));
+    });
+    sampled.forEach((point) => {
       const touched = eraserPoints.some((eraserPoint) => {
         const distanceX = point.x - eraserPoint.x;
         const distanceY = point.y - eraserPoint.y;
@@ -95,18 +102,25 @@ function eraseTouchedStrokes(strokes: DrawingStroke[], eraser: DrawingStroke, ca
     }
 
     return segments
-      .filter((points) => points.length > 1)
+      .filter((points) => points.length > 0)
       .map((points) => ({ ...stroke, points }));
   });
 }
 
 export function DrawingScreen({}: Props) {
-  const { progress, saveDrawing } = useProgress();
+  const { progress, saveDrawing, rewardAction } = useProgress();
+  const rewardedDrawing = useRef(false);
   const [strokes, setStrokes] = useState<DrawingStroke[]>(
     progress.drawingStrokes.filter((stroke) => stroke.color !== '#ffffff'),
   );
   const strokesRef = useRef(strokes);
   const [currentStroke, setCurrentStroke] = useState<DrawingStroke | null>(null);
+  const currentStrokeRef = useRef<DrawingStroke | null>(null);
+  const history = useRef<DrawingStroke[][]>([]);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canvasSide, setCanvasSide] = useState(1);
+  const canvasRef = useRef<View>(null);
+  const canvasOrigin = useRef<{ x: number; y: number } | null>(null);
   const [canvasWidth, setCanvasWidth] = useState(1);
   const [canvasHeight, setCanvasHeight] = useState(CANVAS_SIZE);
   const canvasWidthRef = useRef(1);
@@ -131,19 +145,29 @@ export function DrawingScreen({}: Props) {
     isEraserRef.current = isEraser;
   }, [isEraser]);
 
-  useEffect(() => {
-    AsyncStorage.getItem(DRAWING_RESET_KEY).then((hasReset) => {
-      if (hasReset) {
-        return;
-      }
+  const commitStroke = () => {
+    const stroke = currentStrokeRef.current;
+    if (!stroke) return;
+    const next = isEraserRef.current
+      ? eraseTouchedStrokes(strokesRef.current, stroke, canvasWidthRef.current, canvasHeightRef.current)
+      : [...strokesRef.current, stroke];
+    history.current = [...history.current.slice(-19), strokesRef.current];
+    setCanUndo(true);
+    strokesRef.current = next;
+    currentStrokeRef.current = null;
+    setStrokes(next);
+    setCurrentStroke(null);
+    void saveDrawing(next);
+    if (!isEraserRef.current && !rewardedDrawing.current) { rewardedDrawing.current = true; void rewardAction('drawing'); }
+  };
 
-      strokesRef.current = [];
-      setStrokes([]);
-      setCurrentStroke(null);
-      void saveDrawing([]);
-      void AsyncStorage.setItem(DRAWING_RESET_KEY, '1');
-    });
-  }, [saveDrawing]);
+  const eventPoint = (event: GestureResponderEvent) => {
+    const { pageX, pageY, locationX, locationY } = event.nativeEvent;
+    const origin = canvasOrigin.current;
+    // SVG paths and dots can become the event target; their local coordinates
+    // are not the origin of the canvas.
+    return getCanvasPoint(origin ? pageX - origin.x : locationX, origin ? pageY - origin.y : locationY, canvasWidthRef.current, canvasHeightRef.current);
+  };
 
   const drawingResponder = useRef(
     PanResponder.create({
@@ -151,49 +175,32 @@ export function DrawingScreen({}: Props) {
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: (event) => {
-        const { locationX, locationY } = event.nativeEvent;
-        const point = getCanvasPoint(locationX, locationY, canvasWidthRef.current, canvasHeightRef.current);
-        setCurrentStroke(point ? { color: colorRef.current, points: [point], width: brushSizeRef.current } : null);
+        const point = eventPoint(event);
+        const stroke = point ? { color: colorRef.current, points: [point], width: brushSizeRef.current } : null;
+        currentStrokeRef.current = stroke;
+        setCurrentStroke(stroke);
       },
       onPanResponderMove: (event) => {
-        const { locationX, locationY } = event.nativeEvent;
-        const point = getCanvasPoint(locationX, locationY, canvasWidthRef.current, canvasHeightRef.current);
+        const point = eventPoint(event);
 
         if (!point) {
-          setCurrentStroke((stroke) => {
-            if (!stroke) {
-              return null;
-            }
-
-            const nextStrokes = isEraserRef.current
-              ? eraseTouchedStrokes(strokesRef.current, stroke, canvasWidthRef.current, canvasHeightRef.current)
-              : [...strokesRef.current, stroke];
-            strokesRef.current = nextStrokes;
-            setStrokes(nextStrokes);
-            void saveDrawing(nextStrokes);
-            return null;
-          });
+          commitStroke();
           return;
         }
 
-        setCurrentStroke((stroke) => (stroke ? { ...stroke, points: [...stroke.points, point] } : stroke));
+        const stroke = currentStrokeRef.current;
+        if (!stroke) return;
+        const last = stroke.points[stroke.points.length - 1];
+        const distance = Math.hypot((point.x - last.x) * canvasWidthRef.current, (point.y - last.y) * canvasHeightRef.current);
+        if (distance < 1) return;
+        const count = Math.min(256, Math.ceil(distance / 3));
+        const points = Array.from({ length: count }, (_, i) => ({ x: last.x + (point.x - last.x) * (i + 1) / count, y: last.y + (point.y - last.y) * (i + 1) / count }));
+        const next = { ...stroke, points: [...stroke.points, ...points] };
+        currentStrokeRef.current = next;
+        setCurrentStroke(next);
       },
-      onPanResponderRelease: () => {
-        setCurrentStroke((stroke) => {
-          if (!stroke) {
-            return null;
-          }
-
-          const nextStrokes = isEraserRef.current
-            ? eraseTouchedStrokes(strokesRef.current, stroke, canvasWidthRef.current, canvasHeightRef.current)
-            : [...strokesRef.current, stroke];
-          strokesRef.current = nextStrokes;
-          setStrokes(nextStrokes);
-          void saveDrawing(nextStrokes);
-          return null;
-        });
-      },
-      onPanResponderTerminate: () => setCurrentStroke(null),
+      onPanResponderRelease: commitStroke,
+      onPanResponderTerminate: commitStroke,
     }),
   ).current;
 
@@ -214,21 +221,25 @@ export function DrawingScreen({}: Props) {
 
   return (
     <View style={styles.screen}>
-      <AppTopMenu icon="palette" title="Mi dibujo" />
+      <AppTopMenu compact icon="palette" title="Mi dibujo" />
 
       <View style={styles.content}>
+        <View style={styles.canvasArea} onLayout={event => setCanvasSide(Math.min(460, event.nativeEvent.layout.width, event.nativeEvent.layout.height))}>
         <View
+          ref={canvasRef}
+          testID="drawing-canvas"
           {...drawingResponder.panHandlers}
           onLayout={(event) => {
             canvasWidthRef.current = event.nativeEvent.layout.width;
             canvasHeightRef.current = event.nativeEvent.layout.height;
             setCanvasWidth(event.nativeEvent.layout.width);
             setCanvasHeight(event.nativeEvent.layout.height);
+            canvasRef.current?.measureInWindow((x, y) => { canvasOrigin.current = { x, y }; });
           }}
-          style={styles.canvas}
+          style={[styles.canvas, { width: canvasSide, height: canvasSide }]}
         >
             <Svg height="100%" width="100%">
-            {strokes.map((stroke, index) => (
+            {strokes.map((stroke, index) => stroke.points.length === 1 ? <Circle key={`${index}-dot`} cx={stroke.points[0].x * canvasWidth} cy={stroke.points[0].y * canvasHeight} fill={stroke.color} r={stroke.width / 2} /> : (
               <Path
                 d={pointsToPath(stroke.points, canvasWidth, canvasHeight)}
                 key={`${index}-${stroke.points.length}`}
@@ -261,35 +272,44 @@ export function DrawingScreen({}: Props) {
             ) : null}
           </Svg>
         </View>
+        </View>
 
         <View style={styles.controls}>
-          <Text style={styles.controlLabel}>Colores</Text>
-          <View style={styles.palette}>
+          <ScrollView style={styles.paletteScroll} contentContainerStyle={styles.palette} accessibilityLabel="Colores del pincel">
             {palette.map((itemColor) => (
               <TouchableOpacity
+                accessibilityRole="button"
                 accessibilityLabel={`Elegir color ${itemColor}`}
+                aria-pressed={!isEraser && color === itemColor}
                 key={itemColor}
                 onPress={() => {
                   setColor(itemColor);
                   setIsEraser(false);
                 }}
-                style={[styles.colorButton, { backgroundColor: itemColor }, color === itemColor && styles.selectedColor]}
-              />
+                style={[styles.colorButton, { backgroundColor: itemColor }, !isEraser && color === itemColor && styles.selectedColor]}
+              >{!isEraser && color === itemColor && <MaterialCommunityIcons name="check" color="#fff" size={22} />}</TouchableOpacity>
             ))}
-          </View>
+          </ScrollView>
 
-          <View style={styles.brushHeader}>
-            <Text style={styles.controlLabel}>Tamaño del pincel</Text>
-          </View>
+          <View style={styles.brushRow}>
+            <Text style={styles.controlLabel}>Tamaño</Text>
           <View
             {...sliderResponder.panHandlers}
+            accessibilityRole="adjustable"
+            accessibilityLabel="Tamaño del pincel"
+            aria-valuemin={4}
+            aria-valuemax={30}
+            aria-valuenow={brushSize}
+            accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+            onAccessibilityAction={event => setBrushSize(value => Math.max(4, Math.min(30, value + (event.nativeEvent.actionName === 'increment' ? 2 : -2))))}
             onLayout={(event) => {
               sliderWidthRef.current = event.nativeEvent.layout.width;
             }}
             style={styles.slider}
           >
-            <View style={styles.sliderTrack} />
+            <View pointerEvents="none" style={styles.sliderTrack} />
             <View
+              pointerEvents="none"
               style={[
                 styles.sliderThumb,
                 {
@@ -301,9 +321,13 @@ export function DrawingScreen({}: Props) {
               ]}
             />
           </View>
+          </View>
 
+          <View style={styles.toolRow}>
           <TouchableOpacity
             accessibilityRole="button"
+            accessibilityLabel="Goma de borrar"
+            aria-pressed={isEraser}
             onPress={() => {
               setIsEraser(true);
               setColor('#ffffff');
@@ -311,9 +335,17 @@ export function DrawingScreen({}: Props) {
             style={[styles.eraserButton, isEraser && styles.activeEraserButton]}
           >
             <MaterialCommunityIcons color="#26796e" name="eraser" size={22} />
-            <Text style={styles.eraserButtonText}>Goma de borrar</Text>
+            <Text style={styles.eraserButtonText}>Goma</Text>
           </TouchableOpacity>
-
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel="Deshacer último trazo" disabled={!canUndo} style={[styles.eraserButton, !canUndo && styles.disabledButton]} onPress={() => {
+            const previous = history.current.pop();
+            if (!previous) return;
+            strokesRef.current = previous;
+            setStrokes(previous);
+            setCanUndo(history.current.length > 0);
+            void saveDrawing(previous);
+          }}><MaterialCommunityIcons color="#26796e" name="undo" size={22} /><Text style={styles.eraserButtonText}>Deshacer</Text></TouchableOpacity>
+          </View>
         </View>
       </View>
       <AppBottomMenu />

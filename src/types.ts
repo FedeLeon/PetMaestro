@@ -1,11 +1,18 @@
 export type RootStackParamList = {
   Map: undefined;
   CityMap: undefined;
-  Game: { levelId: number };
+  Game: { levelId: number; mode?: 'review' };
+  Activities: undefined;
+  Album: undefined;
+  Toys: undefined;
+  Library: undefined;
+  Audiobook: { storyId: string };
+  ToyGame: { toyId: string };
+  CityActivity: { activityId: string };
   Pet: undefined;
   Shop: undefined;
   ShopCategory: { categoryId: ShopCategory['id'] };
-  House: undefined;
+  House: { room?: 'inside' | 'outside' | 'kitchen' | 'bathroom' | 'bedroom' } | undefined;
   Drawing: undefined;
 };
 
@@ -75,6 +82,8 @@ export type ShopCategory = {
 };
 
 export type ProgressState = {
+  storyQuizResults: Record<string, { best: number; completed: number; lastAttemptId: string }>;
+  learning: LearningProgress;
   unlockedLevel: number;
   coins: number;
   ownedItems: string[];
@@ -88,6 +97,16 @@ export type ProgressState = {
   drawingStrokes: DrawingStroke[];
   needs: PetNeeds;
   needsUpdatedAt: number;
+};
+
+export type WordProgress = { correct: number; errors: number; lastPracticed: number };
+export type ActivityKind = 'answers' | 'review' | 'meal' | 'wash' | 'sleep' | 'water' | 'toy' | 'city';
+export type LearningProgress = {
+  words: Record<string, WordProgress>;
+  counts: Partial<Record<ActivityKind, number>>;
+  claimedMissions: string[];
+  cityCompleted: string[];
+  toyBest: Record<string, number>;
 };
 
 export type PetNeeds = {

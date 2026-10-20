@@ -1,0 +1,54 @@
+{
+  "tool": "built-in imagegen",
+  "reference": "assets/generated/kitchen/food-broccoli-v1.png",
+  "assets": [
+    {
+      "id": "tomato",
+      "name": "Tomate",
+      "price": 10,
+      "nutrition": 10,
+      "path": "assets/generated/kitchen/food-tomato-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw one ripe round red tomato with a small green star-shaped leafy top. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    },
+    {
+      "id": "pasta",
+      "name": "Fideos",
+      "price": 16,
+      "nutrition": 14,
+      "path": "assets/generated/kitchen/food-pasta-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw a small neat pile of golden uncooked spiral pasta fusilli, about 8 large clearly readable spirals. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    },
+    {
+      "id": "spinach",
+      "name": "Espinaca",
+      "price": 18,
+      "nutrition": 12,
+      "path": "assets/generated/kitchen/food-spinach-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw a small fresh bunch of three broad vibrant green spinach leaves with short stems. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    },
+    {
+      "id": "zucchini",
+      "name": "Zapallito",
+      "price": 16,
+      "nutrition": 12,
+      "path": "assets/generated/kitchen/food-zucchini-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw one short pale-green round summer squash zucchini (Argentinian zapallito), with one thick cut slice beside it showing creamy pale flesh. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    },
+    {
+      "id": "mushrooms",
+      "name": "Champiñones",
+      "price": 20,
+      "nutrition": 14,
+      "path": "assets/generated/kitchen/food-mushrooms-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw two edible cultivated button mushrooms, one large and one small, with cream stems and smooth light beige caps, friendly food illustration, no faces. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    },
+    {
+      "id": "lentils",
+      "name": "Lentejas",
+      "price": 22,
+      "nutrition": 16,
+      "path": "assets/generated/kitchen/food-lentils-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: standalone ingredient sprite for the children's cooking game PetMaestro. Reference image is style only. Draw a small compact mound of brown-green lentil grains, stylized with individual plump round flat grains clearly visible, no container. Match the existing ingredient sprite's polished softly painted 3D storybook appearance, saturated appetizing colors, soft rounded forms, warm gentle highlights and a clear silhouette for young children. Single isolated centered ingredient group on a genuinely transparent background, occupying 80 to 85 percent of a square image. Fully inside the canvas with modest transparent padding. Three-quarter view slightly from above. No plate, bowl, bag, packaging, frame, ground, cast shadow, text, labels, letters, face, utensil or unrelated food. Genuine alpha outside the food."
+    }
+  ]
+}

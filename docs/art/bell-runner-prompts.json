@@ -1,0 +1,17 @@
+{
+  "tool": "built-in imagegen",
+  "assets": [
+    {
+      "asset": "assets/generated/toys/bell-runner/park-v1.png",
+      "prompt": "Use case: illustration-story. Asset type: seamless horizontal scrolling park background for a children's side-scrolling platform game called PetMaestro. Extra wide 3:1 landscape panorama, front/side elevation, NOT a top-down view. Bright welcoming sunny park with round leafy trees, distant low hills, little flowers, wood fences, blue sky and soft clouds. At exactly 80 percent image height a perfectly HORIZONTAL FLAT golden sandy path runs continuously from left edge to right edge, with grass below. Path is full-width, not a trail going into distance. Keep the entire lower 35 percent open and clear for running character, coins and obstacles drawn separately. No animals, people, toys, obstacles, stones, UI, words or letters. Golden warm sunlight, lush turquoise-green trees, soft polished painterly storybook shading with rounded forms matching a cute orange cat children's game. Left/right edges should meet smoothly when tiled horizontally. 3:1 panorama."
+    },
+    {
+      "asset": "assets/generated/toys/bell-runner/cat-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: three-frame character sprite sheet for PetMaestro children's side-view running game. Reference is character identity only: same adorable orange striped tabby kitten, cream muzzle/belly/paws/tail tip, large amber eyes, pink nose, happy face. Create exactly THREE evenly spaced full-body poses in ONE horizontal row on a genuine transparent background, wide 3:1 canvas with three equal square cells. The kitten is running upright on TWO back legs in a clear three-quarter SIDE VIEW facing RIGHT. Frame 1: right back foot forward and left back foot backward, arms swinging. Frame 2: opposite stride, left back foot forward, right back foot backward, arms opposite; same head and body height, facing right. Frame 3: joyful jumping pose, both feet tucked, arms slightly raised, facing right. Same identical kitten and proportions in all frames, no clothes, no props, no objects. Character occupies central 75 percent of each square cell, all poses entirely inside each cell; same baseline at 91 percent cell height, same body center and scale in all three. Warm polished softly shaded game illustration, no shadow, no ground, no checkerboard pattern, no writing or labels. Keep all background truly transparent."
+    },
+    {
+      "asset": "assets/generated/toys/bell-runner/cat-stride-v2.png",
+      "prompt": "Edit the supplied THREE-CELL sprite sheet. Keep the first running pose and third jumping pose and the transparent background unchanged. In ONLY THE MIDDLE SQUARE CELL, draw the same kitten in the OPPOSITE running stride: its FRONT visible leg must bend BACKWARD with the foot trailing LEFT, and the rear leg extends FORWARD RIGHT. The visible near arm reaches FORWARD RIGHT instead of trailing backwards. Clear opposite silhouette to frame 1, same right-facing profile head, body, size, cell center, baseline, colors and character identity. Exactly three equal square cells in a 3:1 wide sheet, no borders or labels, transparent background. This opposite stride is essential for the running animation."
+    }
+  ]
+}

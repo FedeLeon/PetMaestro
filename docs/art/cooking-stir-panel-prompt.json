@@ -1,0 +1,5 @@
+{
+  "tool": "built-in imagegen",
+  "asset": "assets/generated/ui/cooking-stir-panel-v1.png",
+  "prompt": "Use case: illustration-story. Asset type: compact horizontal HUD panel for stirring progress in the children's game PetMaestro. Reference image: existing top menu frame, use only its exact painted material and palette style. Create one SMALL SIMPLE rounded rectangular panel with 3:1 width to height ratio. Honey golden carved wooden border, slim turquoise inner trim, tiny paw carvings at two upper corners, blank light cream interior occupying 80 percent of the canvas. Front view straight-on with polished warm highlights and subtle painted woodgrain. Interior completely empty, will receive one line of live text and a progress bar from code. No text, no bar drawn inside, no spoon or cat, no other objects, no scene. Frame fills canvas with only 1 percent transparent outer margin, transparent background outside rounded silhouette, opaque cream center. Ensure a genuinely wide 3:1 image composition. Match the reference game style, not a realistic photo."
+}

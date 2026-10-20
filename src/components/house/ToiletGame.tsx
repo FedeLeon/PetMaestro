@@ -5,11 +5,15 @@ import { houseImages } from '../../data/assetImages';
 import { useProgress } from '../../context/ProgressContext';
 import { styles } from '../../styles/house/bathroomActivity.styles';
 import { styles as toiletStyles } from '../../styles/house/toiletGame.styles';
-import { ActivityProgress, BathroomActivityScene } from './BathroomActivityScene';
+import { BathroomActivityScene } from './BathroomActivityScene';
+import { SceneFinish, SceneTool } from './CareActivityScene';
+import { styles as sceneStyles } from '../../styles/house/careScene.styles';
+import { useCareActivity } from './useCareActivity';
 import { BathroomParticles } from './BathroomParticles';
 import { BathroomWater } from './BathroomWater';
 import { ToiletFlushAnimation } from './ToiletFlushAnimation';
 import { useBathroomTouch } from './useBathroomTouch';
+import { useActivitySound } from './useActivitySound';
 
 type Phase = 'ready' | 'using' | 'flush' | 'flushing' | 'wash' | 'washing' | 'done';
 type Point = { x: number; y: number };
@@ -19,8 +23,11 @@ const PAWS = [{ x: .31, y: .595 }, { x: .48, y: .595 }];
 
 export function ToiletGame({ onClose }: { onClose: () => void }) {
   const { improveBathroom } = useProgress();
+  const care = useCareActivity();
   const [phase, setPhase] = useState<Phase>('ready');
+  useActivitySound(phase === 'flushing' || phase === 'washing', 'water');
   const [elapsed, setElapsed] = useState(0);
+  const elapsedRef = useRef(0);
   const [layout, setLayout] = useState({ width: 0, height: 0 });
   const [cursor, setCursor] = useState<Point | null>(null);
   const [remaining, setRemaining] = useState([6, 6]);
@@ -31,19 +38,21 @@ export function ToiletGame({ onClose }: { onClose: () => void }) {
   const pawsAppear = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (phase !== 'using' && phase !== 'flushing') return;
-    setElapsed(0);
-    const start = Date.now();
+    if (!care.active || phase !== 'using' && phase !== 'flushing') return;
+    const start = Date.now() - elapsedRef.current * DURATION[phase];
     const timer = setInterval(() => {
+      if (!care.live.current) return;
       const fraction = Math.min(1, (Date.now() - start) / DURATION[phase]);
+      elapsedRef.current = fraction;
       setElapsed(fraction);
       if (fraction === 1) {
         clearInterval(timer);
-        setPhase(phase === 'using' ? 'flush' : 'wash');
+        elapsedRef.current = 0;
+        setPhase(phase === 'using' ? 'flush' : 'washing');
       }
     }, 80);
     return () => clearInterval(timer);
-  }, [phase]);
+  }, [care.active, care.live, phase]);
   useEffect(() => {
     const animation = Animated.timing(curtain, { toValue: phase === 'ready' || phase === 'done' ? 0 : 1, duration: 550, useNativeDriver: true });
     animation.start();
@@ -57,11 +66,10 @@ export function ToiletGame({ onClose }: { onClose: () => void }) {
   }, [pawsAppear, showPaws]);
 
   const washAt = useCallback((x: number, y: number) => {
-    if (phase !== 'washing' || awarded.current || !layout.width || !layout.height) return;
+    if (!care.live.current || phase !== 'washing' || awarded.current || !layout.width || !layout.height) return;
     setCursor({ x, y });
     const previous = lastPoint.current;
-    if (!previous) { lastPoint.current = { x, y }; return; }
-    if (Math.hypot(x - previous.x, y - previous.y) < Math.max(3, layout.width * .008)) return;
+    if (previous && Math.hypot(x - previous.x, y - previous.y) < Math.max(3, layout.width * .008)) return;
     lastPoint.current = { x, y };
     const next = remainingRef.current.map((value, index) => {
       const paw = PAWS[index];
@@ -77,26 +85,16 @@ export function ToiletGame({ onClose }: { onClose: () => void }) {
       setPhase('done');
       void improveBathroom(70, 10);
     }
-  }, [improveBathroom, layout, phase]);
-  const touch = useBathroomTouch(phase === 'washing', washAt, () => { lastPoint.current = null; setCursor(null); });
+  }, [care.live, improveBathroom, layout, phase]);
+  const touch = useBathroomTouch(care.active && phase === 'washing', washAt, () => { lastPoint.current = null; setCursor(null); });
   const washed = remaining.filter((value) => value === 0).length;
   const washProgress = 1 - (remaining[0] + remaining[1]) / 12;
-  const label = { ready: 'Ayudá al gato a ir al baño', using: 'Un momento de privacidad…', flush: '¡Ahora tirá de la cadena!', flushing: 'Vaciando el inodoro…', wash: 'Lavá las patitas', washing: 'Enjuagá las patitas', done: '¡Muy bien! Todo limpio' }[phase];
+  const label = { ready: 'Tocá al gatito para empezar', using: 'Un momento de privacidad…', flush: '¡Ahora tocá el tirador de la cadena!', flushing: 'Vaciando el inodoro…', wash: 'Lavá las patitas', washing: `Tocá o frotá las dos patitas · ${washed}/2 limpias`, done: '¡Muy bien! Todo limpio' }[phase];
   const progress = phase === 'ready' ? 0 : phase === 'using' ? elapsed / 3 : phase === 'flush' ? 1 / 3 : phase === 'flushing' ? (1 + elapsed) / 3 : phase === 'wash' ? 2 / 3 : phase === 'washing' ? (2 + washProgress) / 3 : 1;
-  const action = phase === 'ready' ? { label: 'Usar inodoro', next: 'using', icon: 'toilet' } as const : phase === 'flush' ? { label: 'Tirar de la cadena', next: 'flushing', icon: 'water-sync' } as const : null;
   const toolSize = Math.max(118, Math.min(180, layout.height * .32));
-  const flush = () => { if (phase === 'flush') { setElapsed(0); setPhase('flushing'); } };
+  const flush = () => { if (care.live.current && phase === 'flush') { elapsedRef.current = 0; setElapsed(0); setPhase('flushing'); } };
 
-  return <BathroomActivityScene source={houseImages.toiletCat} onClose={onClose} controls={<>
-    <ActivityProgress value={progress} label={label} />
-    {action ? <TouchableOpacity accessibilityRole="button" accessibilityLabel={action.label} onPress={() => { setElapsed(0); setPhase(action.next); }} style={styles.action}><MaterialCommunityIcons name={action.icon} color="#237d75" size={28} /><Text style={styles.actionText}>{action.label}</Text></TouchableOpacity> : null}
-    {showPaws ? <>
-      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Lavar patitas" accessibilityState={{ selected: phase === 'washing' }} onPress={() => setPhase('washing')} style={styles.action}>
-        <Image source={houseImages.bathHandShower} resizeMode="contain" style={styles.toolImage} /><View style={toiletStyles.actionCopy}><Text style={styles.actionText}>{phase === 'washing' ? 'Ducha lista' : 'Lavar patitas'}</Text><Text accessibilityLiveRegion="polite" style={toiletStyles.showerLabel}>{washed} de 2 patitas limpias</Text></View>
-      </TouchableOpacity>
-    </> : null}
-    {phase === 'done' ? <><Text style={styles.success}>Baño +70 · Higiene +10</Text><TouchableOpacity accessibilityRole="button" onPress={onClose} style={styles.action}><Text style={styles.actionText}>¡Listo!</Text></TouchableOpacity></> : null}
-  </>}>
+  return <BathroomActivityScene source={houseImages.toiletCat} onClose={onClose} value={progress} label={label}>
     <View ref={touch.stageRef} testID="toilet-stage" onLayout={(event) => setLayout(event.nativeEvent.layout)} style={styles.fill} {...touch.panHandlers}>
       <View pointerEvents="none" style={styles.fill}>
         <Animated.View testID="privacy-curtain" style={[styles.privacy, { opacity: curtain, transform: [{ scaleX: curtain.interpolate({ inputRange: [0, 1], outputRange: [.05, 1] }) }] }]}>{Array.from({ length: 6 }, (_, index) => <View key={index} style={styles.curtainFold} />)}</Animated.View>
@@ -118,5 +116,8 @@ export function ToiletGame({ onClose }: { onClose: () => void }) {
       </View>
       {phase === 'flush' || phase === 'flushing' ? <ToiletFlushAnimation flushing={phase === 'flushing'} onFlush={flush} /> : null}
     </View>
+    {phase === 'ready' && <TouchableOpacity accessibilityRole="button" accessibilityLabel="Usar inodoro" onPress={() => { elapsedRef.current = 0; setElapsed(0); setPhase('using'); }} style={[sceneStyles.tool, sceneStyles.toiletStart]}><MaterialCommunityIcons name="toilet" color="#26796e" size={30} /><Text style={sceneStyles.toolLabel}>Tocá al gatito</Text></TouchableOpacity>}
+    {showPaws && <SceneTool label="Lavar patitas" caption="Agua lista" source={houseImages.bathHandShower} style={sceneStyles.pawShower} selected onPress={() => setPhase('washing')} />}
+    {phase === 'done' && <SceneFinish onPress={onClose} />}
   </BathroomActivityScene>;
 }

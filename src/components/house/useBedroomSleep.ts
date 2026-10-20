@@ -1,10 +1,13 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useProgress } from '../../context/ProgressContext';
+import { useActivitySound } from './useActivitySound';
+import { useCareActivity } from './useCareActivity';
 
 export function useBedroomSleep() {
   const { completeSleep } = useProgress();
+  const care = useCareActivity();
   const save = useRef(completeSleep);
   save.current = completeSleep;
   const darkness = useRef(new Animated.Value(0)).current;
@@ -12,7 +15,12 @@ export function useBedroomSleep() {
   const running = useRef(false);
   const generation = useRef(0);
   const [phase, setPhase] = useState<'awake' | 'sleeping' | 'rested'>('awake');
+  useActivitySound(phase === 'sleeping', 'sleep');
   const [error, setError] = useState(false);
+  useEffect(() => {
+    if (care.active) return;
+    generation.current++; running.current = false; animation.current?.stop(); darkness.setValue(0); setPhase('awake');
+  }, [care.active, darkness]);
   useFocusEffect(useCallback(() => {
     setPhase('awake');
     return () => {
@@ -23,7 +31,7 @@ export function useBedroomSleep() {
     };
   }, [darkness]));
   const start = () => {
-    if (running.current) return;
+    if (running.current || !care.live.current) return;
     running.current = true;
     const current = ++generation.current;
     setError(false);
@@ -35,7 +43,7 @@ export function useBedroomSleep() {
     ]);
     animation.current = sequence;
     sequence.start(async ({ finished }) => {
-      if (!finished || current !== generation.current) return;
+      if (!finished || current !== generation.current || !care.live.current) return;
       try {
         await save.current();
         if (current === generation.current) setPhase('rested');

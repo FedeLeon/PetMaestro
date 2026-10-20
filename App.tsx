@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { ProgressProvider, useProgress } from './src/context/ProgressContext';
@@ -14,12 +14,23 @@ import { ShopScreen } from './src/screens/ShopScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { RootStackParamList } from './src/types';
 import { preloadGameAssets } from './src/data/preloadGameAssets';
+import { AudioProvider, useGameAudio } from './src/context/AudioContext';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from './src/styles/app.styles';
+import { ActivitiesScreen } from './src/screens/ActivitiesScreen';
+import { AlbumScreen } from './src/screens/AlbumScreen';
+import { ToysScreen } from './src/screens/ToysScreen';
+import { ToyGameScreen } from './src/screens/ToyGameScreen';
+import { CityActivityScreen } from './src/screens/CityActivityScreen';
+import { LibraryScreen } from './src/screens/LibraryScreen';
+import { AudiobookScreen } from './src/screens/AudiobookScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigator() {
+  const navigationRef = useNavigationContainerRef<RootStackParamList>();
+  const { changeScene } = useGameAudio();
   const { isReady } = useProgress();
-  const [showLoading, setShowLoading] = useState(true);
   const [animationsReady, setAnimationsReady] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadError, setLoadError] = useState(false);
@@ -36,22 +47,12 @@ function AppNavigator() {
     return () => { mounted = false; };
   }, [loadAttempt]);
 
-  useEffect(() => {
-    if (!isReady) {
-      return;
-    }
-
-    const timeoutId = setTimeout(() => setShowLoading(false), 2200);
-    return () => clearTimeout(timeoutId);
-  }, [isReady]);
-
-  if (!isReady || showLoading || !animationsReady) {
+  if (!isReady || !animationsReady) {
     return <LoadingScreen progress={loadProgress} error={loadError} onRetry={() => setLoadAttempt(attempt => attempt + 1)} />;
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="dark" />
+    <NavigationContainer ref={navigationRef} onStateChange={() => changeScene(navigationRef.getCurrentRoute()?.name ?? 'Map')}>
       <Stack.Navigator
         initialRouteName="Map"
         screenOptions={{
@@ -62,6 +63,13 @@ function AppNavigator() {
       >
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="CityMap" component={CityMapScreen} />
+        <Stack.Screen name="Activities" component={ActivitiesScreen} />
+        <Stack.Screen name="Album" component={AlbumScreen} />
+        <Stack.Screen name="Toys" component={ToysScreen} />
+        <Stack.Screen name="Library" component={LibraryScreen} />
+        <Stack.Screen name="Audiobook" component={AudiobookScreen} />
+        <Stack.Screen name="ToyGame" component={ToyGameScreen} />
+        <Stack.Screen name="CityActivity" component={CityActivityScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
         <Stack.Screen name="Pet" component={PetScreen} />
         <Stack.Screen name="Shop" component={ShopScreen} />
@@ -75,8 +83,15 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <ProgressProvider>
-      <AppNavigator />
-    </ProgressProvider>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'top', 'bottom']}>
+        <StatusBar hidden />
+        <AudioProvider>
+          <ProgressProvider>
+            <AppNavigator />
+          </ProgressProvider>
+        </AudioProvider>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

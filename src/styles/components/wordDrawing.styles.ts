@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  fit: { flex: 1, minHeight: 0, minWidth: 0, width: '100%', alignItems: 'center', justifyContent: 'center' },
   cardFrame: { height: '100%', position: 'absolute', width: '100%', zIndex: 2 },
   drawing: {
     alignItems: 'center', aspectRatio: 1, borderColor: '#ffffff', borderRadius: 8, borderWidth: 4,

@@ -1,15 +1,18 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { navigationImages } from '../data/assetImages';
+import { MenuFrame } from './MenuFrame';
+import { furnitureImages, navigationImages } from '../data/assetImages';
 import { styles } from '../styles/components/appBottomMenu.styles';
 import { RootStackParamList } from '../types';
+import { useGameAudio } from '../context/AudioContext';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 export function AppBottomMenu({ onOpenHouse }: { onOpenHouse?: () => void } = {}) {
   const navigation = useNavigation<Navigation>();
   const route = useRoute();
+  const { playSound } = useGameAudio();
 
   const menuItems = [
     { routeName: 'Map' as const, label: 'Mapa', image: navigationImages.map },
@@ -20,20 +23,32 @@ export function AppBottomMenu({ onOpenHouse }: { onOpenHouse?: () => void } = {}
 
   return (
     <View style={styles.menu}>
+      <MenuFrame kind="bottom" />
       {menuItems.map((item) => {
         const active = route.name === item.routeName || (item.routeName === 'Map' && route.name === 'CityMap') || (item.routeName === 'Shop' && route.name === 'ShopCategory');
 
         return (
           <TouchableOpacity
             accessibilityRole="button"
+            accessibilityLabel={item.label}
+            aria-selected={active}
             key={item.routeName}
-            onPress={() => item.routeName === 'House' && onOpenHouse ? onOpenHouse() : navigation.navigate(item.routeName)}
+            onPress={() => { playSound('tap'); if (item.routeName === 'House') { if (onOpenHouse) onOpenHouse(); else navigation.navigate('House', { room: 'inside' }); } else navigation.navigate(item.routeName); }}
             style={[styles.button, active && styles.activeButton]}
           >
-            <Image accessibilityLabel={item.label} resizeMode="contain" source={item.image} style={styles.icon} />
+            <Image accessible={false} resizeMode="contain" source={item.image} style={styles.icon} />
           </TouchableOpacity>
         );
       })}
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Juguetes" aria-selected={['Toys', 'ToyGame'].includes(route.name)} onPress={() => { playSound('tap'); navigation.navigate('Toys'); }} style={[styles.button, ['Toys', 'ToyGame'].includes(route.name) && styles.activeButton]}>
+        <Image accessible={false} testID="toys-menu-art" resizeMode="contain" source={navigationImages.toys} style={styles.icon} />
+      </TouchableOpacity>
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Aventuras" aria-selected={['Activities', 'Album'].includes(route.name)} onPress={() => { playSound('tap'); navigation.navigate('Activities'); }} style={[styles.button, ['Activities', 'Album'].includes(route.name) && styles.activeButton]}>
+        <Image accessible={false} testID="adventures-menu-art" resizeMode="contain" source={navigationImages.adventures} style={styles.icon} />
+      </TouchableOpacity>
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Biblioteca" aria-selected={['Library', 'Audiobook'].includes(route.name)} onPress={() => { playSound('tap'); navigation.navigate('Library'); }} style={[styles.button, ['Library', 'Audiobook'].includes(route.name) && styles.activeButton]}>
+        <Image accessible={false} testID="library-menu-art" resizeMode="contain" source={furnitureImages['bookcase-open']} style={styles.icon} />
+      </TouchableOpacity>
     </View>
   );
 }

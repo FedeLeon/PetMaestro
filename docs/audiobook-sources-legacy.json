@@ -1,0 +1,62 @@
+[
+  {
+    "id": "burro-flautista",
+    "title": "El burro flautista",
+    "author": "Tomás de Iriarte (1750–1791)",
+    "narrator": "jrodzg",
+    "file": "assets/audio/stories/burro-flautista.mp3",
+    "source": "https://archive.org/download/fabulasliterarias_1702_librivox/fabulasliterarias_08_iriarte_128kb.mp3",
+    "catalog": "https://librivox.org/fabulas-literarias-by-tomas-de-iriarte/",
+    "rights": "Public domain dedication by LibriVox; catalog declaration based on US law",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "downloaded": "2026-10-19",
+    "durationSeconds": 58.070204,
+    "bytes": 933810,
+    "sha256": "a92bc1c9d92638bfb0c23268b98c302e595094119fea116ab26526e3a82d080f"
+  },
+  {
+    "id": "pato-serpiente",
+    "title": "El pato y la serpiente",
+    "author": "Tomás de Iriarte (1750–1791)",
+    "narrator": "jrodzg",
+    "file": "assets/audio/stories/pato-serpiente.mp3",
+    "source": "https://archive.org/download/fabulasliterarias_1702_librivox/fabulasliterarias_13_iriarte_128kb.mp3",
+    "catalog": "https://librivox.org/fabulas-literarias-by-tomas-de-iriarte/",
+    "rights": "Public domain dedication by LibriVox; catalog declaration based on US law",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "downloaded": "2026-10-19",
+    "durationSeconds": 58.044082,
+    "bytes": 933392,
+    "sha256": "a90342e41f428467f7cebc3f8d973aabc4a9af7dd89080b133ec4fb9268e49f1"
+  },
+  {
+    "id": "abeja-cuclillo",
+    "title": "La abeja y el cuclillo",
+    "author": "Tomás de Iriarte (1750–1791)",
+    "narrator": "mariemdover",
+    "file": "assets/audio/stories/abeja-cuclillo.mp3",
+    "source": "https://archive.org/download/fabulasliterarias_1702_librivox/fabulasliterarias_20_iriarte_128kb.mp3",
+    "catalog": "https://librivox.org/fabulas-literarias-by-tomas-de-iriarte/",
+    "rights": "Public domain dedication by LibriVox; catalog declaration based on US law",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "downloaded": "2026-10-19",
+    "durationSeconds": 72.907755,
+    "bytes": 1171211,
+    "sha256": "1396a9858f6c085fb0eac90ef9bfbd32bb47ab1dfe86f09dca856c131eabc6a4"
+  },
+  {
+    "id": "ardilla-caballo",
+    "title": "La ardilla y el caballo",
+    "author": "Tomás de Iriarte (1750–1791)",
+    "narrator": "mariemdover",
+    "file": "assets/audio/stories/ardilla-caballo.mp3",
+    "source": "https://archive.org/download/fabulasliterarias_1702_librivox/fabulasliterarias_30_iriarte_128kb.mp3",
+    "catalog": "https://librivox.org/fabulas-literarias-by-tomas-de-iriarte/",
+    "rights": "Public domain dedication by LibriVox; catalog declaration based on US law",
+    "rightsSource": "https://librivox.org/pages/public-domain/",
+    "downloaded": "2026-10-19",
+    "durationSeconds": 89.835102,
+    "bytes": 1442080,
+    "sha256": "e1a136e72c8283841bab35e840ca69acb06689ac5879c710325a547af4a57655"
+  }
+]

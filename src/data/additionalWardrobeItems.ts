@@ -1,0 +1,26 @@
+import type { ShopItem } from '../types';
+
+export const additionalWardrobeItems: ShopItem[] = [
+  { id: 'oval-pink-glasses', name: 'Anteojos ovalados rosas', price: 35, category: 'glasses', target: 'cat', slot: 'eyes', color: '#ed8eb8', label: 'ANTEOJOS OVALADOS ROSAS', icon: 'glasses' },
+  { id: 'mint-round-glasses', name: 'Anteojos menta', price: 36, category: 'glasses', target: 'cat', slot: 'eyes', color: '#71c5a1', label: 'ANTEOJOS MENTA', icon: 'glasses' },
+  { id: 'flower-glasses', name: 'Anteojos flor', price: 42, category: 'glasses', target: 'cat', slot: 'eyes', color: '#b489d9', label: 'ANTEOJOS FLOR', icon: 'glasses' },
+  { id: 'orange-sport-glasses', name: 'Lentes deportivos naranja', price: 40, category: 'glasses', target: 'cat', slot: 'eyes', color: '#f49a42', label: 'LENTES DEPORTIVOS NARANJA', icon: 'glasses' },
+  { id: 'navy-square-glasses', name: 'Anteojos azul marino', price: 38, category: 'glasses', target: 'cat', slot: 'eyes', color: '#3c6598', label: 'ANTEOJOS AZUL MARINO', icon: 'glasses' },
+  { id: 'moon-glasses', name: 'Anteojos luna', price: 44, category: 'glasses', target: 'cat', slot: 'eyes', color: '#c7a1e8', label: 'ANTEOJOS LUNA', icon: 'glasses' },
+  { id: 'orange-paw-shirt', name: 'Remera naranja con huella', price: 36, category: 'shirts', target: 'cat', slot: 'body', color: '#ed9953', label: 'REMERA NARANJA CON HUELLA', icon: 'tshirt-crew' },
+  { id: 'teal-leaf-shirt', name: 'Remera turquesa con hojas', price: 39, category: 'shirts', target: 'cat', slot: 'body', color: '#51b7ad', label: 'REMERA TURQUESA CON HOJAS', icon: 'tshirt-crew' },
+  { id: 'purple-moon-shirt', name: 'Remera violeta con luna', price: 44, category: 'shirts', target: 'cat', slot: 'body', color: '#9e83d2', label: 'REMERA VIOLETA CON LUNA', icon: 'tshirt-crew' },
+  { id: 'cream-flower-shirt', name: 'Remera crema con flores', price: 42, category: 'shirts', target: 'cat', slot: 'body', color: '#f2dbaf', label: 'REMERA CREMA CON FLORES', icon: 'tshirt-crew' },
+  { id: 'teal-dot-skirt', name: 'Pollera turquesa con lunares', price: 44, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#58bbae', label: 'POLLERA TURQUESA CON LUNARES', icon: 'tshirt-crew' },
+  { id: 'lavender-skirt', name: 'Pollera lavanda', price: 43, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#b59ed8', label: 'POLLERA LAVANDA', icon: 'tshirt-crew' },
+  { id: 'lemon-star-skirt', name: 'Pollera amarilla con estrellas', price: 46, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#edcf58', label: 'POLLERA AMARILLA CON ESTRELLAS', icon: 'tshirt-crew' },
+  { id: 'yellow-shorts', name: 'Short amarillo', price: 38, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#e9bf50', label: 'SHORT AMARILLO', icon: 'tshirt-crew' },
+  { id: 'red-shorts', name: 'Short rojo', price: 39, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#dd6d62', label: 'SHORT ROJO', icon: 'tshirt-crew' },
+  { id: 'denim-shorts', name: 'Short de jean', price: 42, category: 'bottoms', target: 'cat', slot: 'bottom', color: '#6c9acc', label: 'SHORT DE JEAN', icon: 'tshirt-crew' },
+  { id: 'yellow-sneakers', name: 'Zapatillas amarillas', price: 38, category: 'shoes', target: 'cat', slot: 'feet', color: '#eac34e', label: 'ZAPATILLAS AMARILLAS', icon: 'shoe-sneaker' },
+  { id: 'pink-trainers', name: 'Zapatillas rosas', price: 39, category: 'shoes', target: 'cat', slot: 'feet', color: '#e99cbf', label: 'ZAPATILLAS ROSAS', icon: 'shoe-sneaker' },
+  { id: 'turquoise-boots', name: 'Botitas turquesa', price: 42, category: 'shoes', target: 'cat', slot: 'feet', color: '#51b9b1', label: 'BOTITAS TURQUESA', icon: 'shoe-sneaker' },
+  { id: 'red-rain-boots', name: 'Botas de lluvia rojas', price: 42, category: 'shoes', target: 'cat', slot: 'feet', color: '#df7565', label: 'BOTAS DE LLUVIA ROJAS', icon: 'shoe-sneaker' },
+  { id: 'lilac-slippers', name: 'Pantuflas lilas', price: 39, category: 'shoes', target: 'cat', slot: 'feet', color: '#b79cda', label: 'PANTUFLAS LILAS', icon: 'shoe-sneaker' },
+  { id: 'brown-shoes', name: 'Zapatos marrones', price: 40, category: 'shoes', target: 'cat', slot: 'feet', color: '#ac7952', label: 'ZAPATOS MARRONES', icon: 'shoe-sneaker' },
+];
