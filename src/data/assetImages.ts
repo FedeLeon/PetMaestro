@@ -23,6 +23,7 @@ export const toySceneImages = {
   bellPark: require('../../assets/generated/toys/bell-runner/park-v1.png'),
   bellCat: require('../../assets/generated/toys/bell-runner/cat-stride-v2.png'),
   bellCatRun: require('../../assets/generated/toys/bell-runner/cat-run-cycle-v3.png'),
+  bellCatSad: require('../../assets/generated/toys/bell-runner/cat-run-sad-v1.png'),
   bellObstacles: {
     log: require('../../assets/generated/toys/bell-runner/obstacle-log-v1.png'),
     rock: require('../../assets/generated/toys/bell-runner/obstacle-rock-v1.png'),
@@ -244,6 +245,8 @@ export const houseImages = {
   bathSoap: require('../../assets/generated/house/bath-soap-v1.png'),
   bathTowel: require('../../assets/generated/house/bath-towel-v1.png'),
   showerCat: require('../../assets/generated/house/shower-cat-v1.png'),
+  toiletRoom: require('../../assets/generated/house/toilet-empty-room-v1.png'),
+  toiletSeatedCat: require('../../assets/generated/house/toilet-seated-cat-v1.png'),
   toiletCat: require('../../assets/generated/house/toilet-cat-v1.png'),
   bathroomInterior: require('../../assets/generated/house/bathroom-interactive-v2.png'),
   toothBrushClean: require('../../assets/generated/house/toothbrush-clean-v1.png'),
@@ -322,4 +325,14 @@ export const catShoeImages: Record<string, { left: number; right: number }> = {
   'green-boots': { left: require('../../assets/generated/cat-items/feet/green-boots-left-v1.png'), right: require('../../assets/generated/cat-items/feet/green-boots-right-v1.png') },
   'purple-shoes': { left: require('../../assets/generated/cat-items/feet/purple-shoes-left-v1.png'), right: require('../../assets/generated/cat-items/feet/purple-shoes-right-v1.png') },
   'orange-slippers': { left: require('../../assets/generated/cat-items/feet/orange-slippers-left-v1.png'), right: require('../../assets/generated/cat-items/feet/orange-slippers-right-v1.png') },
+};
+
+export const activityButtonImages = {
+  fridge: require('../../assets/generated/ui/activity-fridge-v1.png'),
+  cook: require('../../assets/generated/ui/activity-cook-v1.png'),
+  feed: require('../../assets/generated/ui/activity-feed-v1.png'),
+  teeth: require('../../assets/generated/ui/activity-teeth-v1.png'),
+  shower: require('../../assets/generated/ui/activity-shower-v1.png'),
+  toilet: require('../../assets/generated/ui/activity-toilet-v1.png'),
+  sleep: require('../../assets/generated/ui/activity-sleep-v1.png'),
 };

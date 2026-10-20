@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
+  layer: { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 },
+  lidArt: { position: 'absolute', left: '19%', top: '30%', width: '30%', height: '40%' },
+  lidHit: { position: 'absolute', left: '19%', top: '52%', width: '30%', height: '20%', minWidth: 44, minHeight: 44, zIndex: 6 },
+  dragCat: { position: 'absolute', zIndex: 7 },
+  seatedCat: { position: 'absolute', left: '23%', top: '5%', width: '34%', height: '78%' },
+  dropTarget: { position: 'absolute', left: '20%', top: '52%', width: '30%', height: '22%', borderRadius: 100, borderWidth: 3, borderStyle: 'dashed', borderColor: '#efbd41', backgroundColor: '#fff5ca35' },
+  privacy: { top: '5%', bottom: '9%' },
   chainHit: { position: 'absolute', left: '64%', top: '18%', width: '23%', height: '39%', minWidth: 44, minHeight: 44, zIndex: 4 },
   asset: { width: '100%', height: '100%' },
   flushWindow: { position: 'absolute', left: '66%', top: '59%', width: '25%', aspectRatio: 1, borderRadius: 200, borderColor: '#fff6df', borderWidth: 6, backgroundColor: '#83d9e8', overflow: 'hidden' },

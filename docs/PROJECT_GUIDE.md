@@ -91,7 +91,7 @@ En React Native Web 0.21, `ImageBackground` transmite `onLayout` a la imagen int
 
 La biblioteca de cuentos usa las rutas `Library` y `Audiobook`, con acceso desde
 el menú inferior y la biblioteca colocada en el salón. `src/data/audiobooks.ts`
-registra doce cuentos (dos MP3 y diez lecturas) en tres estantes de cuatro. `src/data/libraryProgression.ts` define el orden estable y exige completar las cinco preguntas de cada uno de los cuatro libros anteriores, sin exigir aciertos. Las tarjetas bloqueadas son grises y el lector y `ProgressContext` también validan el acceso. `useStoryPlayer` gestiona
+registra doce cuentos (dos MP3 y diez lecturas) en una única grilla desplazable, sin paginación, de cuatro tarjetas por fila. `src/data/libraryProgression.ts` define el orden estable y exige completar las cinco preguntas de cada uno de los cuatro libros anteriores, sin exigir aciertos. Las tarjetas bloqueadas son grises y el lector y `ProgressContext` también validan el acceso. `useStoryPlayer` gestiona
 reproducción, progreso y errores; `AudioContext.setNarrationActive` pausa la
 música durante esta vista. El menú inferior conserva nombres accesibles pero
 solo muestra assets. Fuentes, derechos y pruebas: `docs/audiobooks.md`.

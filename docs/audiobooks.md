@@ -5,7 +5,8 @@ de comprar muebles. La biblioteca comprada y colocada en el salón también abre
 la colección al tocarla. Los siete botones inferiores muestran únicamente sus
 assets dentro de círculos; conservan nombres accesibles para lectores de pantalla.
 
-La biblioteca contiene doce cuentos largos en tres estantes de cuatro. Los
+La biblioteca contiene doce cuentos largos en una única grilla desplazable,
+sin paginación. Se desbloquean por grupos de cuatro. Los
 primeros cuatro reemplazan las poesías breves anteriores. La abeja haragana
 (14:07) y Las medias de los flamencos (10:47), de Horacio Quiroga, tienen audio
 local y texto completo, narrados por AnabelleC y Charbelí Ramos Chávez. La voz
@@ -14,24 +15,26 @@ la tortuga y El león y el ratón son adaptaciones originales rioplatenses de
 fábulas tradicionales, de unas 850 palabras cada una (~7 minutos para leer en
 voz alta a 130 palabras/minuto). Cada libro muestra si ofrece audio o lectura.
 
-## Estantes y desbloqueo
+## Desbloqueo por grupos
 
-El primer estante está abierto desde el principio. Cada cuento cuenta como
+El primer grupo está abierto desde el principio. Cada cuento cuenta como
 terminado al completar sus cinco preguntas, incluso con cero respuestas
-correctas. Terminar cuatro cuentos distintos abre el estante siguiente; las
+correctas. Terminar cuatro cuentos distintos abre el grupo siguiente; las
 repeticiones de un mismo cuento no reemplazan los pendientes. Un cuestionario
 abandonado a medias no cuenta. Se usa `storyQuizResults.completed`, de modo que
 las lecturas ya completadas de los primeros cuatro cuentos conservan su valor.
 
-Las flechas permiten visitar los tres estantes. Los libros futuros tienen
-tarjetas grises, candado y una explicación del requisito; no se pueden abrir.
+Los doce libros están montados en la misma vista, con cuatro tarjetas por fila.
+Se desplaza la grilla verticalmente para recorrerlos; no hay flechas de página.
+Los libros futuros tienen tarjetas grises, candado y una explicación del
+requisito; no se pueden abrir.
 El lector también valida el bloqueo si se intenta entrar por una ruta directa,
 y `ProgressContext` rechaza preguntas y premios de lectura de libros todavía
 bloqueados. Al completar un grupo se anuncia que se abrieron cuatro cuentos y
-la biblioteca muestra el nuevo estante al volver. El último grupo no anuncia
+sus tarjetas recuperan el color dentro de la misma grilla. El último grupo no anuncia
 libros inexistentes. Los libros anteriores siguen disponibles para releer.
 
-El segundo estante contiene La cigarra y la hormiga, El zorro y la cigüeña,
+El segundo grupo contiene La cigarra y la hormiga, El zorro y la cigüeña,
 Los ratones del campo y la ciudad y El viento y el sol. El tercero contiene
 La semilla impaciente, El puente de los amigos, El farol de la luciérnaga y
 El barrilete de los colores. Cada texto nuevo tiene entre 668 y 733 palabras,
@@ -40,6 +43,7 @@ aproximadamente seis minutos, escritas para PetMaestro en español rioplatense.
 No se añadieron nuevas grabaciones sin una variante latinoamericana o argentina
 verificada; los ocho libros nuevos son para leer.
 
+La navegación conserva la posición de desplazamiento al volver de un cuento.
 Orden estable y reglas: `src/data/libraryProgression.ts`. Textos, metadatos y
 preguntas nuevas: `src/data/expandedStories.json`. Fuentes y derechos:
 `docs/expanded-library-content.json`. Arte: `docs/art/expanded-library-prompts.json`.

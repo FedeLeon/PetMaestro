@@ -63,7 +63,13 @@ async function run() {
     await button(page, '¡Listo!').click();
 
     await button(page, 'Usar inodoro').click();
-    await button(page, 'Usar inodoro').click();
+    await button(page, 'Levantar la tapa del inodoro').click();
+    await page.getByText('Arrastrá al gatito hasta el asiento', { exact: true }).waitFor();
+    const toilet = await page.getByTestId('toilet-stage').boundingBox();
+    await page.mouse.move(toilet.x + toilet.width * .72, toilet.y + toilet.height * .66);
+    await page.mouse.down();
+    await page.mouse.move(toilet.x + toilet.width * .35, toilet.y + toilet.height * .62, { steps: 16 });
+    await page.mouse.up();
     await button(page, 'Tirar de la cadena').click();
     await button(page, 'Lavar patitas').click();
     for (const x of [.31, .48]) await rub(page, 'toilet-stage', [[x-.025,.595], [x+.025,.595]], 10);
@@ -90,8 +96,8 @@ async function run() {
     await page.mouse.down();
     await page.mouse.move(pot.x + pot.width*.445, pot.y + pot.height*.48, { steps: 12 });
     await page.mouse.up();
-    await button(page, 'Encender cocina').click();
-    await rub(page, 'cooking-stage', [[.34,.48],[.55,.48]], 22);
+    await button(page, 'Soplar (0/3)').waitFor();
+    assert.equal(await page.getByTestId('cooking-soup').count(), 1);
     for (let i=0; i<3; i++) await button(page, `Soplar (${i}/3)`).click();
     await button(page, 'Servir al gato').click();
     await button(page, 'Dar una cucharada').click();

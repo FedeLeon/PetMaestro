@@ -1,0 +1,6 @@
+{
+  "tool": "built-in imagegen",
+  "asset": "assets/generated/toys/bell-runner/cat-run-sad-v1.png",
+  "reference": "assets/generated/toys/bell-runner/cat-run-cycle-v3.png",
+  "prompt": "Use case: precise-object-edit. Edit this transparent game sprite atlas, exactly FOUR columns and TWO rows with EIGHT equal square cells on a 2:1 canvas. Change ONLY THE FACIAL EXPRESSIONS of ALL EIGHT kittens from happy smiling to visibly SAD / briefly disappointed after bumping an obstacle. Mouth CLOSED in a small clear downturned frown, eyebrows inner corners raised, eyes soft worried with pupils looking forward RIGHT, no smile and no tongue. Gentle child-friendly disappointment, no pain, no injuries, no bruises, no tears, no scary emotions. Keep every head outline, orange tabby identity, fur colors, cream muzzle, ears, each body's running stride, arms, paws, tail, scale, exact cell positions, padding and transparent background unchanged. Preserve the exact original eight poses and 4x2 atlas arrangement so this sheet overlays the existing running animation. True transparent background, no text, no numbers, no borders, no new objects."
+}

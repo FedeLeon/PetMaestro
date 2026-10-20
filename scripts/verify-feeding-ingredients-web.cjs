@@ -25,8 +25,8 @@ async function run() {
         for (const id of ids) await button(page, `Elegir ${kitchenFoods.find(f => f.id === id).name}`).click();
         await button(page, 'Cocinar').click();
         for (const id of ids) await page.getByTestId(`drag-food-${id}`).click();
-        await button(page, 'Encender cocina').click();
-        for (let i = 0; i < 5; i++) await button(page, 'Revolver').click();
+        await button(page, 'Soplar (0/3)').waitFor();
+        assert.equal(await page.getByTestId('cooking-soup').count(), 1);
         for (let i = 0; i < 3; i++) await button(page, `Soplar (${i}/3)`).click();
         await button(page, 'Servir al gato').click();
         const bowl = page.getByTestId('feeding-bowl-ingredients');

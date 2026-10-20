@@ -82,9 +82,10 @@ export function BellRunnerGame({ onCoin, onComplete }: { onCoin: () => void; onC
           </View> : null;
         })}
         <Image testID="bell-runner-goal" source={catItemImages['bell-ball']} resizeMode="contain" style={[styles.object, { left: bellX - layout.bellSide / 2, top: layout.ground - layout.bellSide - Math.abs(Math.sin(state.time * 6)) * 8, width: layout.bellSide, height: layout.bellSide, transform: [{ rotate: `${state.time * 110}deg` }] }]} />
-        <View testID="bell-runner-cat" style={[styles.cat, { left: catX - layout.catSide / 2, top: catTop, width: layout.catSide, height: layout.catSide, opacity: stumble ? .55 : 1, transform: [{ rotate: stumble ? '-9deg' : jumping ? `${(lift - .5) * -8}deg` : `${Math.sin(state.time * 16) * 2}deg` }] }]}>
-          <Image accessible={false} testID="bell-run-sprite" source={toySceneImages.bellCatRun} resizeMode="stretch" style={[styles.sprite, { left: `${-(sprite % 4) * 100}%`, top: `${-Math.floor(sprite / 4) * 100}%`, opacity: jumping ? 0 : 1 }]} />
-          <Image accessible={false} source={toySceneImages.bellCat} resizeMode="stretch" style={[styles.jumpSprite, { left: '-200%', opacity: jumping ? 1 : 0 }]} />
+        <View testID="bell-runner-cat" accessible accessibilityRole="image" accessibilityLabel={stumble ? 'Gatito triste después de chocar' : 'Gatito corriendo'} style={[styles.cat, { left: catX - layout.catSide / 2, top: catTop, width: layout.catSide, height: layout.catSide, transform: [{ rotate: stumble ? '-9deg' : jumping ? `${(lift - .5) * -8}deg` : `${Math.sin(state.time * 16) * 2}deg` }] }]}>
+          <Image accessible={false} testID="bell-run-sprite" source={toySceneImages.bellCatRun} resizeMode="stretch" style={[styles.sprite, { left: `${-(sprite % 4) * 100}%`, top: `${-Math.floor(sprite / 4) * 100}%`, opacity: jumping || stumble ? 0 : 1 }]} />
+          <Image accessible={false} testID="bell-sad-sprite" source={toySceneImages.bellCatSad} resizeMode="stretch" style={[styles.sprite, { left: `${-(sprite % 4) * 100}%`, top: `${-Math.floor(sprite / 4) * 100}%`, opacity: stumble ? 1 : 0 }]} />
+          <Image accessible={false} source={toySceneImages.bellCat} resizeMode="stretch" style={[styles.jumpSprite, { left: '-200%', opacity: jumping && !stumble ? 1 : 0 }]} />
         </View>
       </View>
       <Pressable testID="bell-jump-area" accessibilityRole="button" accessibilityLabel="Saltar en el parque" accessibilityHint="Esperá que se acerque un obstáculo con su moneda y tocá para saltar." disabled={phase !== 'running'} onPress={jump} style={styles.fill} />

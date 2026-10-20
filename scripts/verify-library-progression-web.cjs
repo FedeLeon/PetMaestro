@@ -21,10 +21,14 @@ async function run() {
       });
       const open = async () => { await page.goto(process.env.GAME_URL || 'http://localhost:8087'); await button(page, 'Biblioteca').waitFor({ timeout: 90000 }); await button(page, 'Biblioteca').click(); };
       const checkGroup = async (group, locked) => {
-        await page.getByTestId('library-group').filter({ hasText: `Estante ${group + 1} de 3` }).waitFor();
+        await page.getByTestId('library-group').waitFor();
+        assert.equal(await page.locator('[data-testid^="story-book-"]').count(), 12, 'All twelve books exist in one view');
+        assert.equal(await button(page, 'Grupo siguiente de cuentos').count(), 0, 'There is no pagination');
+        assert.equal(await button(page, 'Grupo anterior de cuentos').count(), 0);
         for (const id of storyOrder.slice(group * 4, (group + 1) * 4)) {
           const card = page.getByTestId(`story-book-${id}`);
           assert.equal(await card.isDisabled(), locked);
+          await card.scrollIntoViewIfNeeded();
           const rect = await card.boundingBox();
           assert.ok(rect.x >= 0 && rect.x + rect.width <= viewport.width && rect.y >= 58 && rect.y + rect.height <= viewport.height - 94, 'Every square-page book fits above the menu');
           if (locked) {
@@ -63,24 +67,24 @@ async function run() {
         await button(page, 'Elegir otro cuento').click();
       };
       await open(); await checkGroup(0, false);
-      await button(page, 'Grupo siguiente de cuentos').click(); await checkGroup(1, true);
+      await checkGroup(1, true);
       await page.screenshot({ path: `${output}/locked-${viewport.width}.png` });
-      await button(page, 'Grupo siguiente de cuentos').click(); await checkGroup(2, true);
-      await button(page, 'Grupo anterior de cuentos').click(); await button(page, 'Grupo anterior de cuentos').click();
+      await checkGroup(2, true);
+      
       for (const id of storyOrder.slice(0, 3)) await finish(id);
       await finish(storyOrder[0]);
       assert.equal((await saved(page)).storyQuizResults[storyOrder[0]].completed, 2);
-      await button(page, 'Grupo siguiente de cuentos').click(); await checkGroup(1, true);
-      await button(page, 'Grupo anterior de cuentos').click();
+      await checkGroup(1, true);
+      
       await read(storyOrder[3]); await answerWrong(storyOrder[3], 0);
       await button(page, 'Volver al cuento').click(); await button(page, 'Volver a los libros').click();
-      await button(page, 'Grupo siguiente de cuentos').click(); await checkGroup(1, true);
+      await checkGroup(1, true);
       await page.reload(); await button(page, 'Biblioteca').waitFor({ timeout: 90000 }); await button(page, 'Biblioteca').click();
       await checkGroup(0, false);
       await finish(storyOrder[3]);
       await checkGroup(1, false);
       await page.screenshot({ path: `${output}/unlocked-2-${viewport.width}.png` });
-      await button(page, 'Grupo siguiente de cuentos').click(); await checkGroup(2, true); await button(page, 'Grupo anterior de cuentos').click();
+      await checkGroup(2, true); 
       for (const id of storyOrder.slice(4, 8)) await finish(id);
       await checkGroup(2, false);
       await page.screenshot({ path: `${output}/unlocked-3-${viewport.width}.png` });
@@ -95,7 +99,7 @@ async function run() {
       assert.equal((await saved(page)).coins, final.coins);
       assert.deepEqual(errors, []);
       await page.close();
-      console.log(`Library progression passed at ${viewport.width}x${viewport.height}: gray locks, 12 complete stories and 60 questions, zero-score unlocking, repeats, cancellation, both unlocks and reload.`);
+      console.log(`Library progression passed at ${viewport.width}x${viewport.height}: single scrollable grid, gray locks, 12 complete stories and 60 questions, zero-score unlocking, repeats, cancellation, both unlocks and reload.`);
     }
   } finally { await browser.close(); }
 }

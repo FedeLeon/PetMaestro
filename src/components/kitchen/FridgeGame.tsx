@@ -3,10 +3,10 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useProgress } from '../../context/ProgressContext';
 import { kitchenFoods, kitchenImages, MAX_MEAL_INGREDIENTS, FRIDGE_PAGE_SIZE } from '../../data/kitchenContent';
 import { styles, fridgeFoodPlacement } from '../../styles/house/kitchen.styles';
-import { uiImages } from '../../data/assetImages';
+import { activityButtonImages, uiImages } from '../../data/assetImages';
 import { useGameAudio } from '../../context/AudioContext';
 import { KitchenScene } from './KitchenScene';
-import { SceneTool } from '../house/CareActivityScene';
+import { BreathingBathroomButton } from '../house/BreathingBathroomButton';
 import { styles as sceneStyles } from '../../styles/house/careScene.styles';
 
 export function FridgeGame({ onClose, onCook }: { onClose: () => void; onCook: (ids: string[]) => void }) {
@@ -49,6 +49,6 @@ export function FridgeGame({ onClose, onCook }: { onClose: () => void; onCook: (
       <Image accessible={false} source={uiImages.shopPageArrow} resizeMode="contain" style={[styles.image, direction < 0 && styles.reverseArrow]} />
     </TouchableOpacity>)}
     <Text accessibilityLiveRegion="polite" accessibilityLabel={`Alimentos: página ${page + 1} de ${pages}`} style={styles.fridgePage}>{page + 1}/{pages}</Text>
-    <SceneTool source={kitchenImages.potFire} label="Cocinar" caption="Olla" disabled={!selected.length || busy} onPress={() => onCook(selectedRef.current)} style={sceneStyles.fridgeCook} selected={selected.length > 0} />
+    <BreathingBathroomButton source={activityButtonImages.cook} label="Cocinar" disabled={!selected.length || busy} onPress={() => onCook(selectedRef.current)} style={sceneStyles.fridgeCook} />
   </KitchenScene>;
 }

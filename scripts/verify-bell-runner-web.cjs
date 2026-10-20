@@ -30,13 +30,16 @@ async function run() {
         await page.waitForTimeout(45);
       }
       assert.equal(frames.size, 8, 'The cat cycles through eight distinct running frames');
-      const coinBefore = await page.getByTestId('bell-course-coin-0').boundingBox();
-      const obstacleBefore = await page.getByTestId('bell-obstacle-0').boundingBox();
+      const coursePair = () => page.evaluate(() => {
+        const coin = document.querySelector('[data-testid="bell-course-coin-0"]')?.getBoundingClientRect();
+        const obstacle = document.querySelector('[data-testid="bell-obstacle-0"]')?.getBoundingClientRect();
+        return { coin: coin && { x: coin.x, width: coin.width }, obstacle: obstacle && { x: obstacle.x, width: obstacle.width } };
+      });
+      const { coin: coinBefore, obstacle: obstacleBefore } = await coursePair();
       assert.ok(coinBefore && obstacleBefore, 'Coin and obstacle are visible before jumping');
       assert.ok(Math.abs(coinBefore.x + coinBefore.width / 2 - obstacleBefore.x - obstacleBefore.width / 2) < 2, 'Coin travels above its obstacle');
       await page.waitForTimeout(160);
-      const coinAfter = await page.getByTestId('bell-course-coin-0').boundingBox();
-      const obstacleAfter = await page.getByTestId('bell-obstacle-0').boundingBox();
+      const { coin: coinAfter, obstacle: obstacleAfter } = await coursePair();
       assert.ok(coinAfter.x < coinBefore.x - 10, 'Visible coin approaches from the right');
       assert.ok(Math.abs((coinAfter.x - coinBefore.x) - (obstacleAfter.x - obstacleBefore.x)) < 3, 'Coin and obstacle share their travel speed');
       const catchCoin = async index => {
@@ -52,8 +55,10 @@ async function run() {
         const obstacle = page.getByTestId(`bell-obstacle-${index}`);
         assert.equal(await obstacle.locator('img').count(), 1, 'Obstacle uses an illustrated raster asset');
         assert.ok(await obstacle.locator('img').evaluate(el => el.complete && el.naturalWidth > 0), 'Obstacle illustration loads successfully');
-        await page.screenshot({ path: `/tmp/petmaestro-bell/approach-${index}-${viewport.width}.png` });
         await jump.click(); await jump.click();
+        // Capture after the physical tap so image encoding cannot delay a jump
+        // while the obstacle is still moving toward the cat.
+        await page.screenshot({ path: `/tmp/petmaestro-bell/approach-${index}-${viewport.width}.png` });
         await page.getByLabel(`${index + 1} monedas atrapadas`, { exact: true }).waitFor();
         assert.equal(await page.getByTestId(`bell-course-coin-${index}`).count(), 0, 'Caught coin disappears from the course');
       };
@@ -81,6 +86,13 @@ async function run() {
       await page.waitForTimeout(1200);
       assert.equal((await saved(page)).coins, result.coins, 'No late jump/completion reward after navigation');
       await button(page, 'Jugar Pelota cascabel').click(); await button(page, 'Empezar carrera').click();
+      await page.getByRole('img', { name: 'Gatito triste después de chocar', exact: true }).waitFor({ timeout: 8000 });
+      assert.equal(await page.getByTestId('bell-sad-sprite').evaluate(el => getComputedStyle(el).opacity), '1', 'The sad face is visible immediately after a collision');
+      assert.equal(await page.getByTestId('bell-run-sprite').evaluate(el => getComputedStyle(el).opacity), '0', 'The happy face is hidden during the collision reaction');
+      assert.equal(await page.getByTestId('bell-runner-cat').evaluate(el => getComputedStyle(el).opacity), '1', 'The sad face remains fully visible');
+      await page.screenshot({ path: `/tmp/petmaestro-bell/sad-${viewport.width}.png` });
+      await page.waitForTimeout(700);
+      assert.equal(await page.getByTestId('bell-sad-sprite').evaluate(el => getComputedStyle(el).opacity), '0', 'The cat returns to its running face after recovering');
       await page.getByText('¡Alcanzaste el cascabel!', { exact: true }).waitFor({ timeout: 25000 });
       assert.equal((await saved(page)).coins, result.coins + 5, 'A completed replay pays five more coins');
       await page.reload(); await button(page, 'Juguetes').waitFor({ timeout: 90000 });

@@ -29,17 +29,9 @@ async function run() {
       await page.mouse.move(stage.x + stage.width * nx, stage.y + stage.height * ny, { steps: 12 });
       await page.mouse.up();
     };
-    const mixAndCool = async (manual = false) => {
-      await button(page, 'Encender cocina').click();
-      await primaryFits('Revolver');
-      await capture('stir');
-      if (manual) {
-        const stage = await page.getByTestId('cooking-stage').boundingBox();
-        await page.mouse.move(stage.x + stage.width * .34, stage.y + stage.height * .48);
-        await page.mouse.down();
-        for (let index = 0; index < 12; index++) for (const x of [.55, .34]) await page.mouse.move(stage.x + stage.width * x, stage.y + stage.height * .48, { steps: 4 });
-        await page.mouse.up();
-      } else for (let index = 0; index < 5; index++) await button(page, 'Revolver').click();
+    const fillAndCool = async () => {
+      await button(page, 'Soplar (0/3)').waitFor();
+      assert.equal(await page.getByTestId('cooking-soup').count(), 1);
       await capture('cool');
       for (let index = 0; index < 3; index++) { await primaryFits(`Soplar (${index}/3)`); await button(page, `Soplar (${index}/3)`).click(); }
       await primaryFits('Servir al gato');
@@ -66,7 +58,7 @@ async function run() {
     assert.equal(await page.getByTestId('drag-food-peas').getAttribute('aria-label'), 'Agregar Arvejas', 'Dropping outside must not consume an ingredient');
     await dragIngredient('peas', .445, .48);
     await page.getByTestId('drag-food-rice').click();
-    await mixAndCool();
+    await fillAndCool();
     await capture('feed');
     // Preserve the original gesture, alongside the two easier tap routes.
     const stage = await page.getByTestId('feeding-stage').boundingBox();
@@ -89,7 +81,7 @@ async function run() {
     await button(page, 'Elegir Zanahoria').click();
     await button(page, 'Cocinar').click();
     await page.getByTestId('drag-food-carrot').click();
-    await mixAndCool(true);
+    await fillAndCool();
     await page.getByLabel('Cucharadas: 0 de 1', { exact: true }).waitFor();
     await button(page, 'Dar una cucharada').click();
     await button(page, 'Aventuras').click();
@@ -123,7 +115,7 @@ async function run() {
     assert.ok((await saved(page)).ownedItems.includes(hat.id));
     assert.deepEqual(errors, []);
     fs.writeFileSync(`${output}/report.json`, JSON.stringify({ errors, progress: await saved(page) }, null, 2));
-    console.log('Kitchen: selection cap, taps and drags, stirring, cooling, three feeding routes, cancellation, one reward, infinite food/shop purchases, barn and persistence passed.');
+    console.log('Kitchen: selection cap, taps and drags, soup filling, cooling, three feeding routes, cancellation, one reward, infinite food/shop purchases, barn and persistence passed.');
   } finally { await browser.close(); }
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

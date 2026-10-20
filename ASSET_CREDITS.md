@@ -1,5 +1,7 @@
 # Asset Credits
 
+- Reacción triste en la carrera del cascabel: `assets/generated/toys/bell-runner/cat-run-sad-v1.png`, atlas transparente de ocho poses, creado con imagegen integrado editando únicamente las expresiones del atlas `cat-run-cycle-v3.png`. Se conserva el PNG generado original y el atlas alegre anterior; no hay edición externa de píxeles. Prompt exacto y referencia: `docs/art/bell-sad-cat-prompt.json`.
+
 - Ampliación de biblioteca a doce cuentos: ocho trípticos nuevos en `assets/generated/library/{cigarra-hormiga,zorro-ciguena,raton-campo-ciudad,viento-sol,semilla-impaciente,puente-amigos,farol-luciernaga,barrilete-colores}-sequence-v1.png`. Creados con imagegen integrado, tomando la biblioteca existente como referencia de estilo; cada PNG original opaco contiene tres escenas y se muestra mediante ventanas de recorte, sin edición externa de píxeles. El tríptico del viento y el sol se refinó para representar a Emilia, la viajera humana del texto. Prompts, refinamiento y rutas individuales: `docs/art/expanded-library-prompts.json`. Las flechas reutilizan `ui/shop-page-arrow-v1.png`; las tarjetas bloqueadas y candados se construyen con los componentes existentes.
 
 - Biblioteca de cuentos largos: cuatro trípticos nuevos `assets/generated/library/{abeja-haragana,medias-flamencos,liebre-tortuga,leon-raton}-sequence-v1.png`, creados con imagegen integrado usando la biblioteca existente como referencia de estilo. Cada PNG opaco original contiene tres escenas y se muestra mediante recorte de vista, sin edición externa de píxeles. Se conservan las ilustraciones anteriores. Prompts y rutas individuales: `docs/art/long-stories-prompts.json`. Fuentes de texto y audio: `AUDIO_CREDITS.md`.
@@ -130,3 +132,23 @@ Se conservaron los PNG originales generados, sin edición externa de píxeles.
 Los límites alpha se midieron en modo de lectura para ubicar las prendas y
 separar cada par de zapatos durante el renderizado. Los assets anteriores se
 conservan para mantener compatibilidad.
+
+## Botones de actividades · 20 de octubre de 2026
+
+Siete PNG originales generados con imagegen integrado, con transparencia y sin edición externa. Aplicados en cocina, baño y dormitorio; botones aproximadamente 20 % mayores. Referencia de estilo: `assets/generated/ui/feeding-finish-happy-cat-v1.png`.
+
+Rutas: `assets/generated/ui/activity-{fridge,cook,feed,teeth,shower,toilet,sleep}-v1.png`. Prompt exacto compartido (sustituir `SUBJECT` por el motivo correspondiente):
+
+> Create one square illustrated activity button for a children's cat care game. Reference image is STYLE AND FRAME reference only. Match its polished warm cartoon painting, golden wooden rounded-square frame, turquoise inner trim, tiny paw corner decorations and pale cream center. Replace the cat face entirely with SUBJECT. One large clear central illustration, readable at 80px. Keep the full frame inside the canvas with very little outer padding. Transparent outside the frame, opaque cream inside. No text, no letters, no numbers, no extra buttons. A finished game UI PNG asset.
+
+Motivos exactos: `fridge`: “a friendly rounded turquoise refrigerator with a paw magnet”; `cook`: “a turquoise cooking pot filled with colorful soup, a wooden spoon and soft steam”; `feed`: “a turquoise cat food bowl filled with colorful food and a spoon”; `teeth`: “a big friendly white tooth and a turquoise toothbrush”; `shower`: “a shower head with large blue drops, a bar of soap and bubbles”; `toilet`: “a clean cute white toilet with turquoise accents and a small paw decoration”; `sleep`: “a cozy little bed with soft pillow and a crescent moon”.
+
+## Inodoro interactivo · 20 de octubre de 2026
+
+Fondo sin personaje (`assets/generated/house/toilet-empty-room-v1.png`) y gato sentado transparente (`assets/generated/house/toilet-seated-cat-v1.png`), originales generados con imagegen integrado a partir de `assets/generated/house/toilet-cat-v1.png`; se conserva el asset anterior. Tapa animada en SVG y arrastre con retorno al soltar afuera; privacidad automática al sentarse.
+
+Prompts exactos:
+
+- Fondo: Edit the reference into a reusable background for the SAME children's cat care game. Remove the orange kitten completely and reconstruct the toilet, tiled wall and floor naturally behind it. Keep EXACT camera, same landscape 3:2 composition, mirror left, shelf, towel, toilet tank and toilet position, dimensions and style. The toilet is EMPTY with an OPEN white seat ring and visible clean pale blue bowl water, no lid (lid is a separate game layer). Keep the tank in place. The seat opening center must be about x=34% y=63% of canvas; the floor and all the right-hand empty tiled wall stay the same. No characters, no lettering, no UI. Full opaque background.
+- Personaje: Create a standalone transparent-background sprite of ONLY the same adorable orange kitten from the reference, in the SAME seated pose with paws together in lap and lower legs hanging down. Preserve orange fur, cream tummy, big friendly eyes and face, chubby proportions. Front three-quarter view exactly like reference. Full entire kitten from ear tips to toes and tail, no cropping, centered. No toilet, no bathroom, no objects, no shadow plane, no text. Transparent everywhere outside the kitten. This sprite will be positioned on a toilet in a children's care game, cute innocent everyday care scene.
+- Edición final del personaje sobre la generación anterior: Edit this sprite for direct layering over a bathroom background. Keep the same full seated orange kitten, exact pose, face and proportions. Remove ALL golden and brown haze, aura, bloom, glow, atmospheric color and shadows OUTSIDE the kitten silhouette. Outside the actual fur outline alpha must be exactly zero, including all corners, the spaces between limbs, and area below toes. The kitten itself must be solid opaque, not a translucent ghost. Clean crisp transparent cutout with only fine natural fur at edges. No background of any color, no backdrop, no vignette, no floor. Output a transparent PNG.

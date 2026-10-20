@@ -2,27 +2,25 @@ import { StyleSheet } from 'react-native';
 
 export function libraryLayout(width: number, height: number) {
   const cardWidth = Math.max(120, Math.min(244, (width - 60) / 4));
-  return { cardWidth, illustrationSide: Math.max(56, Math.min(cardWidth - 24, height - 170)), titleSize: cardWidth < 210 ? 13 : 17 };
+  return { cardWidth, illustrationSide: Math.max(56, Math.min(160, cardWidth - 24, height - 170)), titleSize: cardWidth < 210 ? 13 : 17 };
 }
 export function storyLayout(width: number, height: number) {
   return { side: Math.max(80, Math.min(420, height - 20, width * .46)) };
 }
 export const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#f8edd3' },
-  body: { flex: 1, minHeight: 0, marginBottom: 94, padding: 12, gap: 6 },
+  body: { flex: 1, minHeight: 0, marginBottom: 94, padding: 8, gap: 6 },
   intro: { color: '#32685e', fontSize: 16, fontWeight: '800', textAlign: 'center' },
-  shelfHeader: { minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  shelfHeader: { minHeight: 40, flexDirection: 'row', alignItems: 'center', gap: 8 },
   shelfHeading: { flex: 1, gap: 2 },
   unlockHint: { color: '#526b5e', fontSize: 12, textAlign: 'center' },
-  pageArrow: { width: 48, height: 48 },
-  arrowArt: { width: '100%', height: '100%' },
-  arrowBack: { transform: [{ rotate: '180deg' }] },
   lockedBook: { backgroundColor: '#bfc3c5', borderColor: '#969da0', boxShadow: '0px 5px 0px #858e91' },
   lockedArt: { backgroundColor: '#d4d8da', borderColor: '#a6afb2', alignItems: 'center', justifyContent: 'center' },
   lockedTitle: { color: '#3f4a50' },
   lockedBadge: { backgroundColor: '#dfe3e5' },
   lockedMessage: { flex: 1, marginBottom: 94, padding: 20, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  shelf: { flex: 1, minHeight: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12 },
+  bookList: { flex: 1, minHeight: 0 },
+  shelf: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'center', gap: 12, paddingBottom: 6 },
   book: { borderRadius: 14, borderWidth: 3, borderColor: '#e8b54e', borderLeftWidth: 10, borderBottomWidth: 7, padding: 8, alignItems: 'center', gap: 6, boxShadow: '0px 5px 0px #9e713c' },
   bookArt: { borderRadius: 8, borderWidth: 2, borderColor: '#ffe7a4', overflow: 'hidden' },
   bookTitle: { fontWeight: '900', color: '#fffdf3', textAlign: 'center', minHeight: 34 },

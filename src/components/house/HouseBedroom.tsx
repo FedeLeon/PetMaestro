@@ -2,9 +2,10 @@ import { useCallback, useState } from 'react';
 import { Animated, BackHandler, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { PetCat } from '../PetCat';
-import { houseImages } from '../../data/assetImages';
+import { activityButtonImages, houseImages } from '../../data/assetImages';
 import { styles } from '../../styles/house/bedroom.styles';
 import type { ProgressState } from '../../types';
+import { activityButtonSize } from '../../styles/house/activityButtons.layout';
 import { roomFrame } from './roomFrame';
 import { BreathingBathroomButton } from './BreathingBathroomButton';
 import { SleepingCat } from './SleepingCat';
@@ -16,7 +17,7 @@ export function HouseBedroom({ equippedCatItems, equippedItemId, onOpenInside }:
   const frame = roomFrame(viewport, 1.5, .64);
   const sleep = useBedroomSleep();
   const sleeping = sleep.phase === 'sleeping';
-  const buttonSize = Math.max(44, Math.min(68, height * .15));
+  const buttonSize = activityButtonSize(height);
   const kitten = frame.point(.70, .385);
   const letter = frame.point(.84, .41);
   useFocusEffect(useCallback(() => {
@@ -29,7 +30,7 @@ export function HouseBedroom({ equippedCatItems, equippedItemId, onOpenInside }:
       {!sleeping && <View testID="bedroom-awake-cat" pointerEvents="none" style={[styles.cat, { left: width * .42 - 115, top: height * .75 - 142 - 79 * height / 530, transform: [{ scale: height / 265 }] }]}><PetCat equippedCatItems={equippedCatItems} equippedItemId={equippedItemId} size="room" /></View>}
       {sleeping && <SleepingCat left={kitten.x} top={Math.max(8, kitten.y)} width={frame.image.width * .19} letterX={letter.x} letterY={Math.max(height * .34, letter.y)} riseDistance={height * .22} />}
       <Animated.View testID="bedroom-darkness" pointerEvents="none" style={[styles.night, { opacity: sleep.darkness }]} />
-      {!sleeping && <BreathingBathroomButton label="Dormir en la cama" icon="sleep" onPress={sleep.start} style={frame.button(.79, .43, buttonSize)} />}
+      {!sleeping && <BreathingBathroomButton label="Dormir en la cama" source={activityButtonImages.sleep} onPress={sleep.start} style={frame.button(.79, .43, buttonSize)} />}
       <TouchableOpacity testID="bedroom-exit" accessibilityRole="button" accessibilityLabel="Puerta al salón" style={[styles.door, frame.hit(.065, .10, .14, .50)]} onPress={onOpenInside} />
       {sleep.phase === 'rested' && <Text accessibilityLiveRegion="polite" style={styles.message}>¡Descansó! Sueño al 100%</Text>}
       {sleep.error && <Text accessibilityLiveRegion="polite" style={styles.message}>No se pudo guardar. Intentá dormir de nuevo.</Text>}

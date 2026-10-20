@@ -9,8 +9,9 @@ import { BreathingBathroomButton } from './BreathingBathroomButton';
 import { FridgeGame } from '../kitchen/FridgeGame';
 import { CookingGame } from '../kitchen/CookingGame';
 import { FeedingGame } from '../kitchen/FeedingGame';
+import { activityButtonSize } from '../../styles/house/activityButtons.layout';
 import { roomFrame } from './roomFrame';
-import { SceneTool } from './CareActivityScene';
+import { activityButtonImages } from '../../data/assetImages';
 
 type Props = { equippedCatItems: ProgressState['equippedCatItems']; equippedItemId: string | null; onOpenInside: () => void };
 export function HouseKitchen({ equippedCatItems, equippedItemId, onOpenInside }: Props) {
@@ -21,7 +22,7 @@ export function HouseKitchen({ equippedCatItems, equippedItemId, onOpenInside }:
   const frame = roomFrame(viewport, 1.5, .62);
   const catScale = height / 300;
   const catPosition = frame.point(.64, .8);
-  const buttonSize = Math.max(44, Math.min(64, height * .15));
+  const buttonSize = activityButtonSize(height);
   const close = () => { setActivity(null); setIngredients([]); };
   // Leaving the house screen cancels this local meal so animations cannot feed
   // or award a mission while another screen is visible.
@@ -43,9 +44,9 @@ export function HouseKitchen({ equippedCatItems, equippedItemId, onOpenInside }:
       }]}>
         <PetCat equippedCatItems={equippedCatItems} equippedItemId={equippedItemId} size="room" />
       </View>
-      <BreathingBathroomButton label="Abrir heladera" icon="fridge-outline" onPress={() => setActivity('fridge')} style={frame.button(.145, .40, buttonSize)} />
-      <BreathingBathroomButton label="Preparar comida" icon="pot-steam-outline" onPress={() => setActivity('fridge')} delay={400} style={frame.button(.445, .44, buttonSize)} />
-      <SceneTool label="Dar de comer" caption="A comer" source={kitchenImages.bowl} onPress={() => setActivity('fridge')} style={frame.button(.66, .83, Math.max(64, buttonSize))} />
+      <BreathingBathroomButton label="Abrir heladera" source={activityButtonImages.fridge} onPress={() => setActivity('fridge')} style={frame.button(.145, .40, buttonSize)} />
+      <BreathingBathroomButton label="Preparar comida" source={activityButtonImages.cook} onPress={() => setActivity('fridge')} delay={400} style={frame.button(.445, .44, buttonSize)} />
+      <BreathingBathroomButton label="Dar de comer" delay={700} source={activityButtonImages.feed} onPress={() => setActivity('fridge')} style={frame.button(.81, .61, Math.max(74, buttonSize))} />
       <TouchableOpacity testID="kitchen-exit" accessibilityLabel="Volver al interior de la casa" accessibilityRole="button" onPress={onOpenInside} style={[styles.exit, frame.hit(.835, .27, .115, .28)]} />
     </View>
   </View>;

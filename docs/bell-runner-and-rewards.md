@@ -17,6 +17,13 @@ propia. Los tres obstáculos son PNG ilustrados originales; sus medidas respetan
 la proporción y los límites de transparencia para apoyarlos en el suelo.
 Assets y prompts: `docs/art/bell-runner-upgrade-prompts.json` (imagegen integrado).
 
+Al chocar, el gatito cambia durante los 0,5 segundos del tropiezo a un atlas de
+ocho poses con boca triste y cejas levantadas (`cat-run-sad-v1.png`). Conserva
+el movimiento de las patas y se muestra con opacidad completa para que la
+expresión sea visible; al recuperarse vuelve a la cara alegre. Ambos atlas
+permanecen montados para tener el sprite triste listo antes del primer choque.
+Prompt y referencia: `docs/art/bell-sad-cat-prompt.json` (imagegen integrado).
+
 La física vive en `src/data/bellRunner.ts`; la geometría y estilos están en
 `src/styles/components/bellRunner.styles.ts`. El reloj se detiene al salir o al
 ocultar la aplicación. Al volver requiere Continuar. Las monedas ya atrapadas

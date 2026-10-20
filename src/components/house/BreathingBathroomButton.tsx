@@ -1,11 +1,10 @@
-import { useEffect, useRef, type ComponentProps } from 'react';
-import { Animated, Easing, TouchableOpacity, View, type StyleProp, type ViewStyle } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useEffect, useRef } from 'react';
+import { Animated, Easing, Image, TouchableOpacity, View, type ImageSourcePropType, type StyleProp, type ViewStyle } from 'react-native';
 import { styles } from '../../styles/house/bathroom.styles';
 import { useGameAudio } from '../../context/AudioContext';
 
-export function BreathingBathroomButton({ label, icon, onPress, style, delay = 0 }: {
-  label: string; icon: ComponentProps<typeof MaterialCommunityIcons>['name']; onPress: () => void; style: StyleProp<ViewStyle>; delay?: number;
+export function BreathingBathroomButton({ label, source, onPress, style, delay = 0, disabled = false }: {
+  label: string; source: ImageSourcePropType; onPress: () => void; style: StyleProp<ViewStyle>; delay?: number; disabled?: boolean;
 }) {
   const { playSound } = useGameAudio();
   const breath = useRef(new Animated.Value(0)).current;
@@ -18,8 +17,8 @@ export function BreathingBathroomButton({ label, icon, onPress, style, delay = 0
     return () => { clearTimeout(timer); loop.stop(); };
   }, [breath, delay]);
   return <View style={[styles.actionPosition, style]}>
-    <TouchableOpacity accessibilityLabel={label} accessibilityRole="button" onPress={() => { playSound('tap'); onPress(); }} style={styles.actionBubble}>
-      <Animated.View pointerEvents="none" style={{ transform: [{ scale: breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.08] }) }, { translateY: breath.interpolate({ inputRange: [0, 1], outputRange: [0, -3] }) }] }}><MaterialCommunityIcons color="#237d75" name={icon} size={31} /></Animated.View>
+    <TouchableOpacity accessibilityLabel={label} accessibilityRole="button" accessibilityState={{ disabled }} disabled={disabled} activeOpacity={.8} onPress={() => { playSound('tap'); onPress(); }} style={[styles.actionBubble, disabled && styles.actionDisabled]}>
+      <Animated.View pointerEvents="none" style={[styles.actionArt, { transform: [{ scale: breath.interpolate({ inputRange: [0, 1], outputRange: [1, disabled ? 1 : 1.04] }) }, { translateY: breath.interpolate({ inputRange: [0, 1], outputRange: [0, disabled ? 0 : -2] }) }] }]}><Image accessible={false} source={source} resizeMode="contain" style={styles.actionArt} /></Animated.View>
     </TouchableOpacity>
   </View>;
 }

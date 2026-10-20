@@ -94,7 +94,6 @@ async function run() {
         await button(page, 'Elegir otro cuento').click();
       }
       // Leaving a partial question round cannot award quiz coins.
-      if (!await page.getByTestId('story-book-medias-flamencos').count()) await button(page, 'Grupo anterior de cuentos').click();
       await page.getByTestId('story-book-medias-flamencos').filter({ visible: true }).click();
       await button(page, 'Leer yo').click(); await button(page, 'Terminé de leer: responder cinco preguntas').click();
       expectedCoins += 3;
