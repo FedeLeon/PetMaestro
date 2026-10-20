@@ -1,5 +1,7 @@
 # Asset Credits
 
+- Optimización de distribución (2026-10-20): PNG derivados mediante reducción proporcional con Lanczos, sin regenerar ilustraciones ni recortar lienzos; atlas procesados por cuadro. Los originales generados y sus créditos se conservan en el respaldo externo de `asset-backups/PetMaestro/2026-10-20-resolution-optimization`; los registros históricos siguientes describen su creación.
+
 - Reacción triste en la carrera del cascabel: `assets/generated/toys/bell-runner/cat-run-sad-v1.png`, atlas transparente de ocho poses, creado con imagegen integrado editando únicamente las expresiones del atlas `cat-run-cycle-v3.png`. Se conserva el PNG generado original y el atlas alegre anterior; no hay edición externa de píxeles. Prompt exacto y referencia: `docs/art/bell-sad-cat-prompt.json`.
 
 - Ampliación de biblioteca a doce cuentos: ocho trípticos nuevos en `assets/generated/library/{cigarra-hormiga,zorro-ciguena,raton-campo-ciudad,viento-sol,semilla-impaciente,puente-amigos,farol-luciernaga,barrilete-colores}-sequence-v1.png`. Creados con imagegen integrado, tomando la biblioteca existente como referencia de estilo; cada PNG original opaco contiene tres escenas y se muestra mediante ventanas de recorte, sin edición externa de píxeles. El tríptico del viento y el sol se refinó para representar a Emilia, la viajera humana del texto. Prompts, refinamiento y rutas individuales: `docs/art/expanded-library-prompts.json`. Las flechas reutilizan `ui/shop-page-arrow-v1.png`; las tarjetas bloqueadas y candados se construyen con los componentes existentes.

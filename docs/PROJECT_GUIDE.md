@@ -83,6 +83,8 @@ src/data/gameContent.ts contiene palabras, categorias, niveles, rondas y tienda.
 
 Los imports de imagenes se centralizan en src/data/assetImages.ts y las pronunciaciones locales en src/data/audioAssets.ts. Los nuevos assets se registran en ASSET_CREDITS.md y los sonidos en AUDIO_CREDITS.md. Mantener separados escenas, tarjetas, sprites y items equipables; revisar siempre transparencia, recorte y proporcion.
 
+Resoluciones de distribución: indicadores/navegación 128–256 px, alimentos 384 px, ropa/palabras 512 px y cuentos 640 px por cuadro; fondos y panoramas conservan el detalle necesario. `scripts/optimize-assets.py --assetmap <assetmap.json>` analiza la exportación Android (`expo export --platform android --dump-assetmap`); `--apply --backup-dir <directorio fuera del proyecto>` aplica los límites y guarda los originales. Mantiene lienzos transparentes, coordenadas normalizadas y celdas de atlas, incluyendo archivos idénticos agrupados por Metro.
+
 `AudioContext` administra música, efectos y una única voz para impedir pronunciaciones superpuestas. Las preferencias se guardan en `petmaestro.audio.v1`. `src/data/gameAudio.ts` registra los temas y efectos originales; `scripts/generate_game_audio.py` permite reproducirlos. El audio se inicia con una interacción, se pausa en segundo plano y baja la música durante una palabra. El plugin de audio tiene deshabilitados micrófono y reproducción en segundo plano. La implementación sigue la [documentación de audio de Expo SDK 57](https://docs.expo.dev/versions/v57.0.0/sdk/audio/).
 
 En React Native Web 0.21, `ImageBackground` transmite `onLayout` a la imagen interior. Los fondos deben declarar `width: '100%'` y `height: '100%'` en `imageStyle`: de otro modo, los metadatos del PNG pueden producir coordenadas del tamaño original de la imagen y dejar los botones fuera del panel visible.
@@ -162,7 +164,7 @@ Los 246 PNG se pudieron decodificar sin errores. No se detectaron imports de arc
 
 Hay 28 pronunciaciones para 38 palabras. Faltan `bread`, `butterfly`, `wave`, `shirt`, `socks`, `table`, `lamp`, `lion`, `elephant` y `monkey`. Se incorporaron `bear` y `boat`, con procedencia y licencias en `AUDIO_CREDITS.md`. Wikimedia limitó las descargas restantes con HTTP 429 y una espera de 600 segundos. Las palabras pendientes conservan texto y no muestran un botón silencioso; completar y revisar estas voces sigue siendo una tarea pendiente. Tampoco hay grabaciones locales de palabras en castellano.
 
-El directorio de assets ocupa aproximadamente 269 MiB; la exportación Android de esta revisión ocupa aproximadamente 258 MiB antes del empaquetado final. Conviene preparar versiones de distribución con tamaños adecuados al uso real y revisar su calidad en dispositivo. No se redujeron imágenes ni se eliminaron originales durante esta revisión.
+Actualización 2026-10-20: assets de distribución ajustados al uso real; exportación Android reducida de aproximadamente 399 a 158 MiB antes del empaquetado de la APK. Los originales se respaldaron fuera del proyecto; no se eliminaron assets históricos ni se alteraron las coordenadas del juego.
 
 La búsqueda estática encontró nueve PNG sin import actual: cuatro frames de caminata antiguos, las dos mitades antiguas del panorama, su primera versión completa, `bathroom-room.png` y `tooth-plaque-v1.png`. También hay un duplicado idéntico entre `farm/farm-rabbit.png` y `farm-action/rabbit/rabbit-03.png`. Son candidatos de limpieza, no archivos eliminados; debe revisarse su procedencia y cualquier herramienta externa antes de borrarlos.
 
