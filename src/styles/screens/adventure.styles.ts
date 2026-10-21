@@ -1,10 +1,7 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  exploreCard: { flex: 1, minWidth: 210, minHeight: 86, flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#fffdf5', borderWidth: 2, borderColor: '#e1c48f', borderRadius: 18, padding: 10 },
-  exploreImage: { width: 58, height: 58 },
-  exploreCopy: { flex: 1, gap: 4 },
-  exploreTitle: { fontSize: 18, fontWeight: '900', color: '#26796e' },
   filters: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
   filter: { minHeight: 44, borderRadius: 14, borderWidth: 2, borderColor: '#57b8a9', paddingHorizontal: 14, alignItems: 'center', justifyContent: 'center' },
   filterActive: { backgroundColor: '#26796e' },
@@ -13,7 +10,7 @@ export const styles = StyleSheet.create({
   stickerSteps: { flexDirection: 'row', gap: 5, alignItems: 'center' },
   albumPreview: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', gap: 6 },
   screen: { flex: 1, backgroundColor: '#fff7e8' },
-  scroll: { flex: 1, marginBottom: 94 },
+  scroll: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT },
   content: { padding: 16, gap: 12 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   title: { color: '#26796e', fontSize: 22, fontWeight: '900' },
@@ -25,7 +22,6 @@ export const styles = StyleSheet.create({
   button: { minHeight: 48, backgroundColor: '#e87043', borderRadius: 12, padding: 12, alignItems: 'center', justifyContent: 'center' },
   disabled: { opacity: .5 },
   goal: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 44 },
-  goalText: { flex: 1, color: '#674c31', fontSize: 16, fontWeight: '700' },
   albumCard: { width: '23%', minWidth: 160, flexGrow: 1, backgroundColor: '#ffffff', borderRadius: 18, borderWidth: 2, borderColor: '#ead4b1', padding: 8, gap: 5, alignItems: 'center' },
   sticker: { width: 80, height: 80 },
   stickerLocked: { opacity: .55 },
@@ -48,7 +44,7 @@ export const styles = StyleSheet.create({
   cityChoice: { flex: 1, borderRadius: 18, borderWidth: 3, borderColor: '#ead4b1', backgroundColor: '#ffffff', padding: 8, alignItems: 'center', justifyContent: 'center', gap: 4 },
   cityAccepted: { borderColor: '#26796e', backgroundColor: '#e0f6ed' },
   cityDrawing: { flex: 1, width: '100%', maxHeight: 180 },
-  cityScene: { flex: 1, marginBottom: 94 },
+  cityScene: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT },
   citySceneImage: { width: '100%', height: '100%', opacity: .45 },
   cityCards: { padding: 16, gap: 12 },
   cityCard: { backgroundColor: '#ffffff', borderColor: '#ead4b1', borderWidth: 2, borderRadius: 18, padding: 10, gap: 8, flexGrow: 1, flexBasis: 230 },

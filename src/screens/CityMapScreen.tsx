@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -10,12 +11,13 @@ import { cityActivities } from '../data/adventureContent';
 import { RootStackParamList } from '../types';
 
 export function CityMapScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'CityMap'>) {
+  const presentation = usePresentation();
   const { progress } = useProgress();
   const unlocked = progress.completedLevels.includes(11);
   return <View style={styles.screen}>
-    <AppTopMenu compact icon="city-variant-outline" title="Ciudad Gatuna" />
+    <AppTopMenu scene compact icon="city-variant-outline" title="Ciudad Gatuna" />
     <ImageBackground imageStyle={styles.citySceneImage} resizeMode="cover" source={mapImages.catCity} style={styles.cityScene}>
-      <ScrollView contentContainerStyle={styles.cityCards}>
+      <ScrollView contentContainerStyle={presentation.styles.cityCards}>
         <Text style={styles.title}>{unlocked ? '¡La ciudad te necesita!' : 'Completá el nivel 11 para entrar'}</Text>
         <Text style={styles.small}>3 encargos · 15 monedas por lugar, una sola vez.</Text>
         <View style={styles.row}>{cityActivities.map(activity => <View key={activity.id} style={styles.cityCard}>

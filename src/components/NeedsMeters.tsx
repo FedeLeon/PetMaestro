@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { needsImages } from '../data/assetImages';
@@ -36,7 +36,6 @@ export function NeedsMeters({ needs }: NeedsMetersProps) {
             <View style={styles.track}>
               <View style={[styles.fill, { backgroundColor: meter.color, width: `${value}%` }]} />
             </View>
-            <Text style={styles.value}>{value}</Text>
           </TouchableOpacity>
         );
       })}

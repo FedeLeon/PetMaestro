@@ -1,13 +1,16 @@
+import { usePresentation } from '../../presentation/usePresentation';
+import { useSceneActivity } from '../../context/ScenePresentation';
 import { BackHandler, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useInteriorCamera } from './useInteriorCamera';
 import Svg, { Path } from 'react-native-svg';
 import { SparkleBurst, WalkingPetCat, type WalkingPetCatHandle } from '../PetCat';
-import { furnitureImages, houseImages } from '../../data/assetImages';
-import { INTERIOR_WIDTH, INTERIOR_HEIGHT, INTERIOR_FLOOR_Y, interiorDoors, interiorFurniture, type InteriorDoorId } from '../../data/houseInteriorLayout';
+import { furnitureImages, houseImages, uiImages } from '../../data/assetImages';
+import { INTERIOR_WIDTH, INTERIOR_FLOOR_Y, interiorDoors, interiorFurniture, type InteriorDoorId } from '../../data/houseInteriorLayout';
 import type { ProgressState, ShopItem } from '../../types';
 import { styles } from '../../styles/house/interior.styles';
+import { interiorViewportLayout } from '../../styles/house/interior.layout';
 import { styles as televisionStyles } from '../../styles/house/television.styles';
 import { FarmAnimationClock } from '../FarmAnimationClock';
 import { useTelevision } from './useTelevision';
@@ -26,19 +29,20 @@ type Props = {
   initialScrollRatio: number; onScrollRatioChange: (ratio: number) => void;
 };
 export function HouseInterior({ drawingStrokes, equippedCatItems, equippedItemId, onOpenDrawing, onOpenLibrary, onOpenRoom, placedFurniture, initialScrollRatio, onScrollRatioChange }: Props) {
+  const presentation = usePresentation();
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
   const cat = useRef<WalkingPetCatHandle>(null);
   const world = useRef<View>(null);
   const pressStart = useRef({ x: 0, y: 0 });
   const sparkleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const scale = viewport.height / INTERIOR_HEIGHT;
-  const width = INTERIOR_WIDTH * scale;
+  const { scale, width, height, top } = interiorViewportLayout(viewport.height);
   const camera = useInteriorCamera({ width, viewportWidth: viewport.width, scale, initialRatio: initialScrollRatio, onRatioChange: onScrollRatioChange });
   const hasTelevision = placedFurniture.some(item => item.id === 'tv-cabinet');
   const television = useTelevision(cat, hasTelevision, camera.startFollowing);
   const hasBed = placedFurniture.some(item => item.id === 'soft-bed');
   const rest = useSoftBedRest(cat, hasBed, camera.startFollowing);
+  const immersive = useSceneActivity(rest.phase !== 'idle' || television.phase !== 'idle', () => { rest.stop(); television.stop(); }, false);
   const lamps = useHouseLamps(placedFurniture.some(item => item.id === 'fish-lamp'), placedFurniture.some(item => item.id === 'floor-lamp'));
   const tvPlacement = interiorFurniture['tv-cabinet'];
   useEffect(() => () => { if (sparkleTimer.current) clearTimeout(sparkleTimer.current); }, []);
@@ -46,9 +50,9 @@ export function HouseInterior({ drawingStrokes, equippedCatItems, equippedItemId
     const listener = BackHandler.addEventListener('hardwareBackPress', () => { onOpenRoom('outside'); return true; });
     return () => listener.remove();
   }, [onOpenRoom]));
-  return <FarmAnimationClock enabled={television.phase === 'watching' || rest.phase === 'resting'}><View style={styles.room} onLayout={event => setViewport(event.nativeEvent.layout)} {...camera.panHandlers}>
+  return <FarmAnimationClock enabled={television.phase === 'watching' || rest.phase === 'resting'}><View style={[styles.room, immersive && presentation.styles.activityRoom]} onLayout={event => setViewport(event.nativeEvent.layout)} {...camera.panHandlers}>
     <ScrollView testID="interior-scroll" horizontal ref={camera.scrollRef} scrollEnabled={false} style={styles.scroll} contentContainerStyle={styles.scrollContent} showsHorizontalScrollIndicator={false}>
-      <View ref={world} collapsable={false} testID="interior-world" style={[styles.scene, { width, height: viewport.height }]}>
+      <View ref={world} collapsable={false} testID="interior-world" style={[styles.scene, { width, height, top }]}>
         <View pointerEvents="none" style={styles.fill}>
           <Image testID="interior-background" source={houseImages.interiorPanorama} resizeMode="contain" style={styles.image} />
         </View>
@@ -109,6 +113,7 @@ export function HouseInterior({ drawingStrokes, equippedCatItems, equippedItemId
         </> : null}
       </View>
     </ScrollView>
+    {width > viewport.width + 2 && [-1, 1].map(direction => <TouchableOpacity key={direction} accessibilityRole="button" accessibilityLabel={direction < 0 ? 'Ver la izquierda de la casa' : 'Ver la derecha de la casa'} onPress={() => camera.scrollBy(direction as -1 | 1)} style={[styles.cameraArrow, direction < 0 ? styles.cameraLeft : styles.cameraRight]}><Image accessible={false} source={uiImages.shopPageArrow} resizeMode="contain" style={[styles.image, direction < 0 && styles.reverseArrow]} /></TouchableOpacity>)}
     {television.phase !== 'idle' ? <View testID="tv-status" pointerEvents="none" style={televisionStyles.status}><Text style={televisionStyles.statusText}>{television.phase === 'approaching' ? '¡Vamos a mirar la tele!' : 'Tocá la tele para cambiar de canal'}</Text></View> : null}
     {rest.phase !== 'idle' ? <View testID="soft-bed-status" pointerEvents="none" style={televisionStyles.status}><Text style={televisionStyles.statusText}>{rest.phase === 'approaching' ? '¡Vamos a descansar en la camita!' : 'Shhh… Tocá la camita para despertarlo'}</Text></View> : null}
   </View></FarmAnimationClock>;

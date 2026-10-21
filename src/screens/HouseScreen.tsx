@@ -1,9 +1,12 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import type { GestureResponderEvent } from 'react-native';
+import { ScenePresentationProvider, useScenePresentation } from '../context/ScenePresentation';
 import { AppBottomMenu } from '../components/AppBottomMenu';
 import { AppTopMenu } from '../components/AppTopMenu';
 import { HouseBedroom } from '../components/house/HouseBedroom';
@@ -21,11 +24,17 @@ import type { ProgressState, RootStackParamList } from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'House'>;
 type HouseView = 'outside' | 'inside' | 'kitchen' | 'bathroom' | 'bedroom';
 
-export function HouseScreen({ navigation, route }: Props) {
+export function HouseScreen(props: Props) {
+  return <ScenePresentationProvider><HouseScene {...props} /></ScenePresentationProvider>;
+}
+function HouseScene({ navigation, route }: Props) {
+  const presentation = usePresentation();
+  const { activity } = useScenePresentation();
   const { progress, toggleAnimal, toggleFurniture } = useProgress();
   const [houseView, setHouseView] = useState<HouseView>('inside');
+  const [inventoryOpen, setInventoryOpen] = useState(false);
   const openInterior = useCallback(() => setHouseView('inside'), []);
-  useFocusEffect(useCallback(() => { setHouseView(route.params?.room ?? 'inside'); }, [route.params]));
+  useFocusEffect(useCallback(() => { setHouseView(route.params?.room ?? 'inside'); setInventoryOpen(false); return () => setInventoryOpen(false); }, [route.params]));
   const [sceneViewportWidth, setSceneViewportWidth] = useState(0);
   const [sparkle, setSparkle] = useState<{ x: number; y: number; key: number } | null>(null);
   const interiorScrollRatio = useRef(0);
@@ -49,7 +58,7 @@ export function HouseScreen({ navigation, route }: Props) {
   };
   const sceneProps = { equippedCatItems: progress.equippedCatItems, equippedItemId: progress.equippedItemId, onFloorPress: handleFloorPress, walkingCatRef, sparkle };
   return <View style={styles.screen}>
-    <AppTopMenu compact={houseView === 'kitchen' || houseView === 'bathroom'} icon="home-heart" title={houseView === 'kitchen' ? 'Cocina' : houseView === 'bathroom' ? 'Baño' : 'Casa'} />
+    <AppTopMenu scene onBack={houseView !== 'inside' ? openInterior : undefined} compact={houseView === 'kitchen' || houseView === 'bathroom'} icon="home-heart" title={houseView === 'kitchen' ? 'Cocina' : houseView === 'bathroom' ? 'Baño' : 'Casa'} />
     <View style={styles.contentRow}>
       <View onLayout={(event) => setSceneViewportWidth(event.nativeEvent.layout.width)} style={styles.sceneArea}>
         {houseView === 'inside' ? <HouseInterior equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} drawingStrokes={progress.drawingStrokes} onOpenDrawing={() => navigation.navigate('Drawing')} onOpenLibrary={() => navigation.navigate('Library')} onOpenRoom={setHouseView} placedFurniture={placedFurniture} initialScrollRatio={interiorScrollRatio.current} onScrollRatioChange={ratio => { interiorScrollRatio.current = ratio; }} /> : null}
@@ -58,15 +67,23 @@ export function HouseScreen({ navigation, route }: Props) {
         {houseView === 'bathroom' ? <HouseBathroom equippedCatItems={progress.equippedCatItems} equippedItemId={progress.equippedItemId} onOpenInside={() => setHouseView('inside')} /> : null}
         {houseView === 'outside' ? <HouseExterior {...sceneProps} contentWidth={Math.max(960, sceneViewportWidth)} ownedItemIds={progress.ownedItems} onEnterHouse={() => setHouseView('inside')} placedAnimals={placedAnimals} /> : null}
       </View>
-      {houseView === 'inside' || houseView === 'outside' ? <Inventory houseView={houseView} ownedAnimals={ownedAnimals} ownedFurniture={ownedFurniture} progress={progress} toggleAnimal={toggleAnimal} toggleFurniture={toggleFurniture} onOpenShop={() => navigation.navigate('ShopCategory', { categoryId: houseView === 'inside' ? 'furniture' : 'pets' })} /> : null}
+      {!activity && (houseView === 'inside' || houseView === 'outside') ? <TouchableOpacity accessibilityRole="button" accessibilityLabel={houseView === 'inside' ? 'Abrir muebles' : 'Abrir mascotas'} onPress={() => setInventoryOpen(true)} style={presentation.styles.houseInventory}>
+        <Image accessible={false} source={houseView === 'inside' ? furnitureImages['red-sofa'] : farmAnimalImages['farm-cow']} resizeMode="contain" style={styles.inventoryToggleArt} /><Text style={styles.inventoryToggleText}>{houseView === 'inside' ? 'Decorar' : 'Animales'}</Text>
+      </TouchableOpacity> : null}
     </View>
     <AppBottomMenu onOpenHouse={openInterior} />
+    <Modal transparent visible={inventoryOpen && (houseView === 'inside' || houseView === 'outside')} animationType="fade" supportedOrientations={['landscape']} onRequestClose={() => setInventoryOpen(false)}>
+      <SafeAreaView style={styles.inventoryModal}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Cerrar inventario" onPress={() => setInventoryOpen(false)} style={styles.inventoryBackdrop} />
+        <Inventory onClose={() => setInventoryOpen(false)} houseView={houseView} ownedAnimals={ownedAnimals} ownedFurniture={ownedFurniture} progress={progress} toggleAnimal={toggleAnimal} toggleFurniture={toggleFurniture} onOpenShop={() => { setInventoryOpen(false); navigation.navigate('ShopCategory', { categoryId: houseView === 'inside' ? 'furniture' : 'pets' }); }} />
+      </SafeAreaView>
+    </Modal>
   </View>;
 }
 
-type InventoryProps = { houseView: HouseView; ownedAnimals: typeof shopItems; ownedFurniture: typeof shopItems; progress: ProgressState; toggleAnimal: (id: string) => void; toggleFurniture: (id: string) => void; onOpenShop: () => void };
-function Inventory({ houseView, ownedAnimals, ownedFurniture, progress, toggleAnimal, toggleFurniture, onOpenShop }: InventoryProps) {
-  return <View style={styles.inventorySection}>{houseView === 'inside' || houseView === 'outside' ? <>
+type InventoryProps = { onClose: () => void; houseView: HouseView; ownedAnimals: typeof shopItems; ownedFurniture: typeof shopItems; progress: ProgressState; toggleAnimal: (id: string) => void; toggleFurniture: (id: string) => void; onOpenShop: () => void };
+function Inventory({ onClose, houseView, ownedAnimals, ownedFurniture, progress, toggleAnimal, toggleFurniture, onOpenShop }: InventoryProps) {
+  return <View testID="house-inventory" style={styles.inventorySection}><TouchableOpacity accessibilityRole="button" accessibilityLabel="Cerrar panel" onPress={onClose} style={styles.inventoryClose}><MaterialCommunityIcons name="close" color="#26796e" size={28} /></TouchableOpacity>{houseView === 'inside' || houseView === 'outside' ? <>
     {houseView === 'outside' ? <View style={styles.inventoryTitleRow}><MaterialCommunityIcons color="#7d4e28" name="paw-outline" size={22} /><Text style={styles.inventoryTitle}>MASCOTAS</Text></View> : null}
     {houseView === 'inside' ? <View style={styles.inventoryTitleRow}><MaterialCommunityIcons color="#7d4e28" name="sofa-outline" size={22} /><Text style={styles.inventoryTitle}>MUEBLES</Text></View> : null}
     <ScrollView contentContainerStyle={styles.inventoryScroll} showsVerticalScrollIndicator={false}><View style={styles.inventoryGrid}>

@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,6 +22,7 @@ import { RootStackParamList } from '../types';
 const trail = [[.1, .25], [.7, .5], [.36, .1], [.8, .05], [.15, .6], [.5, .4]];
 const sequence = [1, 3, 0, 2, 1, 0];
 export function ToyGameScreen({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'ToyGame'>) {
+  const presentation = usePresentation();
   const { progress, completeToy, recordAnswer } = useProgress();
   const { playSound, speak } = useGameAudio();
   const { toyId } = route.params;
@@ -99,8 +101,8 @@ export function ToyGameScreen({ route, navigation }: NativeStackScreenProps<Root
       <Text style={styles.title}>{bellRunner ? '¡Alcanzaste el cascabel!' : '¡Qué bien jugaron juntos!'}</Text><Text style={styles.text}>Diversión recuperada · Ganaste {reward + (bellRunner ? count : 0)} monedas</Text>
       <TouchableOpacity accessibilityRole="button" style={styles.button} onPress={() => navigation.replace('ToyGame', { toyId })}><Text style={styles.buttonText}>Volver a jugar</Text></TouchableOpacity>
       <TouchableOpacity accessibilityRole="button" style={styles.shortcut} onPress={() => navigation.navigate('Toys')}><Text style={styles.buttonText}>Mis juguetes</Text></TouchableOpacity>
-    </View> : <View style={styles.gameBody}>
-      {!fishMemory && !bellRunner && mode !== 'hide-and-seek' && mode !== 'rolling-yarn' && <View style={styles.gameHeader}><Text style={styles.text}>{mode === 'memory' ? 'Encontrá los dibujos iguales' : mode === 'sequence' ? 'Tocá la luz amarilla' : '¡Atrapá el juguete!'}</Text><Text style={styles.badge}>{count}/{mode === 'memory' ? 3 : 6}</Text></View>}
+    </View> : <View style={presentation.styles.gameBody}>
+      {!fishMemory && !bellRunner && mode !== 'hide-and-seek' && mode !== 'rolling-yarn' && <View style={presentation.styles.gameHeader}><Text style={styles.text}>{mode === 'memory' ? 'Encontrá los dibujos iguales' : mode === 'sequence' ? 'Tocá la luz amarilla' : '¡Atrapá el juguete!'}</Text><Text style={styles.badge}>{count}/{mode === 'memory' ? 3 : 6}</Text></View>}
       {bellRunner ? <BellRunnerGame onCoin={() => { countRef.current += 1; setCount(countRef.current); }} onComplete={coins => void finish(Math.max(1, coins))} /> : fishMemory ? <FishMemoryGame onComplete={() => void finish(FISH_MEMORY_PAIRS)} /> : mode === 'rolling-yarn' ? <RollingYarnGame count={count} onCatch={advance} onRoundComplete={() => void finish(6)} /> : mode === 'hide-and-seek' ? <MouseHideAndSeek count={count} onFound={mouseFound} onRoundComplete={() => void finish(MOUSE_ROUND_FINDS)} /> : mode === 'chase' ? (
         <View testID="toy-arena" style={styles.arena} onLayout={event => setArena(event.nativeEvent.layout)}>
           <Animated.View style={[styles.target, { transform: target.getTranslateTransform() }]}>

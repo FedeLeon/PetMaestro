@@ -1,12 +1,14 @@
-# Marcos de menús y botón Aventuras
+# Marcos de menús e íconos de navegación
 
 Generados el 2026-10-17 con ImageGen integrado, sin API externa. PNG con alpha original conservado. Estilo: madera cálida, filete turquesa y centro crema para mantener legibles los controles.
 
 - `assets/generated/ui/menus/top-menu-frame-v1.png` (2172×724): marco superior.
 - `assets/generated/ui/menus/bottom-menu-frame-v1.png` (2172×724): marco inferior.
-- `assets/generated/navigation/adventures-v1.png` (1254×1254): brújula con mochila y mapa.
+- `assets/generated/navigation/adventures-v1.png` (1254×1254): brújula con mochila y mapa, retirada del menú.
 
-`MenuFrame.tsx` dibuja los marcos en nueve secciones SVG, con recorte virtual del margen exterior y esquinas de tamaño constante. No modifica los archivos ni deforma las huellitas. Es decorativo y no intercepta pulsaciones. El menú inferior mantiene sus 94 puntos de alto y ahora contiene seis controles de 68 puntos, exclusivamente en horizontal. Juguetes y Aventuras tienen ilustraciones y etiquetas propias. [Asset de Juguetes](toys-menu.md).
+`MenuFrame.tsx` dibuja los marcos en nueve secciones SVG, con recorte virtual del margen exterior y esquinas de tamaño constante. No modifica los archivos ni deforma las huellitas. Es decorativo y no intercepta pulsaciones. El menú inferior mide 76 puntos de alto y contiene siete controles circulares de 60 puntos, sin etiquetas visibles y exclusivamente en horizontal. El álbum de figuritas reemplaza a Aventuras. [Asset de Juguetes](toys-menu.md).
+
+Álbum: `assets/generated/navigation/sticker-album-v1.png`, PNG transparente de 192×192, generado con ImageGen integrado el 2026-10-21. Prompt: álbum turquesa y dorado con figuritas grandes de gatito, manzana, pez y estrella, estilo cartoon del juego, sin letras.
 
 ## Prompt final: marco superior
 

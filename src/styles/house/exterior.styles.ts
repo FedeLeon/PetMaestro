@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 import { EXTERIOR_YARD_WIDTH } from '../screens/houseScreen.styles';
 // Keep the right edge of the painted barn visible in the initial panorama.
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   houseDoorHit: { bottom: 6, height: 112, left: 92, position: 'absolute', width: 110, zIndex: 3 },
   horizontalScroll: { flex: 1 },
   roomBackgroundImage: { borderRadius: 6, width: '100%', height: '100%' },
-  room: { marginBottom: 94, backgroundColor: '#ffffff', borderColor: '#f0dcc0', borderRadius: 8, borderWidth: 2, borderLeftWidth: 0, borderRightWidth: 0, flex: 1, minHeight: 0, overflow: 'hidden' },
+  room: { marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#ffffff', borderColor: '#f0dcc0', borderRadius: 8, borderWidth: 2, borderLeftWidth: 0, borderRightWidth: 0, flex: 1, minHeight: 0, overflow: 'hidden' },
   touch: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0, zIndex: 0 },
   wide: { height: '100%', position: 'relative', width: EXTERIOR_YARD_WIDTH },
   yardAnimal: { alignItems: 'center', justifyContent: 'center', position: 'absolute', zIndex: 2 },

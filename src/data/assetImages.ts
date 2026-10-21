@@ -20,6 +20,7 @@ export const storyImages = {
 };
 
 export const toySceneImages = {
+  selectionRoom: require('../../assets/generated/toys/toys-selection-room-v1.png'),
   bellPark: require('../../assets/generated/toys/bell-runner/park-v1.png'),
   bellCat: require('../../assets/generated/toys/bell-runner/cat-stride-v2.png'),
   bellCatRun: require('../../assets/generated/toys/bell-runner/cat-run-cycle-v3.png'),
@@ -86,8 +87,8 @@ export const needsImages = {
 };
 
 export const navigationImages = {
+  album: require('../../assets/generated/navigation/sticker-album-v1.png'),
   toys: require('../../assets/generated/navigation/toys-v1.png'),
-  adventures: require('../../assets/generated/navigation/adventures-v1.png'),
   map: require('../../assets/generated/navigation/map-treasure.png'),
   pet: require('../../assets/generated/navigation/pet.png'),
   house: require('../../assets/generated/navigation/house.png'),

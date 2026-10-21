@@ -1,7 +1,15 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  adventuresButton: { minHeight: 44, backgroundColor: '#26796e', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 12 },
+  mapWorld: { position: 'relative' },
+  mapArrow: { position: 'absolute', bottom: 10, width: 56, height: 56, zIndex: 8 },
+  mapArrowLeft: { left: 10 },
+  mapArrowRight: { right: 10 },
+  mapArrowDisabled: { opacity: .3 },
+  mapArrowImage: { width: '100%', height: '100%' },
+  mapArrowReverse: { transform: [{ scaleX: -1 }] },
+  mapHint: { position: 'absolute', bottom: 18, alignSelf: 'center', backgroundColor: '#fff9e9ed', paddingVertical: 5, paddingHorizontal: 12, borderRadius: 12, color: '#32685e', fontSize: 14, fontWeight: '800' },
   modalClose: { position: 'absolute', right: 4, top: 4, width: 44, height: 44, alignItems: 'center', justifyContent: 'center', zIndex: 1 },
   completedPoint: { backgroundColor: '#57b8a9', borderColor: '#d7f5cf' },
   disabledPlayButton: { backgroundColor: '#c8bba8' },
@@ -11,7 +19,7 @@ export const styles = StyleSheet.create({
   lockedPoint: { backgroundColor: '#d8cec0', borderColor: '#eee7dc' },
   lockedText: { color: '#7f7569' },
   mapImage: { borderRadius: 6, width: '100%', height: '100%' },
-  mapScene: { flex: 1, marginBottom: 94, overflow: 'hidden', position: 'relative' },
+  mapScene: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT, overflow: 'hidden', position: 'relative' },
   lockedNextWorldButton: { opacity: 0.42 },
   modalBackdrop: { alignItems: 'center', backgroundColor: 'rgba(31, 40, 45, 0.48)', flex: 1, justifyContent: 'center', padding: 12 },
   modalCard: { alignItems: 'center', backgroundColor: '#ffffff', borderColor: '#fff3b0', borderRadius: 16, borderWidth: 3, maxWidth: 460, padding: 14, width: '100%' },

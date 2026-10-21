@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -9,7 +10,7 @@ async function visibleControl(locator, viewport, footer = true) {
   await locator.waitFor();
   const r = await locator.boundingBox();
   assert.ok(r.width >= 44 && r.height >= 44, `Touch target: ${JSON.stringify(r)}`);
-  assert.ok(r.x >= 0 && r.y >= 0 && r.x + r.width <= viewport.width + 1 && r.y + r.height <= viewport.height - (footer ? 94 : 0) + 1, `Control in view: ${JSON.stringify(r)}`);
+  assert.ok(r.x >= 0 && r.y >= 0 && r.x + r.width <= viewport.width + 1 && r.y + r.height <= viewport.height - (footer ? BOTTOM_MENU_HEIGHT : 0) + 1, `Control in view: ${JSON.stringify(r)}`);
 }
 async function run() {
   fs.mkdirSync(output, { recursive: true });
@@ -42,7 +43,7 @@ async function run() {
       }, seed);
       await page.goto(process.env.GAME_URL || 'http://localhost:8087');
       await button(page, 'Juguetes').waitFor({ timeout: 90000 });
-      for (const name of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Aventuras']) assert.equal(await button(page, name).getByText(name, { exact: true }).count(), 1, `Visible footer label ${name}`);
+      for (const name of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Álbum de figuritas', 'Biblioteca']) assert.ok(await button(page, name).isVisible(), `Accessible footer control ${name}`);
       await button(page, 'Juguetes').click();
       // First row can be opened without discovering a button below the fold.
       for (const name of ['Jugar Ovillo', 'Jugar Ratoncito', 'Jugar Pez de peluche']) await visibleControl(button(page, name), viewport);
@@ -50,16 +51,11 @@ async function run() {
       await button(page, 'Jugar Ratoncito').locator('img').click();
       await button(page, 'Encontrar al ratoncito').waitFor();
       await button(page, 'Volver').click();
-      await button(page, 'Aventuras').click();
-      for (const name of ['Repaso adaptativo', 'Álbum de palabras', 'Ciudad Gatuna']) await visibleControl(button(page, name), viewport);
-      await page.screenshot({ path: `${output}/adventures-${viewport.width}.png` });
-      await button(page, 'Cobrar misión rest').click();
-      assert.equal((await saved(page)).coins, 27);
-      assert.equal(await button(page, 'Cobrar misión rest').isDisabled(), true);
-      await button(page, 'Álbum de palabras').click();
+      await button(page, 'Mapa').click();
+      await button(page, 'Álbum de figuritas').click();
       await visibleControl(button(page, 'Escuchar cat'), viewport);
       const albumCard = await page.getByTestId('album-cat').boundingBox();
-      assert.ok(albumCard.y + albumCard.height <= viewport.height - 94, 'Sticker and its progress fit above the footer');
+      assert.ok(albumCard.y + albumCard.height <= viewport.height - BOTTOM_MENU_HEIGHT, 'Sticker and its progress fit above the footer');
       await button(page, 'Ganadas (1)').click();
       await page.getByTestId('album-cat').waitFor();
       assert.equal(await page.locator('[data-testid^="album-"]').count(), 1);
@@ -103,8 +99,9 @@ async function run() {
       await page.mouse.click(sliderRect.x + sliderRect.width * .97, sliderRect.y + sliderRect.height / 2);
       assert.ok(Number(await slider.getAttribute('aria-valuenow')) >= 29, 'Brush size responds over the track and thumb');
       await page.screenshot({ path: `${output}/drawing-${viewport.width}.png` });
-      await button(page, 'Aventuras').click();
-      await button(page, 'Ciudad Gatuna').click();
+      await button(page, 'Volver').click();
+      await button(page, 'Mapa').click();
+      await button(page, 'Entrar a Ciudad Gatuna').click();
       await button(page, 'Visitar La panadería').click();
       const bakery = cityActivities[0];
       // Cancel during feedback: no later city reward after leaving the task.
@@ -124,7 +121,7 @@ async function run() {
       await page.getByText('¡Ayudaste a tus amigos de la ciudad!', { exact: true }).waitFor();
       assert.equal((await saved(page)).learning.counts.city, 1);
       assert.deepEqual(errors, []);
-      console.log(`UX passed ${viewport.width}×${viewport.height}: visible toy actions, navigation labels, mission reward, album filters, eight voices, learning results, clothing selection, drawing controls, city feedback and cancellation.`);
+      console.log(`UX passed ${viewport.width}×${viewport.height}: visible toy actions, navigation icons, album filters, eight voices, learning results, clothing selection, drawing controls, city feedback and cancellation.`);
       await page.close();
     }
   } finally { await browser.close(); }

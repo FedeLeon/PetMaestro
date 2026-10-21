@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -30,7 +31,7 @@ async function run() {
           assert.equal(await card.isDisabled(), locked);
           await card.scrollIntoViewIfNeeded();
           const rect = await card.boundingBox();
-          assert.ok(rect.x >= 0 && rect.x + rect.width <= viewport.width && rect.y >= 58 && rect.y + rect.height <= viewport.height - 94, 'Every square-page book fits above the menu');
+          assert.ok(rect.x >= 0 && rect.x + rect.width <= viewport.width && rect.y >= 58 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT, 'Every square-page book fits above the menu');
           if (locked) {
             assert.equal(await card.evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(191, 195, 197)', 'Locked cards are gray');
             await card.evaluate(el => el.click());
@@ -52,7 +53,7 @@ async function run() {
         await button(page, `Responder: ${q.options.find(o => o.id !== q.answerId).text}`).click();
         const next = button(page, index === 4 ? 'Terminar preguntas y recibir monedas' : 'Siguiente pregunta');
         const rect = await next.boundingBox();
-        assert.ok(rect.height >= 44 && rect.y + rect.height <= viewport.height - 94);
+        assert.ok(rect.height >= 44 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT);
         await next.click();
       };
       const finish = async id => {
@@ -63,7 +64,7 @@ async function run() {
         assert.equal(result.best, 0, 'All five answers may be wrong');
         assert.ok(result.completed >= 1);
         const other = await button(page, 'Elegir otro cuento').boundingBox();
-        assert.ok(other.y + other.height <= viewport.height - 94, 'Completion and unlock controls fit');
+        assert.ok(other.y + other.height <= viewport.height - BOTTOM_MENU_HEIGHT, 'Completion and unlock controls fit');
         await button(page, 'Elegir otro cuento').click();
       };
       await open(); await checkGroup(0, false);

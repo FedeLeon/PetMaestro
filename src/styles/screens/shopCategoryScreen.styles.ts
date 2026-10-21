@@ -1,10 +1,11 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#fff7e8' },
   statusRow: { height: 30, paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff3d5' },
   message: { color: '#26796e', fontSize: 14, fontWeight: '800', flex: 1 },
   pageCount: { color: '#674124', fontSize: 14, fontWeight: '900', paddingLeft: 8 },
-  scene: { flex: 1, marginBottom: 94, backgroundColor: '#edc98e', overflow: 'hidden' },
+  scene: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#edc98e', overflow: 'hidden' },
   art: { position: 'absolute' },
   backgroundImage: { width: '100%', height: '100%' },
   product: { position: 'absolute', top: 0 },

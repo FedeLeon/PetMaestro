@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -35,7 +36,7 @@ async function run() {
       await page.goto(process.env.GAME_URL || 'http://localhost:8087');
       await page.getByRole('button', { name: /^Hambre:/ }).waitFor({ timeout: 90000 });
       await page.getByRole('button', { name: /^Hambre:/ }).click();
-      await button(page, 'Dar de comer').click();
+      await button(page, 'Preparar comida').click();
       assert.equal(await button(page, 'Alimentos anteriores').isDisabled(), true);
       for (let i = 0; i < 3; i++) {
         await page.getByLabel(`Alimentos: página ${i + 1} de 3`, { exact: true }).waitFor();
@@ -43,7 +44,7 @@ async function run() {
         assert.equal(await foods.count(), 6, 'Exactly six ingredients per page');
         for (const food of await foods.all()) {
           const r = await food.boundingBox();
-          assert.ok(r.width >= 44 && r.height >= 44 && r.y + r.height <= viewport.height - 94);
+          assert.ok(r.width >= 44 && r.height >= 44 && r.y + r.height <= viewport.height - (viewport.width <= 1000 ? 0 : BOTTOM_MENU_HEIGHT));
         }
         await page.screenshot({ path: `${output}/fridge-page-${i + 1}-${viewport.width}.png` });
         if (i < 2) await button(page, 'Más alimentos').click();
@@ -62,13 +63,13 @@ async function run() {
       await button(page, 'Más alimentos').click();
       await choose(page, 'corn');
       await finishMeal(page, ['pumpkin', 'broccoli', 'corn']);
-      await button(page, 'Dar de comer').click();
+      await button(page, 'Preparar comida').click();
       await button(page, 'Más alimentos').click();
       for (const id of ['sweet-potato', 'egg', 'cheese']) await choose(page, id);
       await finishMeal(page, ['sweet-potato', 'egg', 'cheese']);
       const newMeals = [['tomato', 'pasta', 'spinach'], ['zucchini', 'mushrooms', 'lentils']];
       for (const [index, ids] of newMeals.entries()) {
-        await button(page, 'Dar de comer').click();
+        await button(page, 'Preparar comida').click();
         await button(page, 'Más alimentos').click();
         await button(page, 'Más alimentos').click();
         for (const id of ids) await choose(page, id);

@@ -60,7 +60,7 @@ async function run() {
     }
     const cow = page.getByTestId('farm-motion-farm-cow');
     const read = () => cow.getAttribute('transform');
-    await button(page, 'Aventuras').click();
+    await button(page, 'Tienda').click();
     await page.waitForTimeout(150);
     const retained = await cow.count();
     const paused = retained ? await read() : null;

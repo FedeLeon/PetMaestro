@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import * as images from './assetImages';
 import { gardenImages, thirstyGardenImages } from './gardenContent';
@@ -43,7 +44,12 @@ export function preloadGameAssets(onProgress: (loaded: number, total: number) =>
   running = (async () => {
     const pending = tasks.filter(task => !completed.has(task));
     let index = 0;
-    const errors: unknown[] = [];
+    const errors: { resource: string; cause: unknown }[] = [];
+    const failure = (source: number, cause: unknown) => {
+      let resource = `module:${source}`;
+      try { const asset = Asset.fromModule(source); resource = `${asset.name}.${asset.type}`; } catch { /* Keep the module ID if its registration failed. */ }
+      errors.push({ resource, cause });
+    };
     const cache = new Map<number, Promise<unknown>>();
     const worker = async () => {
       while (index < pending.length) {
@@ -55,7 +61,7 @@ export function preloadGameAssets(onProgress: (loaded: number, total: number) =>
           task.assign(result);
           completed.add(task);
           report();
-        } catch (error) { errors.push(error); }
+        } catch (error) { failure(task.source, error); }
       }
     };
     await Promise.all([
@@ -64,10 +70,13 @@ export function preloadGameAssets(onProgress: (loaded: number, total: number) =>
         try {
           if (!fontsReady) await withTimeout(Font.loadAsync(MaterialCommunityIcons.font));
           fontsReady = true; report();
-        } catch (error) { errors.push(error); }
+        } catch (error) { errors.push({ resource: 'MaterialCommunityIcons font', cause: error }); }
       })(),
     ]);
-    if (errors.length) throw new Error(`No se pudieron cargar ${errors.length} recursos.`);
+    if (errors.length) {
+      console.error('[PetMaestro] Fallos de carga inicial', errors);
+      throw new Error(`No se pudieron cargar ${errors.length} recursos: ${errors.slice(0, 3).map(error => error.resource).join(', ')}.`);
+    }
   })().finally(() => { running = undefined; });
   return running;
 }

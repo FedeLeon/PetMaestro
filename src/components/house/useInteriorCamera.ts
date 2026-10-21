@@ -51,6 +51,7 @@ export function useInteriorCamera({ width, viewportWidth, scale, initialRatio, o
   };
   return {
     scrollRef, panHandlers, followCat,
+    scrollBy: (direction: -1 | 1) => { following.current = false; moveTo(offset.current + direction * current.current.viewportWidth * .65); },
     startFollowing: () => { following.current = true; },
     canTap: () => !dragging.current && Date.now() > suppressPressUntil.current,
   };

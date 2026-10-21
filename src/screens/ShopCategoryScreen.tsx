@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -19,6 +20,7 @@ import { styles } from '../styles/screens/shopCategoryScreen.styles';
 import { RootStackParamList, ShopItem } from '../types';
 
 export function ShopCategoryScreen({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'ShopCategory'>) {
+  const presentation = usePresentation();
   const { buyItem, equipItem, toggleAnimal, toggleFurniture, progress, isReady } = useProgress();
   const { playSound } = useGameAudio();
   const [message, setMessage] = useState('');
@@ -37,6 +39,7 @@ export function ShopCategoryScreen({ route, navigation }: NativeStackScreenProps
   const visibleItems = items.slice(currentPage * 3, currentPage * 3 + 3);
   const width = Math.min(size.width, size.height * SHOP_ASPECT);
   const height = width / SHOP_ASPECT;
+  const productHeight = presentation.layout.shopProductHeight(height);
   const fontSize = Math.max(12, Math.min(18, height * .055));
   const returnToShop = useCallback(() => navigation.popTo('Shop'), [navigation]);
   useFocusEffect(useCallback(() => {
@@ -77,9 +80,9 @@ export function ShopCategoryScreen({ route, navigation }: NativeStackScreenProps
   };
   const turnPage = (next: number) => { if (busy.current || next < 0 || next >= pages) return; playSound('tap'); setMessage(''); setPage(next); };
   return <View style={styles.screen}>
-    <AppTopMenu compact icon={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={category.label}
+    <AppTopMenu scene compact icon={category.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={category.label}
       onBack={returnToShop} backLabel="Volver a la tienda" backText="Tienda" />
-    <View style={styles.statusRow}><Text accessibilityLiveRegion="polite" style={styles.message}>{message || 'Elegí algo que te guste'}</Text><Text accessibilityLiveRegion="polite" style={styles.pageCount}>{currentPage + 1} de {pages}</Text></View>
+    <View style={presentation.styles.shopStatus}><Text accessibilityLiveRegion="polite" style={styles.message}>{message || 'Elegí algo que te guste'}</Text><Text accessibilityLiveRegion="polite" style={styles.pageCount}>{currentPage + 1} de {pages}</Text></View>
     <View testID="shop-display-scene" style={styles.scene} onLayout={event => setSize(event.nativeEvent.layout)}>
       <ImageBackground testID="shop-display-art" source={shopImages.displayCabinet} imageStyle={styles.backgroundImage} resizeMode="contain"
         style={[styles.art, { width, height, left: (size.width - width) / 2, top: (size.height - height) / 2 }]}>
@@ -88,7 +91,7 @@ export function ShopCategoryScreen({ route, navigation }: NativeStackScreenProps
           const canBuy = progress.coins >= item.price;
           const source = item.target === 'garden' ? gardenImages[item.id] : item.target === 'cat' ? catItemImages[item.id] : item.target === 'yard' ? farmAnimalImages[item.id] : furnitureImages[item.id];
           const actionText = item.category === 'cat-toys' ? 'Jugar' : item.target === 'cat' ? 'Vestir' : item.target === 'house' ? 'Colocar' : item.target === 'garden' ? 'Cuidar' : 'Al corral';
-          return <View key={item.id} testID={`shop-product-${item.id}`} style={[styles.product, { left: width * (displaySlotCenters[index] - .11), width: width * .22, height }]}>
+          return <View key={item.id} testID={`shop-product-${item.id}`} style={[presentation.styles.shopProduct, { left: width * (displaySlotCenters[index] - .11), width: width * .22, height: productHeight }]}>
             <View style={styles.preview}><ShopProductImage id={item.id} source={source} /></View>
             {owned && <View accessibilityLabel="Comprado" style={styles.owned}><MaterialCommunityIcons name="check-circle" color="#26796e" size={22} /><Text style={styles.ownedText}>¡Tuyo!</Text></View>}
             <View style={styles.namePlate}><Text numberOfLines={2} style={[styles.itemName, { fontSize, lineHeight: Math.round(fontSize * 1.2) }]}>{item.name}</Text></View>

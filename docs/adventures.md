@@ -1,23 +1,12 @@
-# Aprendizaje, misiones y Ciudad Gatuna
+# Aprendizaje y Ciudad Gatuna
 
-**Juguetes** tiene su propio botón con ilustración en el menú inferior y abre directamente la colección de seis minijuegos. Ya no aparece como acceso dentro de Aventuras. **Aventuras** reúne repaso, misiones, álbum y Ciudad Gatuna; también se abre desde el mapa. El vestidor y la tienda permiten abrir los juegos de los juguetes comprados, y los objetivos de misión conservan sus enlaces a las actividades. Todas las vistas se diseñaron para horizontal y funcionan sin conexión.
+Se eliminó Aventuras y misiones, su botón y el cobro de objetivos en celular y escritorio. Juguetes y biblioteca conservan sus accesos directos. El botón de Aventuras se reemplazó por un álbum de figuritas sin texto; desde el álbum se conserva el repaso. Ciudad Gatuna continúa al final del camino. Las partidas anteriores conservan monedas, inventario y aprendizaje.
 
 ## Repaso adaptativo
 
 Cada respuesta en niveles, repaso y ciudad registra aciertos, errores y última práctica de la palabra objetivo. Las parejas correctas del juego de memoria también registran un acierto. Equivocarse permite volver a intentar y no consume vidas ni monedas.
 
 El repaso selecciona hasta cinco palabras del vocabulario disponible hasta el nivel desbloqueado. Prioriza errores relativos a los aciertos, palabras sin practicar y el tiempo transcurrido. Las opciones incorrectas también pertenecen al vocabulario desbloqueado. Una sesión mantiene sus preguntas estables mientras cambia el progreso; la siguiente vuelve a calcularlas. Se alternan consignas en castellano y reconocimiento con pronunciación inglesa cuando existe un audio local; en los demás casos se muestra texto. Completar el repaso entrega 10 monedas y recupera diversión sin modificar el desbloqueo de niveles.
-
-## Cuatro misiones cortas
-
-| Misión | Objetivos | Premio |
-| --- | --- | --- |
-| Aprender da hambre | Reconocer 3 palabras y servir una comida preparada | 20 monedas |
-| Repasar y descansar | Completar un repaso y terminar el descanso en la cama | 20 monedas |
-| Una aventura juntos | Completar un juego de juguete y una acción de higiene | 25 monedas |
-| Amigos de la ciudad | Completar un encargo de la ciudad y regar una flor propia | 30 monedas |
-
-Los objetivos llevan directamente a su actividad. Los contadores avanzan al finalizar acciones reales, incluidos comida, higiene, descanso y riego; no por abrir una pantalla. Las misiones son permanentes, no caducan y cada premio se cobra una vez. No son tareas diarias ni se reinician por cambiar la fecha. El guardado impide cobrar dos veces mediante toques rápidos o recargas.
 
 ## Seis juguetes, cinco tipos de juego
 
@@ -32,7 +21,7 @@ Se necesita comprar el juguete correspondiente. Cada finalización recupera 25 p
 
 ## Tres encargos de Ciudad Gatuna
 
-La ciudad se desbloquea al completar el nivel 11. El acceso desde Aventuras permite ver los lugares bloqueados y la condición de entrada.
+La ciudad se desbloquea al completar el nivel 11. El acceso está al final del mapa y muestra la condición de entrada.
 
 - Panadería: pedir pan, leche y manzana con frases cortas en inglés y su traducción.
 - Parque: encontrar árbol, pájaro y flor.
@@ -46,15 +35,15 @@ El álbum reúne las 38 palabras con traducción, ilustración, progreso y pronu
 
 ## Persistencia y arquitectura
 
-`ProgressState.learning` agrega estadísticas por palabra, contadores de actividades, misiones cobradas, encargos terminados y mejores puntuaciones. Se conserva la clave `petmaestro.progress.v1`. `restoreLearning` normaliza identificadores y números y agrega valores por defecto a partidas anteriores, sin reiniciar monedas, inventario, niveles, dibujo ni cuidado.
+`ProgressState.learning` agrega estadísticas por palabra, contadores de actividades, encargos terminados y mejores puntuaciones. Se conserva la clave `petmaestro.progress.v1`. `restoreLearning` normaliza identificadores y números y agrega valores por defecto a partidas anteriores, sin reiniciar monedas, inventario, niveles, dibujo ni cuidado.
 
 Los datos y reglas compartidas viven en `src/data/adventureContent.ts`; las actualizaciones usan el estado actual y la cola de guardado de `ProgressContext`. La lógica de las nuevas pantallas está separada de su estilo horizontal compartido en `src/styles/screens/adventure.styles.ts`.
 
 ## Comprobación
 
-- `npm run test:learning`: compatibilidad con valores ausentes o dañados, prioridades del repaso, exclusión de vocabulario bloqueado, pegatinas, requisitos de misiones y coherencia de los encargos.
-- `npm run test:adventures`: navegador horizontal 844×390 y 1280×720, error y corrección en repaso, desbloqueo de pegatina, misión con descanso real, seis juguetes, tres encargos y repetición, persistencia al recargar, ciudad bloqueada y compra de juguete desde una partida anterior.
-- `npm run test:care`: las actividades completas de comida, baño, higiene, descanso y riego comprueban también sus contadores de misión.
+- `npm run test:learning`: compatibilidad con valores ausentes o dañados, prioridades del repaso, exclusión de vocabulario bloqueado, pegatinas y coherencia de los encargos.
+- `npm run test:play-learning`: repaso, pegatinas, juguetes, ciudad y persistencia.
+- `npm run test:care`: las actividades completas de comida, baño, higiene, descanso y riego comprueban también sus contadores de actividades.
 - Suites originales de niveles, almacenamiento, layout y vestidor, comprobación TypeScript y exportaciones Web/Android.
 
-Las capturas y los reportes de Aventuras se guardan en `/tmp/petmaestro-adventures`, configurable con `REVIEW_OUTPUT`. Las pruebas de navegador y la exportación Android no sustituyen la validación de gestos, rendimiento y audio en un dispositivo Android físico.
+Las capturas y los reportes de aprendizaje se guardan en `/tmp/petmaestro-play-learning`, configurable con `REVIEW_OUTPUT`. Las pruebas de navegador y la exportación Android no sustituyen la validación de gestos, rendimiento y audio en un dispositivo Android físico.

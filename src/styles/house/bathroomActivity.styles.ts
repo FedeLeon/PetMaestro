@@ -1,6 +1,7 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-  root: { flex: 1, minHeight: 0, minWidth: 0, marginBottom: 94, backgroundColor: '#72cbd0', overflow: 'hidden', userSelect: 'none' },
+  root: { flex: 1, minHeight: 0, minWidth: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#72cbd0', overflow: 'hidden', userSelect: 'none' },
   sceneImage: { width: '100%', height: '100%' },
   canvas: { position: 'absolute', overflow: 'hidden' },
   fill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },

@@ -6,7 +6,7 @@ import { flowerWait, gardenFlowers } from '../data/gardenContent';
 import { PetNeeds, ProgressState } from '../types';
 import { AppState } from 'react-native';
 import { useGameAudio } from './AudioContext';
-import { cityActivities, countActivity, emptyLearning, missionReady, missions, restoreLearning } from '../data/adventureContent';
+import { cityActivities, countActivity, emptyLearning, restoreLearning } from '../data/adventureContent';
 import { words } from '../data/gameContent';
 import { actionRewards, type ActionReward, type DirectActionReward } from '../data/actionRewards';
 import { CoinRewardNotice } from '../components/CoinRewardNotice';
@@ -70,7 +70,6 @@ type ProgressContextValue = {
   completeReview: () => Promise<number>;
   completeToy: (toyId: string, score: number) => Promise<number>;
   completeCity: (activityId: string) => Promise<number>;
-  claimMission: (id: string) => Promise<boolean>;
   rewardAction: (kind: DirectActionReward, targetId?: string) => Promise<number>;
   completeStoryQuiz: (storyId: string, answers: string[], attemptId: string) => Promise<{ coins: number; score: number } | null>;
 };
@@ -480,15 +479,6 @@ export function ProgressProvider({ children }: PropsWithChildren) {
     notifyReward('storyQuiz', coins); playSound('complete');
     return { coins, score };
   };
-  const claimMission = async (id: string) => {
-    const current = progressRef.current;
-    const mission = missions.find(entry => entry.id === id);
-    if (!mission || current.learning.claimedMissions.includes(id) || !missionReady(current.learning, id)) return false;
-    await saveProgress({ ...current, coins: current.coins + mission.reward, learning: { ...current.learning, claimedMissions: [...current.learning.claimedMissions, id] } });
-    playSound('complete');
-    return true;
-  };
-
   const value = useMemo(
     () => ({
       progress: visibleProgress,
@@ -512,7 +502,6 @@ export function ProgressProvider({ children }: PropsWithChildren) {
       completeReview,
       completeToy,
       completeCity,
-      claimMission,
       rewardAction,
       completeStoryQuiz,
     }),

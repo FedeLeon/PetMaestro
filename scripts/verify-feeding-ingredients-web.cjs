@@ -21,7 +21,7 @@ async function run() {
       const allIds = ['carrot', 'potato', 'peas'];
       for (const total of [1, 2, 3]) {
         const ids = allIds.slice(0, total);
-        await button(page, 'Abrir heladera').click();
+        await button(page, 'Preparar comida').click();
         for (const id of ids) await button(page, `Elegir ${kitchenFoods.find(f => f.id === id).name}`).click();
         await button(page, 'Cocinar').click();
         for (const id of ids) await page.getByTestId(`drag-food-${id}`).click();

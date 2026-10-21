@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { useEffect, useRef, useState } from 'react';
 import { AppState, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,6 +10,7 @@ import { useGameAudio } from '../context/AudioContext';
 import { useProgress } from '../context/ProgressContext';
 
 export function BellRunnerGame({ onCoin, onComplete }: { onCoin: () => void; onComplete: (coins: number) => void }) {
+  const presentation = usePresentation();
   const care = useCareActivity();
   const { rewardAction } = useProgress();
   const { playSound } = useGameAudio();
@@ -89,7 +91,7 @@ export function BellRunnerGame({ onCoin, onComplete }: { onCoin: () => void; onC
         </View>
       </View>
       <Pressable testID="bell-jump-area" accessibilityRole="button" accessibilityLabel="Saltar en el parque" accessibilityHint="Esperá que se acerque un obstáculo con su moneda y tocá para saltar." disabled={phase !== 'running'} onPress={jump} style={styles.fill} />
-      <View pointerEvents="none" style={styles.hud}>
+      <View pointerEvents="none" style={presentation.styles.bellHud}>
         <Text style={styles.instruction}>{stumble ? '¡Arriba! Saltá el próximo obstáculo' : 'Cuando se acerque la moneda, ¡tocá para saltar!'}</Text>
         <View style={styles.coinCount}><Image accessible={false} source={uiImages.goldenPawCoin} style={styles.coinArt} /><Text testID="bell-runner-coins" accessibilityLabel={`${state.coins} monedas atrapadas`} style={styles.count}>{state.coins}</Text></View>
       </View>

@@ -1,7 +1,8 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#fff7e8' },
-  scene: { flex: 1, marginBottom: 94, backgroundColor: '#edc98e', overflow: 'hidden' },
+  scene: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#edc98e', overflow: 'hidden' },
   art: { position: 'absolute' },
   backgroundImage: { width: '100%', height: '100%' },
   portal: { position: 'absolute', justifyContent: 'flex-end', alignItems: 'center', minWidth: 44, minHeight: 44 },

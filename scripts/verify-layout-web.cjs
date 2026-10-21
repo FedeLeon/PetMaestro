@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
@@ -23,21 +24,17 @@ async function run() {
     for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
       await page.setViewportSize(viewport);
       const controls = [];
-      for (const name of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Aventuras']) {
+      for (const name of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Álbum de figuritas', 'Biblioteca']) {
         const rect = await button(page, name).boundingBox();
         assert.ok(rect.width >= 44 && rect.height >= 44);
-        assert.ok(rect.x >= 0 && rect.x + rect.width <= viewport.width && rect.y >= viewport.height - 94 && rect.y + rect.height <= viewport.height);
-        for (const other of controls) assert.ok(rect.x >= other.x + other.width, 'Six footer buttons must remain separate');
+        assert.ok(rect.x >= 0 && rect.x + rect.width <= viewport.width && rect.y >= viewport.height - BOTTOM_MENU_HEIGHT && rect.y + rect.height <= viewport.height);
+        for (const other of controls) assert.ok(rect.x >= other.x + other.width, 'Seven footer buttons must remain separate');
         controls.push(rect);
       }
-      await button(page, 'Aventuras').click();
-      await page.getByText('Misiones cortas', { exact: true }).filter({ visible: true }).waitFor();
-      assert.equal(await button(page, 'Jugar con juguetes').count(), 0, 'Remove the old Toys shortcut from Adventures');
-      assert.equal(await button(page, 'Aventuras').getAttribute('aria-selected'), 'true');
+      assert.equal(await button(page, 'Aventuras').count(), 0);
       await button(page, 'Juguetes').click();
       await button(page, 'Jugar Ratoncito').waitFor();
       assert.equal(await button(page, 'Juguetes').getAttribute('aria-selected'), 'true');
-      assert.equal(await button(page, 'Aventuras').getAttribute('aria-selected'), 'false');
       await button(page, 'Juguetes').getByTestId('toys-menu-art').waitFor();
       await page.screenshot({ path: `${output}/toys-navigation-${viewport.width}.png` });
       await button(page, 'Jugar Ratoncito').click();
@@ -85,7 +82,7 @@ async function run() {
       await button(page, 'Bañarse').waitFor();
     }
     assert.deepEqual(errors, []);
-    console.log('Six footer buttons, independent Toys entry, active states and game return passed at two landscape sizes. Phone: map, modals, city, shop, wardrobe, eraser and undo passed.');
+    console.log('Seven footer buttons, independent Toys entry, active states and game return passed at two landscape sizes. Phone: map, modals, city, shop, wardrobe, eraser and undo passed.');
   } finally { await browser.close(); }
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

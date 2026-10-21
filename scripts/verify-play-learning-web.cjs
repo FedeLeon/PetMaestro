@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const catchYarn = require('./catch-yarn.cjs');
 const solveFishMemory = require('./solve-fish-memory.cjs');
 const { shopItems, getWord, cityActivities, reviewWordIds } = require('./load-game-data.cjs');
-const output = process.env.REVIEW_OUTPUT || '/tmp/petmaestro-adventures';
+const output = process.env.REVIEW_OUTPUT || '/tmp/petmaestro-play-learning';
 const button = (page, name) => page.getByRole('button', { name, exact: typeof name === 'string' });
 const visible = (page, value) => page.getByText(value, { exact: true }).filter({ visible: true });
 const saved = page => page.evaluate(() => JSON.parse(localStorage.getItem('petmaestro.progress.v1')));
@@ -19,11 +19,10 @@ async function run() {
     const seed = { coins: 500, unlockedLevel: 11, completedLevels: [11], ownedItems: shopItems.filter(item => item.category === 'cat-toys').map(item => item.id), needs: { hunger: 40, hygiene: 40, bathroom: 40, energy: 40, play: 40 }, needsUpdatedAt: Date.now(), learning: { words: { cat: { correct: 2, errors: 9, lastPracticed: Date.now() }, dog: { correct: 0, errors: 7, lastPracticed: Date.now() } }, counts: {}, claimedMissions: [], cityCompleted: [], toyBest: {} } };
     await page.addInitScript(seed => { if (!localStorage.getItem('petmaestro.progress.v1')) localStorage.setItem('petmaestro.progress.v1', JSON.stringify(seed)); }, seed);
     await page.goto(process.env.GAME_URL || 'http://localhost:8087');
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
-    await button(page, 'Aventuras').click();
-    await page.screenshot({ path: `${output}/missions-phone.png` });
-    assert.equal(await button(page, 'Cobrar misión rest').isDisabled(), true);
-    await button(page, 'Repaso adaptativo').click();
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
+    assert.equal(await button(page, 'Aventuras').count(), 0);
+    await button(page, 'Álbum de figuritas').click();
+    await button(page, 'Practicar palabras').click();
     const ids = reviewWordIds(seed);
     assert.equal(ids[0], 'dog', 'The word with more difficulty must come first');
     for (const [index, id] of ids.entries()) {
@@ -40,18 +39,9 @@ async function run() {
     assert.equal((await saved(page)).coins, 510);
     assert.equal((await saved(page)).learning.counts.review, 1);
     assert.equal((await saved(page)).learning.words.cat.correct, 3);
-    await button(page, 'Aventuras').click();
-    await button(page, 'Álbum de palabras').click();
+    await button(page, 'Ver mis pegatinas ★').click();
     await page.getByTestId('album-cat').getByText('Pegatina ganada ★', { exact: true }).waitFor();
     await page.screenshot({ path: `${output}/album-phone.png` });
-    await button(page, 'Aventuras').click();
-    await button(page, 'Llevá al gatito a dormir: 0 de 1').click();
-    await button(page, 'Dormir en la cama').click();
-    await visible(page, '¡Descansó! Sueño al 100%').waitFor();
-    await button(page, 'Aventuras').click();
-    await button(page, 'Cobrar misión rest').click();
-    assert.equal((await saved(page)).coins, 535);
-    assert.equal(await button(page, 'Cobrar misión rest').isDisabled(), true);
     await button(page, 'Juguetes').click();
     const toys = shopItems.filter(item => item.category === 'cat-toys');
     for (const toy of toys) {
@@ -111,14 +101,14 @@ async function run() {
       assert.ok((await saved(page)).learning.toyBest[toy.id]);
       await button(page, 'Mis juguetes').click();
     }
-    assert.equal((await saved(page)).coins, 565, 'Each of six completed toy rounds awards five coins');
+    assert.equal((await saved(page)).coins, 540, 'Each of six completed toy rounds awards five coins');
     await button(page, 'Jugar Ovillo').click();
     await catchYarn(page);
     await visible(page, '¡Qué bien jugaron juntos!').waitFor();
-    assert.equal((await saved(page)).coins, 570, 'A completed toy replay awards another five coins');
+    assert.equal((await saved(page)).coins, 545, 'A completed toy replay awards another five coins');
     await button(page, 'Mis juguetes').click();
-    await button(page, 'Aventuras').click();
-    await button(page, 'Ciudad Gatuna').click();
+    await button(page, 'Mapa').click();
+    await button(page, 'Entrar a Ciudad Gatuna').click();
     await page.screenshot({ path: `${output}/city-phone.png` });
     for (const activity of [...cityActivities, cityActivities[0]]) {
       const before = (await saved(page)).coins;
@@ -135,40 +125,30 @@ async function run() {
     }
     const result = await saved(page);
     await page.reload();
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
-    await button(page, 'Aventuras').click();
-    assert.deepEqual((await saved(page)).learning, result.learning, 'All five systems must persist');
-    assert.equal(await button(page, 'Cobrar misión rest').isDisabled(), true);
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
+    await button(page, 'Álbum de figuritas').click();
+    assert.deepEqual((await saved(page)).learning, result.learning, 'Learning and game progress must persist');
     await page.setViewportSize({ width: 1280, height: 720 });
-    await page.screenshot({ path: `${output}/missions-desktop.png` });
+    await page.screenshot({ path: `${output}/album-desktop.png` });
     assert.deepEqual(errors, []);
     fs.writeFileSync(`${output}/report.json`, JSON.stringify({ errors, learning: result.learning, coins: result.coins }, null, 2));
     const fresh = await browser.newPage({ viewport: { width: 844, height: 390 } });
     fresh.on('pageerror', error => errors.push(error.message));
     await fresh.addInitScript(() => localStorage.setItem('petmaestro.progress.v1', JSON.stringify({ coins: 30, unlockedLevel: 1, needsUpdatedAt: Date.now() })));
     await fresh.goto(process.env.GAME_URL || 'http://localhost:8087');
-    await button(fresh, 'Aventuras').waitFor({ timeout: 90000 });
-    await button(fresh, 'Aventuras').click();
-    await button(fresh, 'Ciudad Gatuna').click();
-    for (const activity of cityActivities) {
-      const visit = button(fresh, `Visitar ${activity.name}`);
-      assert.equal(await visit.isDisabled(), true, 'City must stay locked until level 11 is complete');
-      const rect = await visit.boundingBox();
-      assert.ok(rect.y + rect.height <= 296, 'First city visit buttons must fit above the phone footer');
-    }
-    await fresh.screenshot({ path: `${output}/city-locked-phone.png` });
-    await button(fresh, 'Aventuras').click();
+    await button(fresh, 'Mapa').waitFor({ timeout: 90000 });
+    const lockedCity = button(fresh, 'Completá la evaluación final para entrar a Ciudad Gatuna');
+    assert.equal(await lockedCity.isDisabled(), true, 'City stays locked until level 11 is complete');
     await button(fresh, 'Juguetes').click();
     await button(fresh, 'Comprar Ovillo').click();
     await button(fresh, 'Comprar Ovillo').click();
     assert.equal((await saved(fresh)).coins, process.env.INFINITE_COINS === '1' ? 30 : 0);
     assert.deepEqual((await saved(fresh)).learning.words, {}, 'Legacy save must gain learning defaults without losing purchases');
-    await button(fresh, 'Aventuras').click();
     await button(fresh, 'Juguetes').click();
     await button(fresh, 'Jugar Ovillo').waitFor();
     await fresh.close();
     assert.deepEqual(errors, []);
-    console.log('Adaptive review, mistakes, stickers, real sleep mission, six toys, three city scenes, repeat rewards and persistence passed.');
+    console.log('Adaptive review, mistakes, stickers, six toys, three city scenes, repeat rewards and persistence passed.');
   } finally { await browser.close(); }
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

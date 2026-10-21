@@ -8,7 +8,7 @@ PetMaestro es un juego infantil offline para Android, pensado inicialmente para 
 
 La APK siempre se ejecuta en `landscape`, configurado en `app.json`. No existe modo vertical y no se debe agregar logica de deteccion de orientacion ni estilos alternativos para `portrait`. Todas las nuevas pantallas, interacciones, assets y animaciones deben disenarse para el espacio horizontal disponible.
 
-El MVP no tiene cuentas, anuncios, compras reales ni backend. El progreso se guarda localmente y la estructura queda preparada para audio, necesidades de la mascota, mas mascotas, logros, misiones y sincronizacion futura.
+El MVP no tiene cuentas, anuncios, compras reales ni backend. El progreso se guarda localmente y la estructura queda preparada para audio, necesidades de la mascota, mas mascotas, logros y sincronizacion futura.
 
 ## Stack
 
@@ -43,6 +43,8 @@ AUDIO_CREDITS.md                Procedencia y licencias de sonidos
 ## Separacion de pantallas y estilos
 
 Cada pantalla mantiene su logica, estado local y JSX en src/screens/<Screen>.tsx. Su unico StyleSheet horizontal vive en src/styles/screens/<screen>.styles.ts y exporta una constante llamada styles.
+
+Distribución horizontal para celulares: encabezado de una fila con necesidades por icono; navegación inferior de 76 puntos, compartida en `src/styles/layout.ts`. El mapa se desplaza con niveles grandes y flechas. El salón usa cámara cercana y controles laterales; muebles/mascotas se editan en un panel desplegable de dos tarjetas cuadradas por fila, sin quitar ancho a la escena.
 
 ```ts
 // src/screens/ExampleScreen.tsx
@@ -128,6 +130,8 @@ git diff --check
 npm run build:android:preview
 ```
 
+Celular: reemplazar el marco superior por pastillas flotantes de necesidades, sonido y monedas; liberar la altura de los escenarios. Juegos y cuidados ocultan la navegación hasta salir o terminar. `ScenePresentation` limita el modo inmersivo a la actividad de la casa; escritorio conserva sus menús. La interfaz se organiza en `src/presentation/mobile` y `desktop` (menú, estilos, medidas y políticas), con bases comunes en `shared`; `usePresentation` selecciona la variante y `ScenePresentation` conserva el ciclo de actividad. Las pantallas, las reglas del juego y el progreso siguen compartidos. Flecha móvil circular dentro de su marco; vestidor sin acceso duplicado a juguetes y cocina con un único botón en el horno.
+
 Para navegador usar npm run web con una ventana horizontal. Para Android usar Expo Go durante desarrollo o EAS preview para una APK instalable horizontal.
 
 Antes de cerrar una tarea ejecutar typecheck y diff --check, probar el flujo afectado y revisar visualmente textos, botones, gestos, audio, animaciones, zonas tactiles, capas y proporcion de assets. TypeScript no sustituye una prueba visual en web o Android.
@@ -156,7 +160,7 @@ La revisión abarcó las nueve pantallas, el registro de recursos, las 104 ronda
 | Guardado | Varias acciones usaban una copia anterior del estado y las escrituras podían terminar fuera de orden. | Estado actual por referencia, cola de escrituras, validación de campos antiguos y reintento visible ante fallos. |
 | Orientación y encuadre | Faltaba protección explícita de las áreas seguras y los modales. | Áreas seguras, barra de estado oculta y modales exclusivamente horizontales. Se agregó un cierre visible al modal del nivel. |
 | Final de aventura | Ciudad Gatuna parecía prometer un segundo mundo jugable, aunque solo contenía candados. | Se identifica claramente como adelanto de próximos niveles. |
-| Carga | Se añadía una espera fija después de cargar la partida. | La entrada depende de que estén listos los datos y los recursos; se precargan también música y efectos. |
+| Carga | Se añadía una espera fija después de cargar la partida. | La entrada depende de que estén listos los datos y los recursos; se precargan también música y efectos. En Android se conservan los módulos empaquetados sin consultar `Image.getSize` por imagen; los fallos identifican el recurso en el registro nativo y el reintento conserva lo ya cargado. |
 
 ### Assets y contenido pendientes
 
@@ -183,7 +187,7 @@ No había un dispositivo Android conectado. La exportación no reemplaza una pru
 
 ### Mecánicas recomendadas, por prioridad
 
-Los puntos 1 a 5 de esta revisión se implementaron posteriormente en esta misma sesión: repaso adaptativo, cuatro misiones, seis juguetes con tres tipos de juego, tres encargos de Ciudad Gatuna y álbum de 38 pegatinas. Ver [reglas y pruebas actuales](adventures.md). La ciudad ya es jugable al completar el nivel 11; la descripción anterior de adelanto corresponde al estado previo.
+Se conservan repaso adaptativo, seis juguetes, tres encargos de Ciudad Gatuna y álbum de 38 pegatinas. Se eliminó la vista Aventuras y misiones junto con sus cobros; el botón inferior se reemplazó por una ilustración de álbum de figuritas, sin texto. Ver [reglas y pruebas actuales](adventures.md). La ciudad ya es jugable al completar el nivel 11; la descripción anterior de adelanto corresponde al estado previo.
 
 1. **Repaso adaptativo por palabra.** Guardar aciertos, errores y última práctica; intercalar palabras que necesitan refuerzo en sesiones cortas. Es la mejora con mayor relación directa con el aprendizaje y reutiliza los cuatro tipos de ronda actuales.
 2. **Misiones de cuidado por sesión.** Por ejemplo, completar un nivel, preparar una comida y regar una flor. Mostrar tres objetivos visuales y entregar una recompensa clara al terminarlos.

@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export function libraryLayout(width: number, height: number) {
@@ -9,7 +10,7 @@ export function storyLayout(width: number, height: number) {
 }
 export const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#f8edd3' },
-  body: { flex: 1, minHeight: 0, marginBottom: 94, padding: 8, gap: 6 },
+  body: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, padding: 8, gap: 6 },
   intro: { color: '#32685e', fontSize: 16, fontWeight: '800', textAlign: 'center' },
   shelfHeader: { minHeight: 40, flexDirection: 'row', alignItems: 'center', gap: 8 },
   shelfHeading: { flex: 1, gap: 2 },
@@ -18,7 +19,7 @@ export const styles = StyleSheet.create({
   lockedArt: { backgroundColor: '#d4d8da', borderColor: '#a6afb2', alignItems: 'center', justifyContent: 'center' },
   lockedTitle: { color: '#3f4a50' },
   lockedBadge: { backgroundColor: '#dfe3e5' },
-  lockedMessage: { flex: 1, marginBottom: 94, padding: 20, alignItems: 'center', justifyContent: 'center', gap: 12 },
+  lockedMessage: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT, padding: 20, alignItems: 'center', justifyContent: 'center', gap: 12 },
   bookList: { flex: 1, minHeight: 0 },
   shelf: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'center', gap: 12, paddingBottom: 6 },
   book: { borderRadius: 14, borderWidth: 3, borderColor: '#e8b54e', borderLeftWidth: 10, borderBottomWidth: 7, padding: 8, alignItems: 'center', gap: 6, boxShadow: '0px 5px 0px #9e713c' },
@@ -28,7 +29,7 @@ export const styles = StyleSheet.create({
   badgeText: { color: '#285f56', fontSize: 12, fontWeight: '900' },
   illustrationViewport: { flex: 1, width: '100%', overflow: 'hidden' },
   strip: { position: 'absolute', top: 0, height: '100%', width: '300%' },
-  player: { flex: 1, minHeight: 0, marginBottom: 94, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, gap: 20 },
+  player: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, gap: 20 },
   picture: { overflow: 'hidden', borderRadius: 18, borderWidth: 5, borderColor: '#e6b24d', backgroundColor: '#fff5da' },
   sceneBadge: { position: 'absolute', bottom: 6, right: 6, backgroundColor: '#fff7e8ed', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3 },
   controls: { flex: 1, maxWidth: 540, minWidth: 200, gap: 8 },

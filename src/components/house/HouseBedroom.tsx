@@ -1,3 +1,5 @@
+import { usePresentation } from '../../presentation/usePresentation';
+import { useSceneActivity } from '../../context/ScenePresentation';
 import { useCallback, useState } from 'react';
 import { Animated, BackHandler, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -12,11 +14,13 @@ import { SleepingCat } from './SleepingCat';
 import { useBedroomSleep } from './useBedroomSleep';
 
 export function HouseBedroom({ equippedCatItems, equippedItemId, onOpenInside }: { equippedCatItems: ProgressState['equippedCatItems']; equippedItemId: string | null; onOpenInside: () => void }) {
+  const presentation = usePresentation();
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const { width, height } = viewport;
   const frame = roomFrame(viewport, 1.5, .64);
   const sleep = useBedroomSleep();
   const sleeping = sleep.phase === 'sleeping';
+  const immersive = useSceneActivity(sleeping, onOpenInside, false);
   const buttonSize = activityButtonSize(height);
   const kitten = frame.point(.70, .385);
   const letter = frame.point(.84, .41);
@@ -24,7 +28,7 @@ export function HouseBedroom({ equippedCatItems, equippedItemId, onOpenInside }:
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => { onOpenInside(); return true; });
     return () => subscription.remove();
   }, [onOpenInside]));
-  return <View style={styles.room} onLayout={event => setViewport(event.nativeEvent.layout)}>
+  return <View style={[styles.room, immersive && presentation.styles.activityRoom]} onLayout={event => setViewport(event.nativeEvent.layout)}>
     <View testID="cat-bedroom" style={[styles.scene, { width, height }]}>
       <View pointerEvents="none" style={styles.fill}><Image testID="bedroom-background" source={houseImages.bedroom} resizeMode="contain" style={[styles.backgroundImage, frame.image]} /></View>
       {!sleeping && <View testID="bedroom-awake-cat" pointerEvents="none" style={[styles.cat, { left: width * .42 - 115, top: height * .75 - 142 - 79 * height / 530, transform: [{ scale: height / 265 }] }]}><PetCat equippedCatItems={equippedCatItems} equippedItemId={equippedItemId} size="room" /></View>}

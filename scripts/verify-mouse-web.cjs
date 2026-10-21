@@ -26,8 +26,7 @@ async function run() {
         if (!localStorage.getItem('petmaestro.progress.v1')) localStorage.setItem('petmaestro.progress.v1', JSON.stringify({ coins: 7, ownedItems: ['mouse-toy', 'yarn-ball', 'feather-wand'], needs: { play: 20 }, needsUpdatedAt: Date.now() }));
       });
       await page.goto(process.env.GAME_URL || 'http://localhost:8087');
-      await button(page, 'Aventuras').waitFor({ timeout: 90000 });
-      await button(page, 'Aventuras').click();
+      await button(page, 'Mapa').waitFor({ timeout: 90000 });
       await button(page, 'Juguetes').click();
       await button(page, 'Jugar Ratoncito').click();
       const target = button(page, 'Encontrar al ratoncito');

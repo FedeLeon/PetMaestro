@@ -2,7 +2,7 @@
 
 Asset final: `assets/generated/navigation/toys-v1.png`. Generado con imagegen integrado el 17 de octubre de 2026, usando el ícono de Aventuras como referencia de estilo. PNG con alpha transparente, sin edición externa; sin CLI ni API alternativa.
 
-El ícono muestra un canasto turquesa con ovillo, ratoncito y pluma. Se registra en `navigationImages` para su precarga. El botón «Juguetes» abre `Toys` y marca esa sección como activa sin seleccionar Aventuras. Se conserva la altura del menú y los botones de 68 puntos; seis controles entran en horizontal. Se elimina el acceso «Jugar con juguetes» de Aventuras y su mención en la descripción del mapa. No se alteran los juguetes, las compras ni el progreso de misiones.
+El ícono muestra un canasto turquesa con ovillo, ratoncito y pluma; `navigationImages` lo incluye en la precarga. El botón abre `Toys`. Fondo de selección: `assets/generated/toys/toys-selection-room-v1.png` (1536×569), generado con ImageGen integrado el 2026-10-21: gatito a la izquierda, biblioteca con juguetes a la derecha y centro libre. Las seis tarjetas mantienen tres columnas y dos filas; en celular las necesidades, sonido, monedas y flecha flotan sobre la habitación.
 
 ## Prompt exacto
 

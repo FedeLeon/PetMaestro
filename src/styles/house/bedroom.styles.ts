@@ -1,6 +1,7 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-  room: { flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#d9b6d9', overflow: 'hidden' },
+  room: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#d9b6d9', overflow: 'hidden' },
   scene: { position: 'relative', overflow: 'hidden' },
   fill: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   image: { width: '100%', height: '100%' },

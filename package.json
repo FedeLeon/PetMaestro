@@ -41,7 +41,7 @@
     "test:wardrobe": "node scripts/verify-wardrobe-web.cjs",
     "test:wardrobe-fit": "node scripts/verify-wardrobe-fit-web.cjs",
     "test:wardrobe-geometry": "node scripts/verify-wardrobe-geometry.cjs",
-    "test:adventures": "node scripts/verify-adventures-web.cjs",
+    "test:play-learning": "node scripts/verify-play-learning-web.cjs",
     "test:learning": "node scripts/verify-learning.cjs",
     "test:kitchen": "node scripts/verify-kitchen-web.cjs",
     "test:feeding-ingredients": "node scripts/verify-feeding-ingredients-web.cjs",

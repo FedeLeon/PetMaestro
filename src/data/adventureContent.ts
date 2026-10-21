@@ -21,16 +21,8 @@ export const cityActivities = [
   ] },
 ];
 
-export const missions: { id: string; title: string; reward: number; goals: { kind: ActivityKind; target: number; text: string }[] }[] = [
-  { id: 'snack', title: 'Aprender da hambre', reward: 20, goals: [{ kind: 'answers', target: 3, text: 'Reconocé 3 palabras' }, { kind: 'meal', target: 1, text: 'Prepará y serví una comida' }] },
-  { id: 'rest', title: 'Repasar y descansar', reward: 20, goals: [{ kind: 'review', target: 1, text: 'Terminá un repaso' }, { kind: 'sleep', target: 1, text: 'Llevá al gatito a dormir' }] },
-  { id: 'play', title: 'Una aventura juntos', reward: 25, goals: [{ kind: 'toy', target: 1, text: 'Completá un minijuego de juguete' }, { kind: 'wash', target: 1, text: 'Completá una acción de higiene' }] },
-  { id: 'gardener', title: 'Amigos de la ciudad', reward: 30, goals: [{ kind: 'city', target: 1, text: 'Ayudá en Ciudad Gatuna' }, { kind: 'water', target: 1, text: 'Regá una flor de tu jardín' }] },
-];
-
-export const emptyLearning = (): LearningProgress => ({ words: {}, counts: {}, claimedMissions: [], cityCompleted: [], toyBest: {} });
+export const emptyLearning = (): LearningProgress => ({ words: {}, counts: {}, cityCompleted: [], toyBest: {} });
 export const countActivity = (learning: LearningProgress, kind: ActivityKind): LearningProgress => ({ ...learning, counts: { ...learning.counts, [kind]: (learning.counts[kind] || 0) + 1 } });
-export const missionReady = (learning: LearningProgress, id: string) => missions.some(mission => mission.id === id && mission.goals.every(goal => (learning.counts[goal.kind] || 0) >= goal.target));
 export const stickerUnlocked = (learning: LearningProgress, wordId: string) => (learning.words[wordId]?.correct || 0) >= 3;
 
 function availableWords(unlockedLevel: number) {
@@ -65,7 +57,6 @@ export function restoreLearning(value: unknown): LearningProgress {
     if (stat && typeof stat === 'object') result.words[word.id] = { correct: number(stat.correct), errors: number(stat.errors), lastPracticed: typeof stat.lastPracticed === 'number' && Number.isFinite(stat.lastPracticed) ? Math.max(0, Math.min(Date.now(), stat.lastPracticed)) : 0 };
   }
   for (const kind of ['answers', 'review', 'meal', 'wash', 'sleep', 'water', 'toy', 'city'] as const) result.counts[kind] = number(raw.counts?.[kind]);
-  result.claimedMissions = missions.filter(m => Array.isArray(raw.claimedMissions) && raw.claimedMissions.includes(m.id)).map(m => m.id);
   result.cityCompleted = cityActivities.filter(a => Array.isArray(raw.cityCompleted) && raw.cityCompleted.includes(a.id)).map(a => a.id);
   for (const id of ['yarn-ball', 'mouse-toy', 'fish-plush', 'bell-ball', 'feather-wand', 'star-plush']) if (number(raw.toyBest?.[id])) result.toyBest[id] = number(raw.toyBest?.[id]);
   return result;

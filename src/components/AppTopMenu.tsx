@@ -1,39 +1,16 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { CoinBadge } from './CoinBadge';
-import { HeaderBackButton } from './HeaderBackButton';
-import { NeedsMeters } from './NeedsMeters';
-import { SoundSettings } from './SoundSettings';
-import { MenuFrame } from './MenuFrame';
 import { useProgress } from '../context/ProgressContext';
-import { styles } from '../styles/components/appTopMenu.styles';
+import { useScenePresentation } from '../context/ScenePresentation';
+import { MobileTopMenu } from '../presentation/mobile/AppTopMenu';
+import { DesktopTopMenu } from '../presentation/desktop/AppTopMenu';
+import { useFullScreenRoute, usePresentation } from '../presentation/usePresentation';
+import type { AppTopMenuProps } from '../presentation/types';
 
-type AppTopMenuProps = {
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  title: string;
-  compact?: boolean;
-  onBack?: () => void;
-  backLabel?: string;
-  backText?: string;
-};
-
-export function AppTopMenu({ icon, title, compact = false, onBack, backLabel, backText }: AppTopMenuProps) {
+export function AppTopMenu(props: AppTopMenuProps) {
   const { progress, saveError, retrySave } = useProgress();
-
-  return (
-    <View style={styles.header}>
-      <MenuFrame kind="top" />
-      <View style={styles.row}>
-        <HeaderBackButton onPress={onBack} label={backLabel} text={backText} />
-        <View style={styles.titleGroup}>
-          <MaterialCommunityIcons color="#26796e" name={icon} size={28} />
-          <Text numberOfLines={1} style={styles.title}>{title}</Text>
-        </View>
-        <SoundSettings />
-        <CoinBadge coins={progress.coins} />
-      </View>
-      {!compact && <NeedsMeters needs={progress.needs} />}
-      {saveError ? <TouchableOpacity accessibilityRole="button" onPress={() => void retrySave()}><Text accessibilityLiveRegion="polite" style={styles.saveError}>No se pudo guardar. Tocá para reintentar.</Text></TouchableOpacity> : null}
-    </View>
-  );
+  const { activity } = useScenePresentation();
+  const presentation = usePresentation();
+  const fullScreen = useFullScreenRoute();
+  const Header = presentation.variant === 'mobile' ? MobileTopMenu : DesktopTopMenu;
+  return <Header {...props} needs={progress.needs} coins={progress.coins} saveError={saveError}
+    onRetrySave={() => void retrySave()} immersive={fullScreen || !!activity} activity={activity} />;
 }

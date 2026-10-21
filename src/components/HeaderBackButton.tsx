@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,6 +10,7 @@ import { useGameAudio } from '../context/AudioContext';
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 export function HeaderBackButton({ onPress, label = 'Volver', text }: { onPress?: () => void; label?: string; text?: string } = {}) {
+  const presentation = usePresentation();
   const navigation = useNavigation<Navigation>();
   const route = useRoute();
   const { playSound } = useGameAudio();
@@ -30,7 +32,7 @@ export function HeaderBackButton({ onPress, label = 'Volver', text }: { onPress?
   };
 
   return (
-    <TouchableOpacity accessibilityRole="button" accessibilityLabel={label} onPress={handlePress} style={[styles.button, text && styles.withText]}>
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel={label} onPress={handlePress} style={[presentation.styles.backButton, text && styles.withText]}>
       <MaterialCommunityIcons color="#ffffff" name="arrow-left" size={28} />
       {text && <Text style={styles.text}>{text}</Text>}
     </TouchableOpacity>

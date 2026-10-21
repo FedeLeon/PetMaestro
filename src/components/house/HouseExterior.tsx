@@ -1,3 +1,5 @@
+import { useScenePresentation } from '../../context/ScenePresentation';
+import { usePresentation } from '../../presentation/usePresentation';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { Image, ImageBackground, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import type { GestureResponderEvent } from 'react-native';
@@ -24,6 +26,8 @@ export function HouseExterior(props: Props) {
 }
 
 function ExteriorScene({ contentWidth, ownedItemIds, equippedCatItems, equippedItemId, onEnterHouse, placedAnimals, walkingCatRef }: Props) {
+  const presentation = usePresentation();
+  const { activity } = useScenePresentation();
   const [watering, setWatering] = useState(false);
   const [viewport, setViewport] = useState({ height: 0, width: 0 });
   const scrollRef = useRef<ScrollView>(null);
@@ -37,7 +41,7 @@ function ExteriorScene({ contentWidth, ownedItemIds, equippedCatItems, equippedI
     const sceneryInView = contentWidth * exteriorFocusRightX - viewport.width + 12;
     scrollRef.current?.scrollTo({ animated: false, x: Math.min(Math.max(0, contentWidth - viewport.width), Math.max(0, centered, sceneryInView)), y: 0 });
   }, [contentWidth, viewport.width]);
-  return <View testID="exterior-scene" style={styles.room} onLayout={(event) => setViewport(event.nativeEvent.layout)}>
+  return <View testID="exterior-scene" style={[styles.room, activity && presentation.styles.activityRoom]} onLayout={(event) => setViewport(event.nativeEvent.layout)}>
     <ScrollView horizontal ref={scrollRef} showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
       <ImageBackground testID="exterior-background" imageStyle={styles.roomBackgroundImage} resizeMode="stretch" source={houseImages.exteriorWide} style={[styles.wide, { width: contentWidth }]}>
         <Pressable ref={floorRef} disabled={watering} accessibilityLabel="Caminar hasta este lugar" onPress={event => {

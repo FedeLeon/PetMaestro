@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { useCallback, useRef, useState } from 'react';
 import { AppState, Text, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -13,6 +14,7 @@ import { styles } from '../styles/screens/adventure.styles';
 import { RootStackParamList } from '../types';
 
 export function CityActivityScreen({ navigation, route }: NativeStackScreenProps<RootStackParamList, 'CityActivity'>) {
+  const presentation = usePresentation();
   const { progress, recordAnswer, completeCity } = useProgress();
   const { playSound } = useGameAudio();
   const activity = cityActivities.find(entry => entry.id === route.params.activityId);
@@ -54,8 +56,8 @@ export function CityActivityScreen({ navigation, route }: NativeStackScreenProps
   };
   return <View style={styles.screen}>
     <AppTopMenu compact icon={activity.icon} title={activity.name} />
-    {reward !== null ? <View style={styles.result}><Text style={styles.title}>¡Ayudaste a tus amigos de la ciudad!</Text><Text style={styles.text}>{reward ? `Ganaste ${reward} monedas` : '¡Gracias por volver a ayudar! Premio de este lugar ya recibido.'}</Text><TouchableOpacity accessibilityRole="button" style={styles.button} onPress={() => navigation.navigate('CityMap')}><Text style={styles.buttonText}>Volver a Ciudad Gatuna</Text></TouchableOpacity></View> : <View style={styles.gameBody}>
-      <View style={styles.gameHeader}><View><Text style={styles.title}>{task.phrase}</Text><Text style={styles.text}>{task.translation} · {step + 1}/3</Text></View><AudioButton word={getWord(task.answer)} /></View>
+    {reward !== null ? <View style={styles.result}><Text style={styles.title}>¡Ayudaste a tus amigos de la ciudad!</Text><Text style={styles.text}>{reward ? `Ganaste ${reward} monedas` : '¡Gracias por volver a ayudar! Premio de este lugar ya recibido.'}</Text><TouchableOpacity accessibilityRole="button" style={styles.button} onPress={() => navigation.navigate('CityMap')}><Text style={styles.buttonText}>Volver a Ciudad Gatuna</Text></TouchableOpacity></View> : <View style={presentation.styles.gameBody}>
+      <View style={presentation.styles.gameHeader}><View><Text style={styles.title}>{task.phrase}</Text><Text style={styles.text}>{task.translation} · {step + 1}/3</Text></View><AudioButton word={getWord(task.answer)} /></View>
       <View style={styles.cityChoices}>{task.options.map(id => <TouchableOpacity key={id} accessibilityRole="button" accessibilityLabel={`Entregar ${getWord(id).spanish}`} aria-pressed={accepted === id} disabled={accepted !== null || wrong.includes(id)} onPress={() => void answer(id)} style={[styles.cityChoice, wrong.includes(id) && styles.disabled, accepted === id && styles.cityAccepted]}><View style={styles.cityDrawing}><WordDrawing word={getWord(id)} bare /></View><Text style={styles.text}>{accepted === id ? '✓ ' : ''}{getWord(id).spanish}</Text></TouchableOpacity>)}</View>
       <Text accessibilityLiveRegion="polite" style={styles.small}>{feedback || activity.welcome}</Text>
     </View>}

@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { useState } from 'react';
 import { styles } from '../styles/screens/petScreen.styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,6 +13,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 
 export function PetScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Pet'>) {
+  const presentation = usePresentation();
   const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
   const displayScale = Math.max(0, Math.min(2.4, stageSize.width / 250, stageSize.height / 335));
   const { equipItem, progress } = useProgress();
@@ -29,10 +31,10 @@ export function PetScreen({ navigation }: NativeStackScreenProps<RootStackParamL
 
   return (
     <View style={styles.screen}>
-      <AppTopMenu compact icon="cat" title="Mi gatito" />
+      <AppTopMenu scene compact icon="cat" title="Mi gatito" />
 
       <View style={styles.mainArea}>
-        <View testID="wardrobe-stage" style={styles.stage} onLayout={event => setStageSize(event.nativeEvent.layout)}>
+        <View testID="wardrobe-stage" style={presentation.styles.wardrobeStage} onLayout={event => setStageSize(event.nativeEvent.layout)}>
         <ImageBackground
           imageStyle={styles.stageBackgroundImage}
           resizeMode="cover"
@@ -45,8 +47,7 @@ export function PetScreen({ navigation }: NativeStackScreenProps<RootStackParamL
         </ImageBackground>
       </View>
 
-      <View style={styles.itemsSection}>
-        {ownedCatItems.some(id => shopItems.find(item => item.id === id)?.slot === 'toy') && <TouchableOpacity accessibilityRole="button" onPress={() => navigation.navigate('Toys')} style={styles.playToysButton}><Text style={styles.playToysText}>Jugar con mis juguetes</Text></TouchableOpacity>}
+      <View style={presentation.styles.wardrobeItems}>
         <ScrollView contentContainerStyle={styles.itemsScroll} showsVerticalScrollIndicator={false}>
           <View style={styles.itemsGrid}>
             {ownedCatItems.length === 0 ? (

@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from '../styles/screens/gameScreen.styles';
@@ -57,6 +58,7 @@ function shuffle<T>(items: T[]) {
 }
 
 export function GameScreen({ navigation, route }: Props) {
+  const presentation = usePresentation();
   const { completeLevel, completeReview, progress, recordAnswer } = useProgress();
   const { playSound } = useGameAudio();
   const review = route.params.mode === 'review';
@@ -254,7 +256,7 @@ export function GameScreen({ navigation, route }: Props) {
     return (
       <View style={styles.screen}>
         <AppTopMenu compact icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
-        <View style={styles.resultArea}>
+        <View style={presentation.styles.learningResult}>
           <View style={styles.resultCard}>
             <View style={styles.resultCardInner}>
               <View style={styles.resultSummary}>
@@ -286,7 +288,7 @@ export function GameScreen({ navigation, route }: Props) {
       <AppTopMenu compact icon={level.icon as keyof typeof MaterialCommunityIcons.glyphMap} title={level.title} />
 
       <Animated.View style={[styles.card, { opacity: entrance, transform: [{ translateX: entrance.interpolate({ inputRange: [0, 1], outputRange: [18, 0] }) }] }]}>
-        <View style={styles.roundHeader}><Text style={styles.progressText}>Ronda {roundIndex + 1} de {level.rounds.length}</Text><Text style={styles.progressText}>{round.type === 'match-pair' ? `${matchedIds.length}/${displayIds.length} parejas` : 'Podés volver a intentar'}</Text></View>
+        <View style={presentation.styles.learningRoundHeader}><Text style={styles.progressText}>Ronda {roundIndex + 1} de {level.rounds.length}</Text><Text style={styles.progressText}>{round.type === 'match-pair' ? `${matchedIds.length}/${displayIds.length} parejas` : 'Podés volver a intentar'}</Text></View>
         <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: level.rounds.length, now: roundIndex }} style={styles.progressTrack}><View style={[styles.progressFill, { width: `${roundIndex / level.rounds.length * 100}%` }]} /></View>
         <View style={styles.promptRow}>
           <Text style={styles.prompt}>{round.type === 'picture-choice' && round.promptLanguage === 'english' && !wordAudio[round.answerId] ? `Buscá: ${getWord(round.answerId).english.toUpperCase()}` : prompt}</Text>

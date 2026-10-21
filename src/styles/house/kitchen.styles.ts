@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const fridgeFoodPlacement = (index: number) => ({ left: `${index % 2 === 0 ? 18 : 53}%` as const, top: `${20 + Math.floor(index / 2) * 24}%` as const, height: '21%' as const });
 export const feedingHeartPositions = [
@@ -14,14 +15,14 @@ export const styles = StyleSheet.create({
   fridgeNext: { right: '0%' },
   reverseArrow: { transform: [{ rotate: '180deg' }] },
   fridgePage: { position: 'absolute', left: '18%', top: '91%', width: '65%', textAlign: 'center', color: '#32685e', fontSize: 12, fontWeight: '900', backgroundColor: '#fffaf1e0', borderRadius: 8 },
-  room: { flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#eedcaf', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  room: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#eedcaf', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   scene: { position: 'relative', overflow: 'hidden' },
   image: { width: '100%', height: '100%' },
   fill: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   roomImage: { position: 'absolute' },
   cat: { position: 'absolute', width: 230, height: 284, zIndex: 2 },
   exit: { position: 'absolute', zIndex: 5 },
-  root: { userSelect: 'none', flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#ecdcb9', overflow: 'hidden' },
+  root: { userSelect: 'none', flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#ecdcb9', overflow: 'hidden' },
   canvas: { position: 'absolute', overflow: 'hidden', borderRadius: 16 },
   panel: { position: 'absolute', top: 6, bottom: 6, right: 8, width: '25%', backgroundColor: '#fff9e9', borderRadius: 18 },
   panelContent: { flexGrow: 1, padding: 8, gap: 4, alignItems: 'stretch' },

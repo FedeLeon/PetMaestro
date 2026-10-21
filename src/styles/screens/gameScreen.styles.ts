@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -238,7 +239,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 10,
-    marginBottom: 94,
+    marginBottom: BOTTOM_MENU_HEIGHT,
   },
   resultDecorations: {
     alignItems: 'center',

@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -114,7 +115,7 @@ export const styles = StyleSheet.create({
   },
   mainArea: {
     flex: 1,
-    marginBottom: 94,
+    marginBottom: BOTTOM_MENU_HEIGHT,
     flexDirection: 'row',
     minHeight: 0,
   },
@@ -126,7 +127,6 @@ export const styles = StyleSheet.create({
     flex: 5,
     minHeight: 0,
     margin: 0,
-    marginBottom: 12,
     overflow: 'hidden',
     width: '100%',
   },

@@ -1,8 +1,13 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-  room: { flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#f4ce8c', overflow: 'hidden', userSelect: 'none' },
+  cameraArrow: { position: 'absolute', bottom: 8, width: 52, height: 52, zIndex: 20 },
+  cameraLeft: { left: 8 },
+  cameraRight: { right: 8 },
+  reverseArrow: { transform: [{ scaleX: -1 }] },
+  room: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#f4ce8c', overflow: 'hidden', userSelect: 'none' },
   scroll: { flex: 1 },
-  scrollContent: { alignItems: 'center' },
+  scrollContent: { alignItems: 'flex-start' },
   scene: { position: 'relative', overflow: 'hidden' },
   fill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },
   image: { width: '100%', height: '100%' },

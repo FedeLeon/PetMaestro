@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -16,7 +17,7 @@ async function run() {
       if (!localStorage.getItem('petmaestro.progress.v1')) localStorage.setItem('petmaestro.progress.v1', JSON.stringify({ coins: 7, needsUpdatedAt: Date.now() }));
     });
     await page.goto(process.env.GAME_URL || 'http://localhost:8087');
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
     await button(page, 'Tienda').click();
     for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
       await page.setViewportSize(viewport);
@@ -26,7 +27,7 @@ async function run() {
       for (const category of shopCategories) {
         const rect = await button(page, `Abrir ${category.label}`).boundingBox();
         assert.ok(rect.width >= 44 && rect.height >= 44, category.id);
-        assert.ok(rect.y >= 0 && rect.y + rect.height <= viewport.height - 94, `${category.id} overlaps footer`);
+        assert.ok(rect.y >= 0 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT, `${category.id} overlaps footer`);
         for (const other of portals) assert.ok(Math.min(rect.x + rect.width, other.x + other.width) - Math.max(rect.x, other.x) <= 1 || Math.min(rect.y + rect.height, other.y + other.height) - Math.max(rect.y, other.y) <= 1, 'Category touch zones must not overlap');
         portals.push(rect);
       }
@@ -38,7 +39,7 @@ async function run() {
         for (const label of ['Ver productos anteriores', 'Ver productos siguientes']) {
           const arrow = await button(page, label).boundingBox();
           assert.ok(arrow.width >= 72 && arrow.height >= 72, 'Large paging touch targets');
-          assert.ok(arrow.x >= 0 && arrow.x + arrow.width <= viewport.width && arrow.y >= 58 && arrow.y + arrow.height <= viewport.height - 94, 'Paging arrows fit between header and footer');
+          assert.ok(arrow.x >= 0 && arrow.x + arrow.width <= viewport.width && arrow.y >= 58 && arrow.y + arrow.height <= viewport.height - BOTTOM_MENU_HEIGHT, 'Paging arrows fit between header and footer');
         }
         if (category.id === 'hats') {
           const nextMotion = page.getByTestId('shop-page-arrow-next-motion');
@@ -70,7 +71,7 @@ async function run() {
             await product.waitFor();
             const control = product.getByRole('button');
             const rect = await control.boundingBox();
-            assert.ok(rect.width >= 44 && rect.height >= 44 && rect.y + rect.height <= viewport.height - 94, `${item.id} purchase control must fit`);
+            assert.ok(rect.width >= 44 && rect.height >= 44 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT, `${item.id} purchase control must fit`);
             assert.equal(await page.getByTestId(`shop-product-art-${item.id}`).locator('image').count(), 1);
             const art = await page.getByTestId(`shop-product-art-${item.id}`).boundingBox();
             for (const label of ['Ver productos anteriores', 'Ver productos siguientes']) {
@@ -121,7 +122,7 @@ async function run() {
       await button(page, 'Abrir Sombreros').waitFor();
     }
     await page.reload();
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
     assert.equal((await saved(page)).ownedItems.length, shopItems.length);
     assert.equal((await saved(page)).coins, 7);
     assert.deepEqual(errors, []);

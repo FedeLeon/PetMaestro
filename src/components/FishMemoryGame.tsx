@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, AppState, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -5,11 +6,12 @@ import { useGameAudio } from '../context/AudioContext';
 import { useProgress } from '../context/ProgressContext';
 import { reviewWordIds } from '../data/adventureContent';
 import { fishMemoryDeck, FISH_MEMORY_LOOK_MS, FISH_MEMORY_PAIRS } from '../data/fishMemory';
-import { fishMemoryLayout, styles } from '../styles/components/fishMemory.styles';
+import { styles } from '../styles/components/fishMemory.styles';
 import { FlippingMemoryCard } from './FlippingMemoryCard';
 
 type Phase = 'ready' | 'flipping' | 'comparing' | 'hiding' | 'complete';
 export function FishMemoryGame({ onComplete }: { onComplete: () => void }) {
+  const presentation = usePresentation();
   const { progress, recordAnswer } = useProgress();
   const { playSound, speak } = useGameAudio();
   const [cards] = useState(() => fishMemoryDeck(reviewWordIds(progress)));
@@ -32,7 +34,7 @@ export function FishMemoryGame({ onComplete }: { onComplete: () => void }) {
   const savedAnswers = useRef<Promise<void>[]>([]);
   const complete = useRef(onComplete);
   complete.current = onComplete;
-  const board = fishMemoryLayout(arena.width, arena.height);
+  const board = presentation.layout.memoryBoard(arena.width, arena.height);
   const changePhase = (value: Phase) => { phaseRef.current = value; setPhase(value); };
   useEffect(() => {
     let alive = true;
@@ -102,7 +104,7 @@ export function FishMemoryGame({ onComplete }: { onComplete: () => void }) {
   };
   return <View testID={`fish-memory-${phase}`} style={styles.game}>
     <View testID="fish-memory-arena" style={styles.arena} onLayout={event => setArena(event.nativeEvent.layout)}>
-      {board.side > 0 && <View testID="fish-memory-board" style={[styles.board, { width: board.width, height: board.height, gap: board.gap }]}>
+      {board.side > 0 && <View testID="fish-memory-board" style={[presentation.styles.memoryBoard, { width: board.width, height: board.height, gap: board.gap }]}>
         {cards.map((id, index) => <FlippingMemoryCard key={index} id={id} index={index} side={board.side}
           visible={open.includes(index) || matched.includes(id)} matched={matched.includes(id)} active={interactive} reducedMotion={reducedMotion}
           disabled={!interactive || phase !== 'ready' || open.includes(index) || matched.includes(id)} onPress={() => reveal(index)} onSettled={settled} />)}

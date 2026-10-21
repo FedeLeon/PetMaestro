@@ -1,3 +1,4 @@
+import { useSceneActivity } from '../../context/ScenePresentation';
 import { BackHandler, Image, TouchableOpacity, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
@@ -36,6 +37,7 @@ export function HouseBathroom({ equippedCatItems, equippedItemId, onOpenInside }
     return () => listener.remove();
   }, [activity, onOpenInside]));
 
+  useSceneActivity(activity !== null, closeActivity);
   if (activity === 'teeth') return <ToothBrushingGame onClose={closeActivity} />;
   if (activity === 'shower') return <ShowerGame onClose={closeActivity} />;
   if (activity === 'toilet') return <ToiletGame onClose={closeActivity} />;

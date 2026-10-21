@@ -1,9 +1,10 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export function storyReaderLayout(width: number, height: number) {
   return { pictureSide: Math.max(80, Math.min(300, width * .24, height - 116)) };
 }
 export const styles = StyleSheet.create({
-  reader: { flex: 1, minHeight: 0, marginBottom: 94, padding: 8, flexDirection: 'row', gap: 12 },
+  reader: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, padding: 8, flexDirection: 'row', gap: 12 },
   illustrationColumn: { alignItems: 'center', justifyContent: 'center', gap: 4 },
   sceneButton: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 3 },
   sceneLabel: { color: '#26796e', fontSize: 12, fontWeight: '800', flexShrink: 1 },

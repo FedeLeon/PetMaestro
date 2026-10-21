@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
@@ -12,16 +13,17 @@ import { styles } from '../styles/screens/shopScreen.styles';
 import { RootStackParamList } from '../types';
 
 export function ShopScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'Shop'>) {
+  const presentation = usePresentation();
   const [size, setSize] = useState({ width: 0, height: 0 });
   const { playSound } = useGameAudio();
   const width = Math.min(size.width, size.height * SHOP_ASPECT);
   const height = width / SHOP_ASPECT;
   return <View style={styles.screen}>
-    <AppTopMenu compact icon="storefront" title="La tienda de nuestros amigos" />
+    <AppTopMenu scene compact icon="storefront" title="La tienda de nuestros amigos" />
     <View testID="shop-explore-scene" style={styles.scene} onLayout={event => setSize(event.nativeEvent.layout)}>
       <ImageBackground testID="shop-explore-art" source={shopImages.interior} resizeMode="contain" imageStyle={styles.backgroundImage}
         style={[styles.art, { width, height, left: (size.width - width) / 2, top: (size.height - height) / 2 }]}>
-        <View pointerEvents="none" style={styles.welcome}><MaterialCommunityIcons name="hand-pointing-up" size={24} color="#26796e" /><Text style={styles.welcomeText}>¡Tocá un objeto!</Text></View>
+        <View pointerEvents="none" style={presentation.styles.shopWelcome}><MaterialCommunityIcons name="hand-pointing-up" size={24} color="#26796e" /><Text style={styles.welcomeText}>¡Tocá un objeto!</Text></View>
         {width > 0 && shopCategories.map(category => {
           const portal = shopPortals[category.id];
           return <TouchableOpacity key={category.id} testID={`shop-portal-${category.id}`} accessibilityRole="button"

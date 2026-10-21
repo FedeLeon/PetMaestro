@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -15,7 +16,7 @@ async function toolsFit(page, names, viewport) {
     const tool = await button(page, name).boundingBox();
     assert.ok(tool.width >= 44 && tool.height >= 44, `${name}: large touch target`);
     assert.ok(tool.x >= rect.x - 1 && tool.x + tool.width <= rect.x + rect.width + 1 && tool.y >= rect.y - 1 && tool.y + tool.height <= rect.y + rect.height + 1, `${name}: directly on the illustrated scene`);
-    assert.ok(tool.y + tool.height <= viewport.height - 94, `${name}: clear of footer`);
+    assert.ok(tool.y + tool.height <= viewport.height - (viewport.width <= 1000 ? 0 : BOTTOM_MENU_HEIGHT), `${name}: clear of footer`);
   }
 }
 async function run() {
@@ -78,7 +79,7 @@ async function run() {
       await button(page, '¡Listo!').click();
       await button(page, 'Casa').click();
       await page.getByRole('button', { name: /^Hambre:/ }).click();
-      await button(page, 'Dar de comer').click();
+      await button(page, 'Preparar comida').click();
       await toolsFit(page, ['Comprar Zanahoria por 8 monedas', 'Cocinar'], viewport);
       await button(page, 'Comprar Zanahoria por 8 monedas').click();
       await page.screenshot({ path: `${output}/fridge-${viewport.width}.png` });

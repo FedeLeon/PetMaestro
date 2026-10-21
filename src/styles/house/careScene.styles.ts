@@ -1,10 +1,11 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export function careSceneFrame(width: number, height: number, aspect: number) {
   const sceneWidth = Math.min(width, height * aspect);
   return { width: sceneWidth, height: sceneWidth / aspect, left: (width - sceneWidth) / 2, top: (height - sceneWidth / aspect) / 2 };
 }
 export const styles = StyleSheet.create({
-  root: { flex: 1, minHeight: 0, marginBottom: 94, backgroundColor: '#a8d9d4', overflow: 'hidden', userSelect: 'none' },
+  root: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, backgroundColor: '#a8d9d4', overflow: 'hidden', userSelect: 'none' },
   canvas: { position: 'absolute', overflow: 'hidden' },
   image: { width: '100%', height: '100%' },
   fill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },

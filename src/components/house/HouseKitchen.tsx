@@ -1,3 +1,4 @@
+import { useSceneActivity } from '../../context/ScenePresentation';
 import { BackHandler, Image, TouchableOpacity, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,12 +26,13 @@ export function HouseKitchen({ equippedCatItems, equippedItemId, onOpenInside }:
   const buttonSize = activityButtonSize(height);
   const close = () => { setActivity(null); setIngredients([]); };
   // Leaving the house screen cancels this local meal so animations cannot feed
-  // or award a mission while another screen is visible.
+  // or award coins while another screen is visible.
   useFocusEffect(useCallback(() => () => { setActivity(null); setIngredients([]); }, []));
   useFocusEffect(useCallback(() => {
     const listener = BackHandler.addEventListener('hardwareBackPress', () => { if (activity) { setActivity(null); setIngredients([]); } else onOpenInside(); return true; });
     return () => listener.remove();
   }, [activity, onOpenInside]));
+  useSceneActivity(activity !== null, close);
   if (activity === 'fridge') return <FridgeGame onClose={close} onCook={ids => { setIngredients(ids); setActivity('cook'); }} />;
   if (activity === 'cook') return <CookingGame ids={ingredients} onClose={close} onServe={() => setActivity('feed')} />;
   if (activity === 'feed') return <FeedingGame ids={ingredients} onClose={close} />;
@@ -44,9 +46,7 @@ export function HouseKitchen({ equippedCatItems, equippedItemId, onOpenInside }:
       }]}>
         <PetCat equippedCatItems={equippedCatItems} equippedItemId={equippedItemId} size="room" />
       </View>
-      <BreathingBathroomButton label="Abrir heladera" source={activityButtonImages.fridge} onPress={() => setActivity('fridge')} style={frame.button(.145, .40, buttonSize)} />
       <BreathingBathroomButton label="Preparar comida" source={activityButtonImages.cook} onPress={() => setActivity('fridge')} delay={400} style={frame.button(.445, .44, buttonSize)} />
-      <BreathingBathroomButton label="Dar de comer" delay={700} source={activityButtonImages.feed} onPress={() => setActivity('fridge')} style={frame.button(.81, .61, Math.max(74, buttonSize))} />
       <TouchableOpacity testID="kitchen-exit" accessibilityLabel="Volver al interior de la casa" accessibilityRole="button" onPress={onOpenInside} style={[styles.exit, frame.hit(.835, .27, .115, .28)]} />
     </View>
   </View>;

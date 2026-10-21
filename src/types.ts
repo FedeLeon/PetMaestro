@@ -2,7 +2,6 @@ export type RootStackParamList = {
   Map: undefined;
   CityMap: undefined;
   Game: { levelId: number; mode?: 'review' };
-  Activities: undefined;
   Album: undefined;
   Toys: undefined;
   Library: undefined;
@@ -104,7 +103,6 @@ export type ActivityKind = 'answers' | 'review' | 'meal' | 'wash' | 'sleep' | 'w
 export type LearningProgress = {
   words: Record<string, WordProgress>;
   counts: Partial<Record<ActivityKind, number>>;
-  claimedMissions: string[];
   cityCompleted: string[];
   toyBest: Record<string, number>;
 };

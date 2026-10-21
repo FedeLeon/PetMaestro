@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -18,7 +19,7 @@ async function answerQuiz(page, id, allWrong = false) {
     await button(page, `Responder: ${option.text}`).click();
     for (const option of q.options) assert.equal(await button(page, `Responder: ${option.text}`).isDisabled(), true, 'One recorded answer per question');
     const rect = await next.boundingBox();
-    assert.ok(rect.height >= 44 && rect.y + rect.height <= page.viewportSize().height - 94, 'Next button remains above footer');
+    assert.ok(rect.height >= 44 && rect.y + rect.height <= page.viewportSize().height - BOTTOM_MENU_HEIGHT, 'Next button remains above footer');
     if (index === 4) await next.evaluate(el => { el.click(); el.click(); el.click(); });
     else await next.click();
   }
@@ -56,7 +57,7 @@ async function run() {
           assert.equal(await page.getByTestId('story-play').count(), 0);
           assert.equal((await saved(page)).coins, expectedCoins, 'Opening a reading-only book cannot automatically award completion');
         }
-        const textBox = await text.boundingBox(); assert.ok(textBox.height >= 48 && textBox.y + textBox.height <= viewport.height - 94);
+        const textBox = await text.boundingBox(); assert.ok(textBox.height >= 48 && textBox.y + textBox.height <= viewport.height - BOTTOM_MENU_HEIGHT);
         await text.evaluate(node => { node.scrollTop = node.scrollHeight; });
         await page.screenshot({ path: `/tmp/petmaestro-story-reading/text-${story.id}-${viewport.width}.png` });
         if (index === 0) {

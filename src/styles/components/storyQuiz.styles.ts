@@ -1,6 +1,7 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-  root: { flex: 1, minHeight: 0, marginBottom: 94, paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
+  root: { flex: 1, minHeight: 0, marginBottom: BOTTOM_MENU_HEIGHT, paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
   heading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   step: { color: '#26796e', fontWeight: '900', fontSize: 16 },
   card: { flex: 1, minHeight: 0, borderRadius: 18, borderWidth: 3, borderColor: '#e6b24d', backgroundColor: '#fff9eb', padding: 10, gap: 8 },

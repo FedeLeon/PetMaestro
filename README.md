@@ -42,14 +42,14 @@ Para construir la APK preview con EAS hace falta iniciar sesion en Expo/EAS.
 Las pruebas de navegador usan Playwright. Iniciar el servidor con
 `npm run web -- --port 8087`, ejecutar `npx playwright install chromium` y luego `npm run test:web`,
 `npm run test:care`, `npm run test:storage`, `npm run test:layout` y `npm run test:wardrobe`.
-`npm run test:learning` comprueba las reglas de aprendizaje y `npm run test:adventures`
-recorre las cinco mecánicas nuevas en navegador.
+`npm run test:learning` comprueba las reglas de aprendizaje y `npm run test:play-learning`
+recorre repaso, álbum, juguetes y ciudad en navegador.
 `GAME_URL` permite cambiar la URL; `CHROMIUM_PATH` permite usar un Chromium ya
 instalado. Las pruebas crean perfiles temporales y guardan sus capturas en
 `/tmp/petmaestro-review` (configurable con `REVIEW_OUTPUT`).
 La prueba del vestidor usa `/tmp/petmaestro-wardrobe/after`; el ajuste de prendas
 y la animación se documentan en [la revisión del vestidor](docs/cat-wardrobe-fit.md).
-Las reglas, recompensas y pruebas nuevas están en [Aventuras y aprendizaje](docs/adventures.md).
+Las reglas, recompensas y pruebas nuevas están en [Aprendizaje, juguetes y ciudad](docs/adventures.md).
 La cocina guiada y el modo temporal de monedas infinitas se explican en
 [Cocina para niños](docs/kitchen-ux.md). `npm run test:kitchen` comprueba el flujo completo.
 

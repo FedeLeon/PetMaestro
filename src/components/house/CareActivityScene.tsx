@@ -1,3 +1,5 @@
+import { usePresentation } from '../../presentation/usePresentation';
+import { useScenePresentation } from '../../context/ScenePresentation';
 import { useState, type ReactNode, type RefObject } from 'react';
 import { Image, Text, TouchableOpacity, View, type ImageSourcePropType, type StyleProp, type ViewStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,8 +10,10 @@ export function CareActivityScene({ source, onClose, children, label, value, asp
   source: ImageSourcePropType; aspectRatio?: number; onClose: () => void; children: ReactNode; label: string; value: number;
   backLabel: string; rootRef?: RefObject<View | null>; overlay?: ReactNode; backgroundColor?: string; showProgress?: boolean;
 }) {
+  const presentation = usePresentation();
+  const { activity } = useScenePresentation();
   const [size, setSize] = useState({ width: 0, height: 0 });
-  return <View ref={rootRef} collapsable={false} testID="care-scene" style={[styles.root, backgroundColor ? { backgroundColor } : undefined]} onLayout={event => setSize(event.nativeEvent.layout)}>
+  return <View ref={rootRef} collapsable={false} testID="care-scene" style={[styles.root, activity && presentation.styles.activityRoom, backgroundColor ? { backgroundColor } : undefined]} onLayout={event => setSize(event.nativeEvent.layout)}>
     <View testID="care-scene-canvas" style={[styles.canvas, careSceneFrame(size.width, size.height, aspectRatio)]}>
       <View pointerEvents="none" style={styles.fill}><Image source={source} resizeMode="contain" style={styles.image} /></View>
       {size.width > 0 && size.height > 0 ? children : null}

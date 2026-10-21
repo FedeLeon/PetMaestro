@@ -1,3 +1,4 @@
+const { BOTTOM_MENU_HEIGHT } = require('../src/styles/layout.ts');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
@@ -23,7 +24,7 @@ async function run() {
       });
       await page.goto(process.env.GAME_URL || 'http://localhost:8087');
       await button(page, 'Biblioteca').waitFor({ timeout: 90000 });
-      for (const label of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Aventuras', 'Biblioteca']) {
+      for (const label of ['Mapa', 'Mascota', 'Casa', 'Tienda', 'Juguetes', 'Álbum de figuritas', 'Biblioteca']) {
         const item = button(page, label);
         assert.equal((await item.innerText()).trim(), '', 'Bottom buttons contain only art');
         const rect = await item.boundingBox();
@@ -33,7 +34,7 @@ async function run() {
       for (const story of stories) {
         const book = page.getByTestId(`story-book-${story.id}`);
         const rect = await book.boundingBox();
-        assert.ok(rect && rect.y >= 58 && rect.y + rect.height <= viewport.height - 94, `Book fits landscape: ${story.id}`);
+        assert.ok(rect && rect.y >= 58 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT, `Book fits landscape: ${story.id}`);
       }
       await page.screenshot({ path: `${output}/books-${viewport.width}.png` });
       for (const story of stories) {
@@ -57,7 +58,7 @@ async function run() {
         }
         await button(page, 'Escuchar').waitFor();
         const rect = await page.getByTestId('story-play').boundingBox();
-        assert.ok(rect.height >= 44 && rect.y + rect.height <= viewport.height - 94);
+        assert.ok(rect.height >= 44 && rect.y + rect.height <= viewport.height - BOTTOM_MENU_HEIGHT);
         await button(page, 'Escuchar').click();
         await page.waitForFunction(id => window.__media.some(m => m.src.includes(id) && !m.paused && m.currentTime > .25), story.id);
         assert.ok(await page.evaluate(() => window.__media.filter(m => m.loop).every(m => m.paused)), 'Background music pauses for stories');

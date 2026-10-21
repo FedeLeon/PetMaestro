@@ -23,9 +23,9 @@ Las pantallas reutilizan las ilustraciones del proyecto: juguetes, libro del ál
 
 Iniciar Expo web antes de las suites de navegador. `CHROMIUM_PATH` permite seleccionar Chromium instalado; `INFINITE_COINS=1` ajusta las comprobaciones de compras al modo de prueba sin modificar la economía del proyecto.
 
-- `npm run test:ux`: controles visibles, entrada por la ilustración del juguete, cobro único de misión, filtros del álbum, reproducción real de las ocho voces, resultado del repaso, poner/quitar ropa, controles de dibujo y confirmación/cancelación de encargos. Capturas: `/tmp/petmaestro-ux-review`.
+- `npm run test:ux`: controles visibles, entrada por la ilustración del juguete, filtros del álbum, reproducción real de las ocho voces, resultado del repaso, poner/quitar ropa, controles de dibujo y confirmación/cancelación de encargos. Capturas: `/tmp/petmaestro-ux-review`.
 - `INFINITE_COINS=1 npm run test:web`: los 11 niveles y sus 104 rondas, errores y reintentos, premios, doble toque de compra, ropa, audio y persistencia del dibujo.
-- `INFINITE_COINS=1 npm run test:adventures`: repaso adaptativo, seis juguetes, misiones, tres lugares de la ciudad, repetición y persistencia.
+- `INFINITE_COINS=1 npm run test:play-learning`: repaso adaptativo, seis juguetes, tres lugares de la ciudad, repetición y persistencia.
 - `npm run test:layout`, `INFINITE_COINS=1 npm run test:care`, `npm run test:shop`, `npm run test:wardrobe`, `npm run test:petting`: navegación, cuidado completo, categorías/objetos, ajuste de ropa y caricias a los seis animales.
 - `INFINITE_COINS=1 npm run test:storage`: fallos simulados de lectura/escritura, recuperación y partidas antiguas.
 - `npm run typecheck`, `npm run test:content`, `npm run test:learning`, `npm run test:animal-motion`: tipos, referencias de assets y reglas de progreso/animación.

@@ -1,3 +1,4 @@
+import { usePresentation } from '../presentation/usePresentation';
 import { styles } from '../styles/screens/drawingScreen.styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -108,6 +109,7 @@ function eraseTouchedStrokes(strokes: DrawingStroke[], eraser: DrawingStroke, ca
 }
 
 export function DrawingScreen({}: Props) {
+  const presentation = usePresentation();
   const { progress, saveDrawing, rewardAction } = useProgress();
   const rewardedDrawing = useRef(false);
   const [strokes, setStrokes] = useState<DrawingStroke[]>(
@@ -223,7 +225,7 @@ export function DrawingScreen({}: Props) {
     <View style={styles.screen}>
       <AppTopMenu compact icon="palette" title="Mi dibujo" />
 
-      <View style={styles.content}>
+      <View style={presentation.styles.drawingContent}>
         <View style={styles.canvasArea} onLayout={event => setCanvasSide(Math.min(460, event.nativeEvent.layout.width, event.nativeEvent.layout.height))}>
         <View
           ref={canvasRef}

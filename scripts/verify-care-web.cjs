@@ -87,7 +87,7 @@ async function run() {
     await screenshot(page, 'bedroom-complete');
 
     await button(page, /^Hambre:/).click();
-    await button(page, 'Abrir heladera').click();
+    await button(page, 'Preparar comida').click();
     await button(page, 'Comprar Zanahoria por 8 monedas').click();
     await button(page, 'Cocinar').click();
     const carrot = await page.getByTestId('drag-food-carrot').boundingBox();
@@ -116,10 +116,10 @@ async function run() {
     assert.equal((await state(page)).coins, process.env.INFINITE_COINS === '1' ? 331 : 323, 'Completed watering adds three coins');
     assert.equal(await button(page, 'Regar Margaritas').isDisabled(), true);
     const counts = (await state(page)).learning.counts;
-    assert.equal(counts.wash, 3, 'Teeth, shower and washing paws must each advance hygiene missions once');
-    assert.equal(counts.meal, 1, 'A served meal must advance missions once');
-    assert.equal(counts.sleep, 1, 'Finished sleep must advance missions once');
-    assert.equal(counts.water, 1, 'Watering must advance missions once');
+    assert.equal(counts.wash, 3, 'Teeth, shower and washing paws must each advance hygiene activity counts once');
+    assert.equal(counts.meal, 1, 'A served meal must advance activity counts once');
+    assert.equal(counts.sleep, 1, 'Finished sleep must advance activity counts once');
+    assert.equal(counts.water, 1, 'Watering must advance activity counts once');
     await screenshot(page, 'garden-watered');
     const audio = await page.evaluate(() => window.__petAudio);
     fs.writeFileSync(`${output}/care-runtime.json`, JSON.stringify({ errors, audio, progress: await state(page) }, null, 2));

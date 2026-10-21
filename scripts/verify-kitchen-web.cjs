@@ -38,9 +38,9 @@ async function run() {
       await button(page, 'Servir al gato').click();
     };
     await page.goto(process.env.GAME_URL || 'http://localhost:8087');
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
     await page.getByRole('button', { name: /^Hambre:/ }).click();
-    await button(page, 'Abrir heladera').click();
+    await button(page, 'Preparar comida').click();
     await capture('fridge');
     assert.equal(await button(page, 'Cocinar').isDisabled(), true);
     for (const name of ['Zanahoria por 8', 'Papa por 12', 'Arvejas por 18']) await button(page, `Comprar ${name} monedas`).click();
@@ -77,14 +77,15 @@ async function run() {
     assert.equal((await saved(page)).learning.counts.meal, 1);
     await button(page, 'Terminar comida').click();
     // A cancelled last spoonful must not award a meal on a hidden screen.
-    await button(page, 'Abrir heladera').click();
+    await button(page, 'Preparar comida').click();
     await button(page, 'Elegir Zanahoria').click();
     await button(page, 'Cocinar').click();
     await page.getByTestId('drag-food-carrot').click();
     await fillAndCool();
     await page.getByLabel('Cucharadas: 0 de 1', { exact: true }).waitFor();
     await button(page, 'Dar una cucharada').click();
-    await button(page, 'Aventuras').click();
+    await button(page, 'Volver a la cocina').click();
+    await button(page, 'Tienda').click();
     await page.waitForTimeout(1800);
     assert.equal((await saved(page)).learning.counts.meal, 1, 'Leaving must cancel pending feeding rewards');
     await button(page, 'Tienda').click();
@@ -110,7 +111,7 @@ async function run() {
       assert.ok(panorama.x + panorama.width * .965 <= yard.x + yard.width, 'Painted barn must fit the initial horizontal view');
     }
     await page.reload();
-    await button(page, 'Aventuras').waitFor({ timeout: 90000 });
+    await button(page, 'Mapa').waitFor({ timeout: 90000 });
     assert.equal((await saved(page)).coins, 18);
     assert.ok((await saved(page)).ownedItems.includes(hat.id));
     assert.deepEqual(errors, []);

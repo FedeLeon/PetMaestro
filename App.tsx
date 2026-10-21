@@ -17,7 +17,6 @@ import { preloadGameAssets } from './src/data/preloadGameAssets';
 import { AudioProvider, useGameAudio } from './src/context/AudioContext';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './src/styles/app.styles';
-import { ActivitiesScreen } from './src/screens/ActivitiesScreen';
 import { AlbumScreen } from './src/screens/AlbumScreen';
 import { ToysScreen } from './src/screens/ToysScreen';
 import { ToyGameScreen } from './src/screens/ToyGameScreen';
@@ -41,7 +40,8 @@ function AppNavigator() {
     setLoadError(false);
     preloadGameAssets((loaded, total) => { if (mounted) setLoadProgress(loaded / total); }).then(() => {
       if (mounted) setAnimationsReady(true);
-    }).catch(() => {
+    }).catch(error => {
+      console.error('[PetMaestro] No se pudo iniciar el juego', error);
       if (mounted) setLoadError(true);
     });
     return () => { mounted = false; };
@@ -63,7 +63,6 @@ function AppNavigator() {
       >
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="CityMap" component={CityMapScreen} />
-        <Stack.Screen name="Activities" component={ActivitiesScreen} />
         <Stack.Screen name="Album" component={AlbumScreen} />
         <Stack.Screen name="Toys" component={ToysScreen} />
         <Stack.Screen name="Library" component={LibraryScreen} />

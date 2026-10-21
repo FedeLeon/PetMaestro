@@ -1,3 +1,4 @@
+import { useSceneActivity } from '../../context/ScenePresentation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,13 +26,15 @@ export function GardenFlowers({ width, height, onWateringChange }: { width: numb
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, [hasFlowers]);
-  useFocusEffect(useCallback(() => () => {
+  const cancel = useCallback(() => {
     session.current += 1;
     sequence.current?.stop();
     busy.current = false;
     setActive(null);
     onWateringChange(false);
-  }, [onWateringChange]));
+  }, [onWateringChange]);
+  useFocusEffect(useCallback(() => () => cancel(), [cancel]));
+  useSceneActivity(active !== null, cancel, false);
   const start = (id: string) => {
     if (busy.current || flowerWait(progress.flowerWateredAt[id], Date.now()) > 0) return;
     busy.current = true;

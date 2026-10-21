@@ -1,3 +1,4 @@
+import { BOTTOM_MENU_HEIGHT } from '../layout';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -7,6 +8,6 @@ export const styles = StyleSheet.create({
   futureNumber: { color: '#7f7569', fontSize: 11, fontWeight: '900' },
   futurePoint: { alignItems: 'center', backgroundColor: '#d8cec0', borderColor: '#eee7dc', borderRadius: 32, borderWidth: 4, bottom: '20%', height: 56, justifyContent: 'center', marginLeft: -28, position: 'absolute', width: 56 },
   mapImage: { borderRadius: 6, width: '100%', height: '100%' },
-  mapScene: { flex: 1, marginBottom: 94, overflow: 'hidden', position: 'relative' },
+  mapScene: { flex: 1, marginBottom: BOTTOM_MENU_HEIGHT, overflow: 'hidden', position: 'relative' },
   screen: { backgroundColor: '#fff7e8', flex: 1 },
 });

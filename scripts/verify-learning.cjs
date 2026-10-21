@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { emptyLearning, restoreLearning, reviewWordIds, reviewLevelFor, missionReady, stickerUnlocked, countActivity, cityActivities, getWord } = require('./load-game-data.cjs');
+const { emptyLearning, restoreLearning, reviewWordIds, reviewLevelFor, stickerUnlocked, countActivity, cityActivities, getWord } = require('./load-game-data.cjs');
 assert.deepEqual(restoreLearning(undefined), emptyLearning());
 assert.deepEqual(restoreLearning([]), emptyLearning());
 const restored = restoreLearning({ words: { cat: { correct: -5, errors: Infinity, lastPracticed: 1e20 }, fake: { correct: 99 } }, counts: { meal: -7, review: 'bad', city: 3.8 }, claimedMissions: ['rest', 'rest', 'fake'], cityCompleted: ['bakery', 'bakery', 'fake'], toyBest: { 'yarn-ball': 6, bad: 500 } });
@@ -10,7 +10,7 @@ assert.equal(restored.words.fake, undefined);
 assert.equal(restored.counts.meal, 0);
 assert.equal(restored.counts.review, 0);
 assert.equal(restored.counts.city, 3);
-assert.deepEqual(restored.claimedMissions, ['rest']);
+assert.equal(Object.hasOwn(restored, 'claimedMissions'), false, 'Legacy mission data is ignored without resetting learning');
 assert.deepEqual(restored.cityCompleted, ['bakery']);
 assert.deepEqual(restored.toyBest, { 'yarn-ball': 6 });
 const learning = emptyLearning();
@@ -27,11 +27,10 @@ for (const round of reviewLevelFor({ learning, unlockedLevel: 1 }).rounds) {
 }
 assert.equal(stickerUnlocked(learning, 'cat'), true);
 assert.equal(stickerUnlocked(learning, 'dog'), false);
-assert.equal(missionReady(learning, 'rest'), false);
-assert.equal(missionReady(countActivity(countActivity(learning, 'review'), 'sleep'), 'rest'), true);
+assert.equal(countActivity(countActivity(learning, 'review'), 'sleep').counts.sleep, 1);
 for (const activity of cityActivities) for (const task of activity.tasks) {
   assert.ok(task.options.includes(task.answer));
   assert.equal(new Set(task.options).size, task.options.length);
   for (const id of task.options) assert.equal(getWord(id).id, id);
 }
-console.log('Learning: legacy saves, corrupt fields, adaptive ordering, vocabulary gate, stickers, mission requirements and city content passed.');
+console.log('Learning: legacy saves, corrupt fields, adaptive ordering, vocabulary gate, stickers, activity counts and city content passed.');
